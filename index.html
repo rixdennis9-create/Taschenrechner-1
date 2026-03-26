@@ -512,6 +512,203 @@
 
     .pct-row input:focus { border-color: #f5a800; }
 
+    /* ── AI CHAT UI ───────────────────────────────────── */
+    #page3 {
+      display: none;
+      flex-direction: column;
+      height: 420px;
+    }
+    #page3.visible {
+      display: flex;
+    }
+
+    .ai-key-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+
+    .ai-key-bar input {
+      flex: 1;
+      height: 30px;
+      border: 1px solid rgba(99,102,241,0.4);
+      border-radius: 8px;
+      padding: 0 8px;
+      font-size: 11px;
+      background: rgba(30,27,58,0.9);
+      color: #c4b5fd;
+      outline: none;
+    }
+    .ai-key-bar input:focus { border-color: #6366f1; }
+    .ai-key-bar input::placeholder { color: rgba(196,181,253,0.4); }
+
+    .ai-key-save {
+      height: 30px;
+      padding: 0 10px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg,#6366f1,#8b5cf6);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .ai-key-save:hover { filter: brightness(1.15); }
+
+    .ai-model-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .ai-model-row select {
+      flex: 1;
+      height: 28px;
+      border: 1px solid rgba(99,102,241,0.35);
+      border-radius: 8px;
+      padding: 0 6px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(30,27,58,0.9);
+      color: #a5b4fc;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .ai-clear-btn {
+      height: 28px;
+      padding: 0 10px;
+      border: 1px solid rgba(239,68,68,0.4);
+      border-radius: 8px;
+      background: rgba(239,68,68,0.1);
+      color: #fca5a5;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .ai-clear-btn:hover { background: rgba(239,68,68,0.2); }
+
+    .ai-chat-window {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px 4px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(99,102,241,0.3) transparent;
+    }
+
+    .ai-msg {
+      max-width: 88%;
+      padding: 9px 12px;
+      border-radius: 14px;
+      font-size: 12px;
+      line-height: 1.55;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .ai-msg.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg,#6366f1,#8b5cf6);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .ai-msg.bot {
+      align-self: flex-start;
+      background: rgba(30,27,58,0.95);
+      color: #e0e7ff;
+      border: 1px solid rgba(99,102,241,0.25);
+      border-bottom-left-radius: 4px;
+    }
+
+    .ai-msg.bot.error {
+      background: rgba(127,29,29,0.6);
+      border-color: rgba(239,68,68,0.4);
+      color: #fca5a5;
+    }
+
+    .ai-msg.bot.thinking {
+      opacity: 0.6;
+      font-style: italic;
+    }
+
+    .ai-msg .ai-msg-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-bottom: 3px;
+    }
+
+    .ai-input-bar {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(99,102,241,0.2);
+    }
+
+    .ai-input-bar textarea {
+      flex: 1;
+      height: 44px;
+      border: 1px solid rgba(99,102,241,0.4);
+      border-radius: 10px;
+      padding: 7px 10px;
+      font-size: 12px;
+      background: rgba(30,27,58,0.9);
+      color: #e0e7ff;
+      resize: none;
+      outline: none;
+      font-family: inherit;
+    }
+    .ai-input-bar textarea:focus { border-color: #6366f1; }
+    .ai-input-bar textarea::placeholder { color: rgba(196,181,253,0.4); }
+
+    .ai-send-btn {
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg,#6366f1,#8b5cf6);
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: filter 0.12s;
+    }
+    .ai-send-btn:hover { filter: brightness(1.2); }
+    .ai-send-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .ai-status {
+      font-size: 10px;
+      color: rgba(196,181,253,0.55);
+      text-align: center;
+      margin-top: 2px;
+      min-height: 14px;
+    }
+
+    .ai-welcome {
+      text-align: center;
+      padding: 16px 8px;
+      color: rgba(196,181,253,0.6);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .ai-welcome .ai-welcome-icon {
+      font-size: 32px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
     /* ── SPLASH SCREEN ────────────────────────────────── */
     #splash {
       position: fixed;
@@ -754,35 +951,47 @@
     </div>
   </div>
 
-  <!-- PAGE 3: AI -->
-  <div class="page" id="page3">
-    <div class="p2-grid">
-      <div class="p2-card full" style="background:linear-gradient(135deg,#1e1b3a,#2d2060);border:1px solid #6366f1;">
-        <h3 style="color:#a5b4fc;"><span class="card-icon" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);">🤖</span>KI-Assistent</h3>
-        <p style="font-size:12px;color:#c4b5fd;margin-bottom:10px;">Stelle eine Rechenaufgabe und der KI-Assistent erklärt den Lösungsweg.</p>
-        <textarea id="ai-input" placeholder="z.B. Wie berechne ich 15% von 340?"
-          style="width:100%;height:68px;border-radius:10px;padding:8px;font-size:13px;
-                 background:#2a2460;border:1px solid #6366f1;color:#e0e7ff;resize:none;outline:none;"></textarea>
-        <button class="p2-btn" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);margin-top:8px;" onclick="aiAnswer()">
-          ✦ Frage stellen
-        </button>
-        <div id="ai-result" style="margin-top:10px;font-size:13px;color:#c4b5fd;min-height:20px;line-height:1.5;"></div>
-      </div>
-      <div class="p2-card full" style="background:linear-gradient(135deg,#1a2a1a,#1e3a1e);border:1px solid #4ade80;">
-        <h3 style="color:#86efac;"><span class="card-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a);">📐</span>Formel-Hilfe</h3>
-        <select id="formula-sel" onchange="showFormula()"
-          style="width:100%;height:32px;border-radius:8px;padding:0 8px;font-size:13px;
-                 background:#1e3a1e;border:1px solid #4ade80;color:#86efac;outline:none;margin-bottom:8px;">
-          <option value="">– Formel wählen –</option>
-          <option value="kreis">Kreisfläche</option>
-          <option value="dreieck">Dreiecksfläche</option>
-          <option value="zins">Zinsrechnung</option>
-          <option value="mwst">Mehrwertsteuer</option>
-          <option value="geschw">Geschwindigkeit</option>
-        </select>
-        <div id="formula-box" style="font-size:13px;color:#bbf7d0;line-height:1.6;min-height:40px;"></div>
+  <!-- PAGE 3: AI CHAT -->
+  <div class="page" id="page3" style="background:linear-gradient(160deg,#0f0d1f,#1a1740);border-radius:16px;padding:12px;">
+
+    <!-- API Key Row -->
+    <div class="ai-key-bar">
+      <input type="password" id="ai-api-key" placeholder="Anthropic API-Schlüssel eingeben (sk-ant-…)" />
+      <button class="ai-key-save" onclick="saveApiKey()">💾 Speichern</button>
+    </div>
+
+    <!-- Model + Clear -->
+    <div class="ai-model-row">
+      <select id="ai-model">
+        <option value="claude-haiku-4-5">Claude Haiku 4.5 — schnell &amp; günstig</option>
+        <option value="claude-sonnet-4-6">Claude Sonnet 4.6 — ausgewogen</option>
+        <option value="claude-opus-4-6">Claude Opus 4.6 — am stärksten</option>
+      </select>
+      <button class="ai-clear-btn" onclick="clearChat()">✕ Löschen</button>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="ai-chat-window" id="ai-chat-window">
+      <div class="ai-welcome">
+        <span class="ai-welcome-icon">🤖</span>
+        <strong style="color:#a5b4fc;font-size:13px;">Dennis AI-Assistent</strong><br>
+        Ich beantworte Fragen auf <strong>Deutsch</strong> und <strong>Englisch</strong>.<br>
+        Ich gebe nur <strong>wahre, faktische Antworten</strong>.<br>
+        Falls ich etwas nicht weiß, sage ich es ehrlich.
       </div>
     </div>
+
+    <!-- Status -->
+    <div class="ai-status" id="ai-status"></div>
+
+    <!-- Input Bar -->
+    <div class="ai-input-bar">
+      <textarea id="ai-user-input"
+        placeholder="Frage stellen… / Ask a question…"
+        onkeydown="aiKeyDown(event)"></textarea>
+      <button class="ai-send-btn" id="ai-send-btn" onclick="aiSend()">➤</button>
+    </div>
+
   </div>
 
   <!-- BOTTOM NAV -->
@@ -815,55 +1024,172 @@ function switchPage(n) {
   });
 }
 
-function aiAnswer() {
-  const q = document.getElementById('ai-input').value.trim();
-  const el = document.getElementById('ai-result');
-  if (!q) { el.textContent = 'Bitte eine Frage eingeben.'; return; }
+/* ═══════════════════════════════════════════════════
+   AI CHAT — CLAUDE API INTEGRATION
+═══════════════════════════════════════════════════ */
 
-  // Simple local responses for common math questions
-  const lower = q.toLowerCase();
-  let answer = '';
+const AI_SYSTEM_PROMPT = `Du bist ein intelligenter Assistent, der in den Dennis Pro Rechner integriert ist.
 
-  const pctMatch = q.match(/(\d+(?:[.,]\d+)?)\s*%\s*(?:von|of)\s*(\d+(?:[.,]\d+)?)/i);
-  if (pctMatch) {
-    const p = parseFloat(pctMatch[1]), v = parseFloat(pctMatch[2].replace(',','.'));
-    answer = `${p}% von ${v} = ${(p/100*v).toFixed(4).replace(/\.?0+$,'')} \n\nRechnung: ${v} × ${p} ÷ 100 = ${p/100*v}`;
-  } else if (lower.includes('prozent')) {
-    answer = '💡 Prozentrechnung:\n→ Prozentwert = Grundwert × Prozentsatz ÷ 100\nBeispiel: 15% von 200 = 200 × 15 ÷ 100 = 30';
-  } else if (lower.includes('fläche') && lower.includes('kreis')) {
-    answer = '💡 Kreisfläche:\n→ A = π × r²\nBeispiel: r=5 → A = 3.14159 × 25 = 78.54';
-  } else if (lower.includes('pythagoras') || lower.includes('hypotenuse')) {
-    answer = '💡 Satz des Pythagoras:\n→ c = √(a² + b²)\nBeispiel: a=3, b=4 → c = √(9+16) = √25 = 5';
-  } else if (lower.includes('zins')) {
-    answer = '💡 Zinsrechnung:\n→ Zinsen = Kapital × Zinssatz × Zeit ÷ 100\nBeispiel: 1000€ × 5% × 2 Jahre = 100€';
-  } else if (lower.includes('mwst') || lower.includes('mehrwertsteuer')) {
-    answer = '💡 Mehrwertsteuer (19%):\n→ Bruttopreis = Nettopreis × 1.19\n→ MwSt-Betrag = Nettopreis × 0.19\nBeispiel: 100€ netto → 119€ brutto';
-  } else if (/[\d]+\s*[\+\-\*\/]\s*[\d]+/.test(q)) {
-    try {
-      const safe = q.replace(/[^0-9+\-*/().% ]/g,'');
-      const res = Function('"use strict";return ('+safe+')')();
-      answer = `Ergebnis: ${res}\n\nRechnung: ${safe} = ${res}`;
-    } catch { answer = 'Diese Rechnung konnte ich nicht direkt auflösen. Nutze den Rechner!'; }
-  } else {
-    answer = '🤖 Tipp: Stelle konkrete Rechenaufgaben, z.B.:\n• "15% von 340"\n• "Kreisfläche mit r=7"\n• "Pythagoras a=6 b=8"\n• "Zins: 500€ bei 3% 4 Jahre"';
+SPRACHE: Antworte immer in der Sprache, in der der Nutzer schreibt (Deutsch oder Englisch). Erkenne die Sprache automatisch und wechsle entsprechend.
+
+KERNREGELN – ABSOLUT VERBINDLICH:
+1. Gib ausschließlich wahre, faktenbasierte Antworten. Erfinde NICHTS.
+2. Wenn du dir bei einer Antwort nicht sicher bist oder etwas nicht weißt, sage das ehrlich und klar.
+3. Löse keine Aufgabe hypothetisch oder spekulativ. Wenn eine Frage nicht eindeutig lösbar ist, erkläre warum.
+4. Wenn eine Rechenaufgabe falsche oder fehlende Angaben hat, weise den Nutzer darauf hin, statt eine falsche Antwort zu geben.
+
+FÄHIGKEITEN:
+- Mathematische Berechnungen und Erklärungen (Grundrechenarten, Prozent, Brüche, Algebra, Geometrie, Statistik)
+- Physikalische und wissenschaftliche Formeln mit korrekten Erklärungen
+- Einheitenumrechnung (Länge, Gewicht, Temperatur, Fläche, Geschwindigkeit)
+- Schritt-für-Schritt Lösungswege bei Rechenaufgaben
+- Allgemeinwissen und faktische Fragen
+
+STIL:
+- Kurz, klar und verständlich
+- Zeige Rechenwege Schritt für Schritt wenn sinnvoll
+- Verwende passende mathematische Notation
+- Hebe wichtige Ergebnisse hervor`;
+
+let aiHistory = [];
+
+function saveApiKey() {
+  const key = document.getElementById('ai-api-key').value.trim();
+  if (!key) { setAiStatus('⚠️ Bitte einen API-Schlüssel eingeben.'); return; }
+  if (!key.startsWith('sk-ant-')) { setAiStatus('⚠️ Ungültiger Schlüssel — muss mit sk-ant- beginnen.'); return; }
+  localStorage.setItem('dennis_ai_key', key);
+  document.getElementById('ai-api-key').value = '••••••••••••••••••••';
+  setAiStatus('✅ API-Schlüssel gespeichert!');
+  setTimeout(() => setAiStatus(''), 3000);
+}
+
+function loadApiKey() {
+  const stored = localStorage.getItem('dennis_ai_key');
+  if (stored) document.getElementById('ai-api-key').placeholder = '✅ Schlüssel gespeichert — Eingabe zum Ändern';
+}
+
+function getApiKey() {
+  const field = document.getElementById('ai-api-key').value.trim();
+  if (field && field !== '••••••••••••••••••••' && field.startsWith('sk-ant-')) return field;
+  return localStorage.getItem('dennis_ai_key') || '';
+}
+
+function setAiStatus(msg) {
+  document.getElementById('ai-status').textContent = msg;
+}
+
+function clearChat() {
+  aiHistory = [];
+  const win = document.getElementById('ai-chat-window');
+  win.innerHTML = `<div class="ai-welcome">
+    <span class="ai-welcome-icon">🤖</span>
+    <strong style="color:#a5b4fc;font-size:13px;">Dennis AI-Assistent</strong><br>
+    Ich beantworte Fragen auf <strong>Deutsch</strong> und <strong>Englisch</strong>.<br>
+    Ich gebe nur <strong>wahre, faktische Antworten</strong>.<br>
+    Falls ich etwas nicht weiß, sage ich es ehrlich.
+  </div>`;
+  setAiStatus('');
+}
+
+function appendMsg(role, text, extraClass) {
+  const win = document.getElementById('ai-chat-window');
+  const div = document.createElement('div');
+  div.className = 'ai-msg ' + role + (extraClass ? ' ' + extraClass : '');
+  const label = document.createElement('div');
+  label.className = 'ai-msg-label';
+  label.textContent = role === 'user' ? 'Du' : 'Dennis AI';
+  div.appendChild(label);
+  const content = document.createElement('div');
+  content.textContent = text;
+  div.appendChild(content);
+  win.appendChild(div);
+  win.scrollTop = win.scrollHeight;
+  return div;
+}
+
+function aiKeyDown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); aiSend(); }
+}
+
+async function aiSend() {
+  const input = document.getElementById('ai-user-input');
+  const sendBtn = document.getElementById('ai-send-btn');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    setAiStatus('⚠️ Bitte zuerst einen Anthropic API-Schlüssel eingeben und speichern.');
+    return;
   }
-  el.style.whiteSpace = 'pre-line';
-  el.textContent = answer;
+
+  // Remove welcome message if still present
+  const welcome = document.querySelector('.ai-welcome');
+  if (welcome) welcome.remove();
+
+  // Show user message
+  appendMsg('user', text);
+  input.value = '';
+  sendBtn.disabled = true;
+  setAiStatus('✦ Dennis AI denkt nach…');
+
+  // Add to history
+  aiHistory.push({ role: 'user', content: text });
+
+  // Thinking bubble
+  const thinkingDiv = appendMsg('bot', '…', 'thinking');
+
+  const model = document.getElementById('ai-model').value;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: model,
+        max_tokens: 1024,
+        system: AI_SYSTEM_PROMPT,
+        messages: aiHistory
+      })
+    });
+
+    thinkingDiv.remove();
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      const msg = err?.error?.message || `HTTP ${response.status}`;
+      appendMsg('bot', `❌ Fehler: ${msg}`, 'error');
+      aiHistory.pop(); // Remove failed user message
+      setAiStatus('');
+      sendBtn.disabled = false;
+      return;
+    }
+
+    const data = await response.json();
+    const replyText = data.content?.find(b => b.type === 'text')?.text || '(Keine Antwort)';
+
+    // Add assistant reply to history
+    aiHistory.push({ role: 'assistant', content: replyText });
+
+    appendMsg('bot', replyText);
+    setAiStatus(`✅ Modell: ${model} · ${data.usage?.output_tokens || '?'} Tokens`);
+
+  } catch (e) {
+    thinkingDiv.remove();
+    appendMsg('bot', `❌ Netzwerkfehler: ${e.message}\n\nHinweis: Stelle sicher, dass du die Datei über einen lokalen Server (nicht file://) öffnest, da Browser direkte API-Anfragen von file:// blockieren.`, 'error');
+    aiHistory.pop();
+    setAiStatus('');
+  }
+
+  sendBtn.disabled = false;
 }
 
-function showFormula() {
-  const sel = document.getElementById('formula-sel').value;
-  const box = document.getElementById('formula-box');
-  const formulas = {
-    kreis:    '⬤ Kreisfläche\nA = π × r²\nUmfang U = 2 × π × r\nBeispiel r=5: A = 78.54, U = 31.42',
-    dreieck:  '△ Dreiecksfläche\nA = (Grundlinie × Höhe) ÷ 2\nBeispiel g=8, h=5: A = 20',
-    zins:     '💰 Zinsrechnung\nZ = K × p × t ÷ 100\nK=Kapital, p=Zinssatz(%), t=Jahre\nBeispiel: 1000 × 5 × 3 ÷ 100 = 150€',
-    mwst:     '🧾 Mehrwertsteuer\nBrutto = Netto × 1.19\nNetto = Brutto ÷ 1.19\nMwSt = Netto × 0.19',
-    geschw:   '🚀 Geschwindigkeit\nv = s ÷ t\ns=Strecke(km), t=Zeit(h)\nBeispiel: 150km ÷ 2h = 75 km/h',
-  };
-  box.style.whiteSpace = 'pre-line';
-  box.textContent = sel ? formulas[sel] : '';
-}
+// loadApiKey() is called in the DOMContentLoaded below (after SPLASH)
 
 /* ═══════════════════════════════════════════════════
    CALCULATOR LOGIC
@@ -1093,6 +1419,7 @@ updateUnitSelects();
    SPLASH SCREEN
 ═══════════════════════════════════════════════════ */
 window.addEventListener('DOMContentLoaded', () => {
+  loadApiKey();
   const splash = document.getElementById('splash');
   setTimeout(() => {
     splash.classList.add('hide');
