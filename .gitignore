@@ -1,0 +1,6 @@
+# Enthält den API-Key – NIEMALS committen!
+.env
+
+# Node-Module
+node_modules/
+npm-debug.log*
