@@ -12,26 +12,39 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(160deg, #d0d0d0 0%, #b0b0b0 100%);
+      background: radial-gradient(ellipse at 50% 30%, #f0f0f0 0%, #c8c8c8 60%, #a8a8a8 100%);
       font-family: 'Segoe UI', system-ui, sans-serif;
     }
 
     /* ── CALCULATOR SHELL ─────────────────────────────────── */
     .calculator {
       width: 380px;
-      background: linear-gradient(180deg, #e8e8e8 0%, #c8c8c8 40%, #d4d4d4 100%);
+      background: linear-gradient(160deg, #f8f8f8 0%, #e2e2e2 30%, #d0d0d0 60%, #e6e6e6 100%);
       border-radius: 28px;
-      padding: 22px 22px 20px;
+      padding: 22px 22px 0px;
       box-shadow:
-        0 2px 0 #fff inset,
-        0 -2px 0 #aaa inset,
-        4px 0 0 #bbb inset,
-        -4px 0 0 #bbb inset,
-        0 20px 60px rgba(0,0,0,0.45),
-        0 6px 20px rgba(0,0,0,0.25);
-      border: 1.5px solid #999;
+        0 3px 0 rgba(255,255,255,0.9) inset,
+        0 -2px 0 rgba(0,0,0,0.15) inset,
+        0 30px 80px rgba(0,0,0,0.5),
+        0 8px 24px rgba(0,0,0,0.3),
+        0 0 60px rgba(220,220,220,0.6);
+      border: 1.5px solid #bbb;
       position: relative;
+      overflow: hidden;
     }
+
+    .calculator::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, transparent 100%);
+      border-radius: 26px 26px 0 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .calculator > * { position: relative; z-index: 1; }
 
     /* ── HEADER ───────────────────────────────────────────── */
     .header {
@@ -153,39 +166,78 @@
     .result.small  { font-size: 30px; }
     .result.xsmall { font-size: 22px; }
 
-    /* ── PAGE INDICATOR ───────────────────────────────────── */
-    .page-tabs {
+    /* ── BOTTOM NAV BAR ───────────────────────────────────── */
+    .bottom-nav {
       display: flex;
-      gap: 6px;
-      margin-bottom: 14px;
+      margin-top: 16px;
+      border-top: 1px solid rgba(0,0,0,0.12);
+      background: linear-gradient(180deg, #d8d8d8, #c0c0c0);
+      border-radius: 0 0 26px 26px;
+      overflow: hidden;
+      box-shadow: 0 2px 0 rgba(255,255,255,0.6) inset;
     }
 
-    .page-tab {
+    .nav-btn {
       flex: 1;
-      height: 34px;
+      height: 58px;
       border: none;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
+      background: transparent;
       cursor: pointer;
-      transition: all 0.18s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: #666;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: all 0.15s ease;
+      border-right: 1px solid rgba(0,0,0,0.08);
+      position: relative;
     }
 
-    .page-tab.active {
-      background: linear-gradient(180deg, #222, #111);
+    .nav-btn:last-child { border-right: none; }
+
+    .nav-btn .nav-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .nav-btn.active {
+      background: linear-gradient(180deg, #1a1a1a, #0d0d0d);
       color: #f5c800;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.1) inset;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3) inset;
     }
 
-    .page-tab.inactive {
-      background: linear-gradient(180deg, #d0d0d0, #b8b8b8);
-      color: #555;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.6) inset;
+    .nav-btn.active::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 20%; right: 20%;
+      height: 2px;
+      background: linear-gradient(90deg, #ffe033, #f5a800);
+      border-radius: 0 0 2px 2px;
     }
 
-    .page-tab.inactive:hover {
-      background: linear-gradient(180deg, #ddd, #c5c5c5);
+    .nav-btn:not(.active):hover {
+      background: rgba(255,255,255,0.25);
+      color: #333;
+    }
+
+    .nav-btn.nav-ai .nav-icon {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .nav-btn.nav-ai.active .nav-icon {
+      background: linear-gradient(135deg, #a5b4fc, #ddd6fe);
+      -webkit-background-clip: text;
+      background-clip: text;
     }
 
     /* ── PAGES ────────────────────────────────────────────── */
@@ -200,17 +252,18 @@
     }
 
     button.calc-btn {
-      height: 64px;
+      height: 66px;
       border: none;
       border-radius: 14px;
-      font-size: 17px;
-      font-weight: 600;
+      font-size: 20px;
+      font-weight: 700;
       cursor: pointer;
       transition: transform 0.08s ease, box-shadow 0.08s ease;
       outline: none;
       position: relative;
       overflow: hidden;
-      color: #1a1a1a;
+      color: #111111;
+      letter-spacing: -0.3px;
     }
 
     button.calc-btn:active {
@@ -220,35 +273,44 @@
 
     /* Silver function buttons */
     .btn-func {
-      background: linear-gradient(180deg, #d8d8d8 0%, #b8b8b8 100%);
+      background: linear-gradient(180deg, #dcdcdc 0%, #bebebe 100%);
+      color: #111111;
       box-shadow:
         0 4px 8px rgba(0,0,0,0.25),
-        0 1px 0 rgba(255,255,255,0.7) inset,
+        0 1px 0 rgba(255,255,255,0.8) inset,
         0 -1px 0 rgba(0,0,0,0.15) inset;
-      font-size: 13px;
+      font-size: 15px;
+      font-weight: 700;
     }
-    .btn-func:hover { background: linear-gradient(180deg, #e2e2e2, #c4c4c4); }
+    .btn-func:hover { background: linear-gradient(180deg, #e8e8e8, #cccccc); }
 
-    /* Operator buttons – dark with yellow accent */
+    /* Operator buttons – bright red */
     .btn-op {
-      background: linear-gradient(180deg, #2a2a2a 0%, #111 100%);
-      color: #f5c800;
+      background: linear-gradient(180deg, #e83333 0%, #c01818 100%);
+      color: #ffffff;
       font-size: 22px;
+      font-weight: 700;
       box-shadow:
-        0 4px 8px rgba(0,0,0,0.4),
-        0 1px 0 rgba(255,255,255,0.08) inset;
+        0 4px 10px rgba(180,0,0,0.45),
+        0 1px 0 rgba(255,150,150,0.4) inset,
+        0 -1px 0 rgba(0,0,0,0.2) inset;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
-    .btn-op:hover { background: linear-gradient(180deg, #383838, #1a1a1a); }
+    .btn-op:hover { background: linear-gradient(180deg, #f04444, #d02020); }
+    .btn-op:active { box-shadow: 0 1px 4px rgba(180,0,0,0.4) !important; }
 
-    /* Number buttons – slightly lighter silver */
+    /* Number buttons – bright silver, bold black text */
     .btn-num {
-      background: linear-gradient(180deg, #e4e4e4 0%, #c8c8c8 100%);
+      background: linear-gradient(180deg, #efefef 0%, #d2d2d2 100%);
+      color: #111111;
+      font-size: 22px;
+      font-weight: 700;
       box-shadow:
         0 4px 8px rgba(0,0,0,0.22),
-        0 1px 0 rgba(255,255,255,0.75) inset,
+        0 1px 0 rgba(255,255,255,0.85) inset,
         0 -1px 0 rgba(0,0,0,0.12) inset;
     }
-    .btn-num:hover { background: linear-gradient(180deg, #ececec, #d4d4d4); }
+    .btn-num:hover { background: linear-gradient(180deg, #f6f6f6, #dcdcdc); }
 
     .btn-zero { grid-column: span 2; }
 
@@ -455,7 +517,7 @@
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background: linear-gradient(160deg, #d0d0d0 0%, #b0b0b0 100%);
+      background: radial-gradient(ellipse at 50% 30%, #f0f0f0 0%, #c8c8c8 60%, #a8a8a8 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -581,11 +643,7 @@
     <div class="result" id="result">0</div>
   </div>
 
-  <!-- PAGE TABS -->
-  <div class="page-tabs">
-    <button class="page-tab active"   id="tab1" onclick="switchPage(1)">▣  Pro Rechner</button>
-    <button class="page-tab inactive" id="tab2" onclick="switchPage(2)">⊞  Seite 2</button>
-  </div>
+  <!-- PAGES GO HERE, NAV IS AT THE BOTTOM -->
 
   <!-- PAGE 1: STANDARD CALCULATOR -->
   <div class="page visible" id="page1">
@@ -621,7 +679,7 @@
     </div>
   </div>
 
-  <!-- PAGE 2: EXTRA TOOLS -->
+  <!-- PAGE 2: PRO RECHNER / EXTRA TOOLS -->
   <div class="page" id="page2">
     <div class="p2-grid">
 
@@ -696,6 +754,53 @@
     </div>
   </div>
 
+  <!-- PAGE 3: AI -->
+  <div class="page" id="page3">
+    <div class="p2-grid">
+      <div class="p2-card full" style="background:linear-gradient(135deg,#1e1b3a,#2d2060);border:1px solid #6366f1;">
+        <h3 style="color:#a5b4fc;"><span class="card-icon" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);">🤖</span>KI-Assistent</h3>
+        <p style="font-size:12px;color:#c4b5fd;margin-bottom:10px;">Stelle eine Rechenaufgabe und der KI-Assistent erklärt den Lösungsweg.</p>
+        <textarea id="ai-input" placeholder="z.B. Wie berechne ich 15% von 340?"
+          style="width:100%;height:68px;border-radius:10px;padding:8px;font-size:13px;
+                 background:#2a2460;border:1px solid #6366f1;color:#e0e7ff;resize:none;outline:none;"></textarea>
+        <button class="p2-btn" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);margin-top:8px;" onclick="aiAnswer()">
+          ✦ Frage stellen
+        </button>
+        <div id="ai-result" style="margin-top:10px;font-size:13px;color:#c4b5fd;min-height:20px;line-height:1.5;"></div>
+      </div>
+      <div class="p2-card full" style="background:linear-gradient(135deg,#1a2a1a,#1e3a1e);border:1px solid #4ade80;">
+        <h3 style="color:#86efac;"><span class="card-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a);">📐</span>Formel-Hilfe</h3>
+        <select id="formula-sel" onchange="showFormula()"
+          style="width:100%;height:32px;border-radius:8px;padding:0 8px;font-size:13px;
+                 background:#1e3a1e;border:1px solid #4ade80;color:#86efac;outline:none;margin-bottom:8px;">
+          <option value="">– Formel wählen –</option>
+          <option value="kreis">Kreisfläche</option>
+          <option value="dreieck">Dreiecksfläche</option>
+          <option value="zins">Zinsrechnung</option>
+          <option value="mwst">Mehrwertsteuer</option>
+          <option value="geschw">Geschwindigkeit</option>
+        </select>
+        <div id="formula-box" style="font-size:13px;color:#bbf7d0;line-height:1.6;min-height:40px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <button class="nav-btn" id="nav2" onclick="switchPage(2)">
+      <span class="nav-icon">⊞</span>
+      Pro Rechner
+    </button>
+    <button class="nav-btn active" id="nav1" onclick="switchPage(1)">
+      <span class="nav-icon">⌂</span>
+      Home
+    </button>
+    <button class="nav-btn nav-ai" id="nav3" onclick="switchPage(3)">
+      <span class="nav-icon">✦</span>
+      AI
+    </button>
+  </div>
+
 </div>
 
 <script>
@@ -703,10 +808,61 @@
    PAGE SWITCHING
 ═══════════════════════════════════════════════════ */
 function switchPage(n) {
-  document.getElementById('page1').classList.toggle('visible', n === 1);
-  document.getElementById('page2').classList.toggle('visible', n === 2);
-  document.getElementById('tab1').className = 'page-tab ' + (n === 1 ? 'active' : 'inactive');
-  document.getElementById('tab2').className = 'page-tab ' + (n === 2 ? 'active' : 'inactive');
+  [1,2,3].forEach(i => {
+    document.getElementById('page'+i).classList.toggle('visible', i === n);
+    const nb = document.getElementById('nav'+i);
+    if (nb) nb.classList.toggle('active', i === n);
+  });
+}
+
+function aiAnswer() {
+  const q = document.getElementById('ai-input').value.trim();
+  const el = document.getElementById('ai-result');
+  if (!q) { el.textContent = 'Bitte eine Frage eingeben.'; return; }
+
+  // Simple local responses for common math questions
+  const lower = q.toLowerCase();
+  let answer = '';
+
+  const pctMatch = q.match(/(\d+(?:[.,]\d+)?)\s*%\s*(?:von|of)\s*(\d+(?:[.,]\d+)?)/i);
+  if (pctMatch) {
+    const p = parseFloat(pctMatch[1]), v = parseFloat(pctMatch[2].replace(',','.'));
+    answer = `${p}% von ${v} = ${(p/100*v).toFixed(4).replace(/\.?0+$,'')} \n\nRechnung: ${v} × ${p} ÷ 100 = ${p/100*v}`;
+  } else if (lower.includes('prozent')) {
+    answer = '💡 Prozentrechnung:\n→ Prozentwert = Grundwert × Prozentsatz ÷ 100\nBeispiel: 15% von 200 = 200 × 15 ÷ 100 = 30';
+  } else if (lower.includes('fläche') && lower.includes('kreis')) {
+    answer = '💡 Kreisfläche:\n→ A = π × r²\nBeispiel: r=5 → A = 3.14159 × 25 = 78.54';
+  } else if (lower.includes('pythagoras') || lower.includes('hypotenuse')) {
+    answer = '💡 Satz des Pythagoras:\n→ c = √(a² + b²)\nBeispiel: a=3, b=4 → c = √(9+16) = √25 = 5';
+  } else if (lower.includes('zins')) {
+    answer = '💡 Zinsrechnung:\n→ Zinsen = Kapital × Zinssatz × Zeit ÷ 100\nBeispiel: 1000€ × 5% × 2 Jahre = 100€';
+  } else if (lower.includes('mwst') || lower.includes('mehrwertsteuer')) {
+    answer = '💡 Mehrwertsteuer (19%):\n→ Bruttopreis = Nettopreis × 1.19\n→ MwSt-Betrag = Nettopreis × 0.19\nBeispiel: 100€ netto → 119€ brutto';
+  } else if (/[\d]+\s*[\+\-\*\/]\s*[\d]+/.test(q)) {
+    try {
+      const safe = q.replace(/[^0-9+\-*/().% ]/g,'');
+      const res = Function('"use strict";return ('+safe+')')();
+      answer = `Ergebnis: ${res}\n\nRechnung: ${safe} = ${res}`;
+    } catch { answer = 'Diese Rechnung konnte ich nicht direkt auflösen. Nutze den Rechner!'; }
+  } else {
+    answer = '🤖 Tipp: Stelle konkrete Rechenaufgaben, z.B.:\n• "15% von 340"\n• "Kreisfläche mit r=7"\n• "Pythagoras a=6 b=8"\n• "Zins: 500€ bei 3% 4 Jahre"';
+  }
+  el.style.whiteSpace = 'pre-line';
+  el.textContent = answer;
+}
+
+function showFormula() {
+  const sel = document.getElementById('formula-sel').value;
+  const box = document.getElementById('formula-box');
+  const formulas = {
+    kreis:    '⬤ Kreisfläche\nA = π × r²\nUmfang U = 2 × π × r\nBeispiel r=5: A = 78.54, U = 31.42',
+    dreieck:  '△ Dreiecksfläche\nA = (Grundlinie × Höhe) ÷ 2\nBeispiel g=8, h=5: A = 20',
+    zins:     '💰 Zinsrechnung\nZ = K × p × t ÷ 100\nK=Kapital, p=Zinssatz(%), t=Jahre\nBeispiel: 1000 × 5 × 3 ÷ 100 = 150€',
+    mwst:     '🧾 Mehrwertsteuer\nBrutto = Netto × 1.19\nNetto = Brutto ÷ 1.19\nMwSt = Netto × 0.19',
+    geschw:   '🚀 Geschwindigkeit\nv = s ÷ t\ns=Strecke(km), t=Zeit(h)\nBeispiel: 150km ÷ 2h = 75 km/h',
+  };
+  box.style.whiteSpace = 'pre-line';
+  box.textContent = sel ? formulas[sel] : '';
 }
 
 /* ═══════════════════════════════════════════════════
@@ -820,7 +976,7 @@ function reciprocal() {
 }
 
 document.addEventListener('keydown', e => {
-  if (document.getElementById('page2').classList.contains('visible')) return;
+  if (!document.getElementById('page1').classList.contains('visible')) return;
   if (e.key >= '0' && e.key <= '9') inputNum(e.key);
   else if (e.key === '.') inputDot();
   else if (e.key === '+') inputOp('+');
