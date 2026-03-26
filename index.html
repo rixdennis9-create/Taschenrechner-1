@@ -12,23 +12,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: radial-gradient(ellipse at 50% 30%, #f0f0f0 0%, #c8c8c8 60%, #a8a8a8 100%);
+      background: radial-gradient(ellipse at 40% 20%, #1a2340 0%, #0d1220 45%, #050810 100%);
       font-family: 'Segoe UI', system-ui, sans-serif;
     }
 
     /* ── CALCULATOR SHELL ─────────────────────────────────── */
     .calculator {
       width: 380px;
-      background: linear-gradient(160deg, #f8f8f8 0%, #e2e2e2 30%, #d0d0d0 60%, #e6e6e6 100%);
-      border-radius: 28px;
+      background: linear-gradient(160deg, #1e2235 0%, #161928 50%, #12151f 100%);
+      border-radius: 32px;
       padding: 22px 22px 0px;
       box-shadow:
-        0 3px 0 rgba(255,255,255,0.9) inset,
-        0 -2px 0 rgba(0,0,0,0.15) inset,
-        0 30px 80px rgba(0,0,0,0.5),
-        0 8px 24px rgba(0,0,0,0.3),
-        0 0 60px rgba(220,220,220,0.6);
-      border: 1.5px solid #bbb;
+        0 1px 0 rgba(255,255,255,0.08) inset,
+        0 -1px 0 rgba(0,0,0,0.4) inset,
+        0 40px 100px rgba(0,0,0,0.8),
+        0 12px 32px rgba(0,0,0,0.6),
+        0 0 0 1px rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.07);
       position: relative;
       overflow: hidden;
     }
@@ -37,9 +37,9 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 50%;
-      background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, transparent 100%);
-      border-radius: 26px 26px 0 0;
+      height: 45%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%);
+      border-radius: 30px 30px 0 0;
       pointer-events: none;
       z-index: 0;
     }
@@ -88,7 +88,7 @@
       font-size: 9px;
       font-weight: 600;
       color: #1a1a1a;
-      opacity: 0.6;
+      opacity: 0.75;
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
@@ -103,7 +103,7 @@
     .model-label {
       font-size: 10px;
       font-weight: 600;
-      color: #555;
+      color: rgba(255,255,255,0.4);
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
@@ -119,35 +119,36 @@
 
     /* ── DISPLAY ──────────────────────────────────────────── */
     .display {
-      background: linear-gradient(180deg, #1a1a1a 0%, #2a2a2a 100%);
-      border-radius: 14px;
-      padding: 16px 18px 14px;
+      background: rgba(0,0,0,0.35);
+      border-radius: 20px;
+      padding: 18px 22px 16px;
       margin-bottom: 18px;
-      min-height: 100px;
+      min-height: 108px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
       text-align: center;
-      border: 2px solid #111;
+      border: 1px solid rgba(255,255,255,0.07);
       box-shadow:
-        0 4px 12px rgba(0,0,0,0.5) inset,
-        0 1px 0 #888 inset;
+        0 6px 20px rgba(0,0,0,0.5) inset,
+        0 1px 0 rgba(255,255,255,0.04) inset;
       position: relative;
+      backdrop-filter: blur(4px);
     }
 
     .display-glare {
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 40%;
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), transparent);
-      border-radius: 12px 12px 0 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent);
+      border-radius: 18px 18px 0 0;
       pointer-events: none;
     }
 
     .expression {
       font-size: 12px;
-      color: #888;
+      color: rgba(255,255,255,0.35);
       min-height: 16px;
       word-break: break-all;
       margin-bottom: 6px;
@@ -155,31 +156,32 @@
     }
 
     .result {
-      font-size: 46px;
-      font-weight: 300;
-      color: #f0f0f0;
-      letter-spacing: -1px;
+      font-size: 50px;
+      font-weight: 200;
+      color: #ffffff;
+      letter-spacing: -2px;
       word-break: break-all;
       line-height: 1.1;
       transition: font-size 0.1s ease;
+      text-shadow: 0 0 30px rgba(255,255,255,0.15);
     }
-    .result.small  { font-size: 30px; }
-    .result.xsmall { font-size: 22px; }
+    .result.small  { font-size: 32px; }
+    .result.xsmall { font-size: 24px; }
 
     /* ── BOTTOM NAV BAR ───────────────────────────────────── */
     .bottom-nav {
       display: flex;
       margin-top: 16px;
-      border-top: 1px solid rgba(0,0,0,0.12);
-      background: linear-gradient(180deg, #d8d8d8, #c0c0c0);
-      border-radius: 0 0 26px 26px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.3);
+      border-radius: 0 0 30px 30px;
       overflow: hidden;
-      box-shadow: 0 2px 0 rgba(255,255,255,0.6) inset;
+      backdrop-filter: blur(8px);
     }
 
     .nav-btn {
       flex: 1;
-      height: 58px;
+      height: 62px;
       border: none;
       background: transparent;
       cursor: pointer;
@@ -187,14 +189,14 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 3px;
-      color: #666;
+      gap: 4px;
+      color: rgba(255,255,255,0.3);
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      transition: all 0.15s ease;
-      border-right: 1px solid rgba(0,0,0,0.08);
+      transition: all 0.18s ease;
+      border-right: 1px solid rgba(255,255,255,0.04);
       position: relative;
     }
 
@@ -206,27 +208,26 @@
     }
 
     .nav-btn.active {
-      background: linear-gradient(180deg, #1a1a1a, #0d0d0d);
+      background: rgba(255,255,255,0.05);
       color: #f5c800;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3) inset;
     }
 
     .nav-btn.active::before {
       content: '';
       position: absolute;
-      top: 0; left: 20%; right: 20%;
+      top: 0; left: 25%; right: 25%;
       height: 2px;
-      background: linear-gradient(90deg, #ffe033, #f5a800);
+      background: linear-gradient(90deg, transparent, #f5c800, transparent);
       border-radius: 0 0 2px 2px;
     }
 
     .nav-btn:not(.active):hover {
-      background: rgba(255,255,255,0.25);
-      color: #333;
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.6);
     }
 
     .nav-btn.nav-ai .nav-icon {
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      background: linear-gradient(135deg, #818cf8, #a78bfa);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -235,7 +236,7 @@
     }
 
     .nav-btn.nav-ai.active .nav-icon {
-      background: linear-gradient(135deg, #a5b4fc, #ddd6fe);
+      background: linear-gradient(135deg, #c7d2fe, #ede9fe);
       -webkit-background-clip: text;
       background-clip: text;
     }
@@ -252,88 +253,92 @@
     }
 
     button.calc-btn {
-      height: 66px;
+      height: 68px;
       border: none;
-      border-radius: 14px;
+      border-radius: 18px;
       font-size: 20px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
-      transition: transform 0.08s ease, box-shadow 0.08s ease;
+      transition: transform 0.08s ease, filter 0.08s ease;
       outline: none;
       position: relative;
       overflow: hidden;
-      color: #111111;
       letter-spacing: -0.3px;
     }
 
     button.calc-btn:active {
-      transform: scale(0.93) translateY(1px);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+      transform: scale(0.92) translateY(2px);
+      filter: brightness(0.85);
     }
 
-    /* Silver function buttons */
+    /* Dark function buttons */
     .btn-func {
-      background: linear-gradient(180deg, #dcdcdc 0%, #bebebe 100%);
-      color: #111111;
+      background: rgba(80,85,110,0.7);
+      color: #e8eaf0;
       box-shadow:
-        0 4px 8px rgba(0,0,0,0.25),
-        0 1px 0 rgba(255,255,255,0.8) inset,
-        0 -1px 0 rgba(0,0,0,0.15) inset;
+        0 6px 14px rgba(0,0,0,0.4),
+        0 1px 0 rgba(255,255,255,0.08) inset;
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(4px);
     }
-    .btn-func:hover { background: linear-gradient(180deg, #e8e8e8, #cccccc); }
+    .btn-func:hover { background: rgba(95,100,130,0.8); }
 
-    /* Operator buttons – bright red */
+    /* Operator buttons – vivid red with glow */
     .btn-op {
-      background: linear-gradient(180deg, #e83333 0%, #c01818 100%);
+      background: linear-gradient(160deg, #e83333 0%, #b81515 100%);
       color: #ffffff;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 700;
       box-shadow:
-        0 4px 10px rgba(180,0,0,0.45),
-        0 1px 0 rgba(255,150,150,0.4) inset,
-        0 -1px 0 rgba(0,0,0,0.2) inset;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        0 6px 18px rgba(220,30,30,0.45),
+        0 1px 0 rgba(255,180,180,0.3) inset;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,100,100,0.2);
     }
-    .btn-op:hover { background: linear-gradient(180deg, #f04444, #d02020); }
-    .btn-op:active { box-shadow: 0 1px 4px rgba(180,0,0,0.4) !important; }
+    .btn-op:hover { background: linear-gradient(160deg, #f04444, #cc1a1a); }
 
-    /* Number buttons – bright silver, bold black text */
+    /* Number buttons – dark glass */
     .btn-num {
-      background: linear-gradient(180deg, #efefef 0%, #d2d2d2 100%);
-      color: #111111;
-      font-size: 22px;
-      font-weight: 700;
+      background: rgba(44,48,68,0.9);
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 400;
       box-shadow:
-        0 4px 8px rgba(0,0,0,0.22),
-        0 1px 0 rgba(255,255,255,0.85) inset,
-        0 -1px 0 rgba(0,0,0,0.12) inset;
+        0 6px 14px rgba(0,0,0,0.4),
+        0 1px 0 rgba(255,255,255,0.06) inset;
+      border: 1px solid rgba(255,255,255,0.06);
     }
-    .btn-num:hover { background: linear-gradient(180deg, #f6f6f6, #dcdcdc); }
+    .btn-num:hover { background: rgba(56,62,86,0.95); }
 
     .btn-zero { grid-column: span 2; }
 
-    /* Equals – yellow/gold */
+    /* Equals – gold glow */
     .btn-equals {
-      background: linear-gradient(180deg, #ffe033 0%, #f5a800 100%);
+      background: linear-gradient(160deg, #ffe033 0%, #e89800 100%);
       color: #1a1a1a;
-      font-size: 24px;
+      font-size: 26px;
+      font-weight: 600;
       box-shadow:
-        0 4px 12px rgba(245,168,0,0.5),
-        0 1px 0 rgba(255,255,255,0.45) inset;
+        0 6px 20px rgba(245,168,0,0.55),
+        0 1px 0 rgba(255,255,200,0.4) inset;
+      border: 1px solid rgba(255,200,0,0.3);
     }
-    .btn-equals:hover { background: linear-gradient(180deg, #ffe84d, #f8b800); }
+    .btn-equals:hover { background: linear-gradient(160deg, #ffec55, #f5a800); }
 
-    /* Clear button – red tint */
+    /* Clear button – vivid red */
     .btn-clear {
-      background: linear-gradient(180deg, #d44, #a22);
+      background: linear-gradient(160deg, #e83333, #a81515);
       color: #fff;
+      font-size: 16px;
+      font-weight: 700;
       box-shadow:
-        0 4px 8px rgba(170,34,34,0.4),
-        0 1px 0 rgba(255,255,255,0.2) inset;
+        0 6px 16px rgba(200,20,20,0.4),
+        0 1px 0 rgba(255,150,150,0.2) inset;
+      border: 1px solid rgba(255,100,100,0.2);
     }
-    .btn-clear:hover { background: linear-gradient(180deg, #e55, #b33); }
+    .btn-clear:hover { background: linear-gradient(160deg, #f04444, #ba1818); }
 
     /* ── PAGE 2 ───────────────────────────────────────────── */
     .p2-grid {
@@ -343,19 +348,19 @@
     }
 
     .p2-card {
-      background: linear-gradient(180deg, #e0e0e0, #c4c4c4);
+      background: rgba(255,255,255,0.04);
       border-radius: 16px;
       padding: 14px;
       box-shadow:
-        0 4px 10px rgba(0,0,0,0.2),
-        0 1px 0 rgba(255,255,255,0.7) inset;
-      border: 1px solid #aaa;
+        0 4px 16px rgba(0,0,0,0.3),
+        0 1px 0 rgba(255,255,255,0.05) inset;
+      border: 1px solid rgba(255,255,255,0.07);
     }
 
     .p2-card h3 {
       font-size: 12px;
       font-weight: 700;
-      color: #333;
+      color: rgba(255,255,255,0.7);
       text-transform: uppercase;
       letter-spacing: 0.08em;
       margin-bottom: 10px;
@@ -396,12 +401,12 @@
       width: 46px;
       height: 30px;
       text-align: center;
-      border: 1px solid #aaa;
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 8px;
-      background: #f0f0f0;
+      background: rgba(255,255,255,0.07);
       font-size: 14px;
       font-weight: 600;
-      color: #111;
+      color: #fff;
       outline: none;
     }
 
@@ -410,7 +415,7 @@
     .fraction-line {
       width: 46px;
       height: 2px;
-      background: #333;
+      background: rgba(255,255,255,0.4);
       border-radius: 1px;
     }
 
@@ -418,12 +423,12 @@
       width: 38px;
       height: 38px;
       text-align: center;
-      border: 1px solid #aaa;
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 8px;
-      background: #f0f0f0;
+      background: rgba(255,255,255,0.07);
       font-size: 16px;
       font-weight: 700;
-      color: #111;
+      color: #fff;
       outline: none;
       cursor: pointer;
     }
@@ -446,11 +451,13 @@
     .p2-btn:hover { background: linear-gradient(180deg, #333, #1a1a1a); }
     .p2-btn:active { transform: scale(0.96); }
 
+    .fraction-op-sel option { background: #1e2235; color: #fff; }
+
     .p2-result {
       margin-top: 8px;
       font-size: 14px;
       font-weight: 700;
-      color: #1a1a1a;
+      color: #f5c800;
       text-align: center;
       min-height: 20px;
     }
@@ -467,21 +474,23 @@
       width: 100%;
       height: 30px;
       padding: 0 8px;
-      border: 1px solid #aaa;
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 8px;
-      background: #f0f0f0;
+      background: rgba(255,255,255,0.07);
       font-size: 13px;
-      color: #111;
+      color: #fff;
       outline: none;
     }
 
     .unit-row input:focus,
     .unit-row select:focus { border-color: #f5a800; }
 
+    .unit-row select option { background: #1e2235; color: #fff; }
+
     .unit-arrow {
       text-align: center;
       font-size: 14px;
-      color: #555;
+      color: rgba(255,255,255,0.4);
       font-weight: 700;
     }
 
@@ -494,7 +503,7 @@
 
     .pct-row label {
       font-size: 11px;
-      color: #555;
+      color: rgba(255,255,255,0.45);
       font-weight: 600;
     }
 
@@ -502,11 +511,11 @@
       width: 100%;
       height: 30px;
       padding: 0 8px;
-      border: 1px solid #aaa;
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 8px;
-      background: #f0f0f0;
+      background: rgba(255,255,255,0.07);
       font-size: 13px;
-      color: #111;
+      color: #fff;
       outline: none;
     }
 
