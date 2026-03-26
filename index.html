@@ -8,17 +8,21 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      min-height: 100vh;
+      height: 100dvh;
       display: flex;
       align-items: center;
       justify-content: center;
       background: radial-gradient(ellipse at 40% 20%, #1a2340 0%, #0d1220 45%, #050810 100%);
       font-family: 'Segoe UI', system-ui, sans-serif;
+      overflow: hidden;
     }
 
     /* ── CALCULATOR SHELL ─────────────────────────────────── */
     .calculator {
       width: 380px;
+      max-width: 100vw;
+      height: 100dvh;
+      max-height: 780px;
       background: linear-gradient(160deg, #1e2235 0%, #161928 50%, #12151f 100%);
       border-radius: 32px;
       padding: 22px 22px 0px;
@@ -31,6 +35,8 @@
       border: 1px solid rgba(255,255,255,0.07);
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .calculator::before {
@@ -171,7 +177,8 @@
     /* ── BOTTOM NAV BAR ───────────────────────────────────── */
     .bottom-nav {
       display: flex;
-      margin-top: 16px;
+      flex-shrink: 0;
+      margin-top: auto;
       border-top: 1px solid rgba(255,255,255,0.06);
       background: rgba(0,0,0,0.3);
       border-radius: 0 0 30px 30px;
@@ -242,6 +249,15 @@
     }
 
     /* ── PAGES ────────────────────────────────────────────── */
+    /* Scrollable content area that pushes nav to the bottom */
+    .calc-content {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+    }
+    .calc-content::-webkit-scrollbar { display: none; }
+
     .page { display: none; }
     .page.visible { display: block; }
 
@@ -249,6 +265,7 @@
     .buttons {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
+      padding-bottom: 4px;
       gap: 9px;
     }
 
@@ -893,7 +910,8 @@
     <div class="result" id="result">0</div>
   </div>
 
-  <!-- PAGES GO HERE, NAV IS AT THE BOTTOM -->
+  <!-- SCROLLABLE CONTENT AREA -->
+  <div class="calc-content">
 
   <!-- PAGE 1: STANDARD CALCULATOR -->
   <div class="page visible" id="page1">
@@ -1041,6 +1059,8 @@
     </div>
 
   </div>
+
+  </div><!-- end .calc-content -->
 
   <!-- BOTTOM NAV -->
   <div class="bottom-nav">
