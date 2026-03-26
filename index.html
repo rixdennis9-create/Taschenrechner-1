@@ -60,43 +60,203 @@
       margin-bottom: 18px;
     }
 
-    /* Logo */
-    .logo {
+    /* Gear / Settings Button */
+    .gear-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 8px 10px 6px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+      outline: none;
+    }
+    .gear-btn:hover { background: rgba(255,255,255,0.1); }
+    .gear-btn:active { transform: scale(0.93); }
+
+    .gear-icon {
+      font-size: 22px;
+      line-height: 1;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .gear-btn:hover .gear-icon { transform: rotate(60deg); }
+
+    .gear-label {
+      font-size: 8px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ── SETTINGS OVERLAY ─────────────────────────────────── */
+    #settings-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      z-index: 500;
+      background: rgba(8,10,20,0.92);
+      backdrop-filter: blur(12px);
+      border-radius: 30px;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    #settings-overlay.open { display: flex; }
+
+    .settings-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 22px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .settings-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
       display: flex;
       align-items: center;
       gap: 8px;
-      text-decoration: none;
+    }
+    .settings-close {
+      width: 32px; height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.6);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .settings-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+    .settings-body { padding: 16px 22px 24px; display: flex; flex-direction: column; gap: 20px; }
+
+    .settings-section {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .settings-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 12px 16px 8px;
     }
 
-    .logo-badge {
-      width: 42px;
-      height: 42px;
-      background: linear-gradient(135deg, #ffe033, #f5a800);
-      border-radius: 12px;
+    .settings-row {
       display: flex;
       align-items: center;
-      justify-content: center;
-      box-shadow:
-        0 3px 8px rgba(245,168,0,0.5),
-        0 1px 0 rgba(255,255,255,0.4) inset;
-      border: 1px solid #d48a00;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      gap: 10px;
+    }
+    .settings-row:first-of-type { border-top: none; }
+
+    .settings-row-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .settings-row-icon {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
     }
 
-    .logo-text {
+    .settings-select {
+      height: 32px;
+      padding: 0 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.07);
+      color: #fff;
       font-size: 13px;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+      min-width: 110px;
+      text-align: right;
+    }
+    .settings-select option { background: #1e2235; color: #fff; }
+
+    /* Radio chip group */
+    .chip-group { display: flex; gap: 6px; }
+    .chip {
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.55);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chip.active {
+      background: linear-gradient(135deg, #ffe033, #f5a800);
+      color: #1a1a1a;
+      border-color: #f5a800;
+    }
+
+    /* Info box */
+    .settings-info-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .info-dev-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .info-dev-avatar {
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ffe033, #f5a800);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
       font-weight: 900;
       color: #1a1a1a;
-      letter-spacing: -0.5px;
-      line-height: 1;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(245,168,0,0.4);
     }
-
-    .logo-sub {
-      font-size: 9px;
-      font-weight: 600;
-      color: #1a1a1a;
-      opacity: 0.75;
+    .info-dev-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .info-dev-role {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
       letter-spacing: 0.05em;
       text-transform: uppercase;
+    }
+    .info-app-row {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
     }
 
     .header-right {
@@ -887,16 +1047,81 @@
 
 <div class="calculator">
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="logo">
-      <div class="logo-badge">
-        <div>
-          <div class="logo-text">D</div>
-          <div class="logo-sub">ENNIS</div>
+  <!-- SETTINGS OVERLAY -->
+  <div id="settings-overlay">
+    <div class="settings-header">
+      <div class="settings-title">⚙️ Einstellungen</div>
+      <button class="settings-close" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="settings-body">
+
+      <!-- Sprache -->
+      <div class="settings-section">
+        <div class="settings-section-title">🌐 Sprache / Language</div>
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-icon" style="background:rgba(99,102,241,0.2);">🗣️</div>
+            App-Sprache
+          </div>
+          <select class="settings-select" id="lang-select" onchange="applyLanguage(this.value)">
+            <option value="de">🇩🇪 Deutsch</option>
+            <option value="en">🇬🇧 English</option>
+            <option value="ru">🇷🇺 Русский</option>
+            <option value="hi">🇮🇳 हिन्दी</option>
+          </select>
         </div>
       </div>
+
+      <!-- Grafik -->
+      <div class="settings-section">
+        <div class="settings-section-title">🖥️ Grafik / Display</div>
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-icon" style="background:rgba(16,185,129,0.2);">📺</div>
+            Qualität
+          </div>
+          <div class="chip-group">
+            <div class="chip" id="gfx-low" onclick="setGfx('low')">720p</div>
+            <div class="chip active" id="gfx-high" onclick="setGfx('high')">1080p</div>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-icon" style="background:rgba(245,168,0,0.2);">✨</div>
+            Animationen
+          </div>
+          <div class="chip-group">
+            <div class="chip active" id="anim-on" onclick="setAnim(true)">An</div>
+            <div class="chip" id="anim-off" onclick="setAnim(false)">Aus</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="settings-section-title" style="padding:0;color:rgba(255,255,255,0.35);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">ℹ️ Info</div>
+      <div class="settings-info-box">
+        <div class="info-dev-row">
+          <div class="info-dev-avatar">D</div>
+          <div>
+            <div class="info-dev-name">Dennis Rix</div>
+            <div class="info-dev-role">Entwickler · Developer</div>
+          </div>
+        </div>
+        <div class="info-app-row">
+          <span>Dennis Pro Rechner · AI-Taschenrechner</span>
+          <span>v2.0</span>
+        </div>
+      </div>
+
     </div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <button class="gear-btn" onclick="openSettings()">
+      <span class="gear-icon">⚙️</span>
+      <span class="gear-label">Einstellung</span>
+    </button>
     <div class="header-right">
       <span class="model-label">Pro Calc</span>
       <span class="power-dot"></span>
@@ -1066,21 +1291,84 @@
   <div class="bottom-nav">
     <button class="nav-btn" id="nav2" onclick="switchPage(2)">
       <span class="nav-icon">⊞</span>
-      Pro Rechner
+      <span id="nav2-label">Pro Rechner</span>
     </button>
     <button class="nav-btn active" id="nav1" onclick="switchPage(1)">
       <span class="nav-icon">⌂</span>
-      Home
+      <span id="nav1-label">Home</span>
     </button>
     <button class="nav-btn nav-ai" id="nav3" onclick="switchPage(3)">
       <span class="nav-icon">✦</span>
-      AI
+      <span id="nav3-label">AI</span>
     </button>
   </div>
 
 </div>
 
 <script>
+/* ═══════════════════════════════════════════════════
+   SETTINGS
+═══════════════════════════════════════════════════ */
+function openSettings() {
+  document.getElementById('settings-overlay').classList.add('open');
+}
+function closeSettings() {
+  document.getElementById('settings-overlay').classList.remove('open');
+}
+
+// Language strings
+const LANG = {
+  de: { home: 'Home', pro: 'Pro Rechner', ai: 'AI', settings: 'Einstellung', calcTitle: 'Pro Calc', acBtn: 'AC' },
+  en: { home: 'Home', pro: 'Pro Tools', ai: 'AI', settings: 'Settings', calcTitle: 'Pro Calc', acBtn: 'AC' },
+  ru: { home: 'Главная', pro: 'Про', ai: 'ИИ', settings: 'Настройки', calcTitle: 'Калькулятор', acBtn: 'AC' },
+  hi: { home: 'होम', pro: 'प्रो', ai: 'AI', settings: 'सेटिंग', calcTitle: 'कैल्क', acBtn: 'AC' }
+};
+let currentLang = 'de';
+
+function applyLanguage(lang) {
+  currentLang = lang;
+  const t = LANG[lang];
+  document.getElementById('nav1-label').textContent = t.home;
+  document.getElementById('nav2-label').textContent = t.pro;
+  document.getElementById('nav3-label').textContent = t.ai;
+  document.querySelector('.gear-label').textContent = t.settings;
+  document.querySelector('.model-label').textContent = t.calcTitle;
+  document.querySelector('.btn-clear').textContent = t.acBtn;
+}
+
+// Graphics quality
+function setGfx(q) {
+  document.getElementById('gfx-low').classList.toggle('active', q === 'low');
+  document.getElementById('gfx-high').classList.toggle('active', q === 'high');
+  // Lower quality: reduce blur/shadow for performance
+  const root = document.querySelector('.calculator');
+  if (q === 'low') {
+    root.style.setProperty('--blur-amount', '0px');
+    document.querySelectorAll('[style*="backdrop-filter"]').forEach(el => el.style.backdropFilter = 'none');
+  } else {
+    document.querySelectorAll('.bottom-nav, #settings-overlay').forEach(el => el.style.backdropFilter = '');
+  }
+}
+
+// Animations toggle
+function setAnim(on) {
+  document.getElementById('anim-on').classList.toggle('active', on);
+  document.getElementById('anim-off').classList.toggle('active', !on);
+  document.body.style.setProperty('--anim-duration', on ? '' : '0s');
+  if (!on) {
+    const style = document.getElementById('no-anim-style') || (() => {
+      const s = document.createElement('style');
+      s.id = 'no-anim-style';
+      document.head.appendChild(s);
+      return s;
+    })();
+    style.textContent = '* { animation-duration: 0.001s !important; transition-duration: 0.001s !important; }';
+  } else {
+    const s = document.getElementById('no-anim-style');
+    if (s) s.textContent = '';
+  }
+}
+
 /* ═══════════════════════════════════════════════════
    PAGE SWITCHING
 ═══════════════════════════════════════════════════ */
