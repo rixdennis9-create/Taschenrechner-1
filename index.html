@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dennis Pro Rechner</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, #d0d0d0 0%, #b0b0b0 100%);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    /* ── CALCULATOR SHELL ─────────────────────────────────── */
+    .calculator {
+      width: 380px;
+      background: linear-gradient(180deg, #e8e8e8 0%, #c8c8c8 40%, #d4d4d4 100%);
+      border-radius: 28px;
+      padding: 22px 22px 20px;
+      box-shadow:
+        0 2px 0 #fff inset,
+        0 -2px 0 #aaa inset,
+        4px 0 0 #bbb inset,
+        -4px 0 0 #bbb inset,
+        0 20px 60px rgba(0,0,0,0.45),
+        0 6px 20px rgba(0,0,0,0.25);
+      border: 1.5px solid #999;
+      position: relative;
+    }
+
+    /* ── HEADER ───────────────────────────────────────────── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    /* Logo */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .logo-badge {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #ffe033, #f5a800);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 3px 8px rgba(245,168,0,0.5),
+        0 1px 0 rgba(255,255,255,0.4) inset;
+      border: 1px solid #d48a00;
+    }
+
+    .logo-text {
+      font-size: 13px;
+      font-weight: 900;
+      color: #1a1a1a;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+
+    .logo-sub {
+      font-size: 9px;
+      font-weight: 600;
+      color: #1a1a1a;
+      opacity: 0.6;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+    }
+
+    .model-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: #555;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .power-dot {
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, #66dd66, #22aa22);
+      border-radius: 50%;
+      box-shadow: 0 0 6px #44cc44;
+      align-self: flex-end;
+    }
+
+    /* ── DISPLAY ──────────────────────────────────────────── */
+    .display {
+      background: linear-gradient(180deg, #1a1a1a 0%, #2a2a2a 100%);
+      border-radius: 14px;
+      padding: 16px 18px 14px;
+      margin-bottom: 18px;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      text-align: center;
+      border: 2px solid #111;
+      box-shadow:
+        0 4px 12px rgba(0,0,0,0.5) inset,
+        0 1px 0 #888 inset;
+      position: relative;
+    }
+
+    .display-glare {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 40%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), transparent);
+      border-radius: 12px 12px 0 0;
+      pointer-events: none;
+    }
+
+    .expression {
+      font-size: 12px;
+      color: #888;
+      min-height: 16px;
+      word-break: break-all;
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .result {
+      font-size: 46px;
+      font-weight: 300;
+      color: #f0f0f0;
+      letter-spacing: -1px;
+      word-break: break-all;
+      line-height: 1.1;
+      transition: font-size 0.1s ease;
+    }
+    .result.small  { font-size: 30px; }
+    .result.xsmall { font-size: 22px; }
+
+    /* ── PAGE INDICATOR ───────────────────────────────────── */
+    .page-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .page-tab {
+      flex: 1;
+      height: 34px;
+      border: none;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .page-tab.active {
+      background: linear-gradient(180deg, #222, #111);
+      color: #f5c800;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.1) inset;
+    }
+
+    .page-tab.inactive {
+      background: linear-gradient(180deg, #d0d0d0, #b8b8b8);
+      color: #555;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.6) inset;
+    }
+
+    .page-tab.inactive:hover {
+      background: linear-gradient(180deg, #ddd, #c5c5c5);
+    }
+
+    /* ── PAGES ────────────────────────────────────────────── */
+    .page { display: none; }
+    .page.visible { display: block; }
+
+    /* ── BUTTON GRID (Page 1) ─────────────────────────────── */
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
+    }
+
+    button.calc-btn {
+      height: 64px;
+      border: none;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+      outline: none;
+      position: relative;
+      overflow: hidden;
+      color: #1a1a1a;
+    }
+
+    button.calc-btn:active {
+      transform: scale(0.93) translateY(1px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+    }
+
+    /* Silver function buttons */
+    .btn-func {
+      background: linear-gradient(180deg, #d8d8d8 0%, #b8b8b8 100%);
+      box-shadow:
+        0 4px 8px rgba(0,0,0,0.25),
+        0 1px 0 rgba(255,255,255,0.7) inset,
+        0 -1px 0 rgba(0,0,0,0.15) inset;
+      font-size: 13px;
+    }
+    .btn-func:hover { background: linear-gradient(180deg, #e2e2e2, #c4c4c4); }
+
+    /* Operator buttons – dark with yellow accent */
+    .btn-op {
+      background: linear-gradient(180deg, #2a2a2a 0%, #111 100%);
+      color: #f5c800;
+      font-size: 22px;
+      box-shadow:
+        0 4px 8px rgba(0,0,0,0.4),
+        0 1px 0 rgba(255,255,255,0.08) inset;
+    }
+    .btn-op:hover { background: linear-gradient(180deg, #383838, #1a1a1a); }
+
+    /* Number buttons – slightly lighter silver */
+    .btn-num {
+      background: linear-gradient(180deg, #e4e4e4 0%, #c8c8c8 100%);
+      box-shadow:
+        0 4px 8px rgba(0,0,0,0.22),
+        0 1px 0 rgba(255,255,255,0.75) inset,
+        0 -1px 0 rgba(0,0,0,0.12) inset;
+    }
+    .btn-num:hover { background: linear-gradient(180deg, #ececec, #d4d4d4); }
+
+    .btn-zero { grid-column: span 2; }
+
+    /* Equals – yellow/gold */
+    .btn-equals {
+      background: linear-gradient(180deg, #ffe033 0%, #f5a800 100%);
+      color: #1a1a1a;
+      font-size: 24px;
+      box-shadow:
+        0 4px 12px rgba(245,168,0,0.5),
+        0 1px 0 rgba(255,255,255,0.45) inset;
+    }
+    .btn-equals:hover { background: linear-gradient(180deg, #ffe84d, #f8b800); }
+
+    /* Clear button – red tint */
+    .btn-clear {
+      background: linear-gradient(180deg, #d44, #a22);
+      color: #fff;
+      box-shadow:
+        0 4px 8px rgba(170,34,34,0.4),
+        0 1px 0 rgba(255,255,255,0.2) inset;
+    }
+    .btn-clear:hover { background: linear-gradient(180deg, #e55, #b33); }
+
+    /* ── PAGE 2 ───────────────────────────────────────────── */
+    .p2-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .p2-card {
+      background: linear-gradient(180deg, #e0e0e0, #c4c4c4);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow:
+        0 4px 10px rgba(0,0,0,0.2),
+        0 1px 0 rgba(255,255,255,0.7) inset;
+      border: 1px solid #aaa;
+    }
+
+    .p2-card h3 {
+      font-size: 12px;
+      font-weight: 700;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .p2-card h3 .card-icon {
+      width: 22px;
+      height: 22px;
+      background: linear-gradient(135deg, #ffe033, #f5a800);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .p2-card.full { grid-column: span 2; }
+
+    /* Fraction inputs */
+    .fraction-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .fraction-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .fraction-col input {
+      width: 46px;
+      height: 30px;
+      text-align: center;
+      border: 1px solid #aaa;
+      border-radius: 8px;
+      background: #f0f0f0;
+      font-size: 14px;
+      font-weight: 600;
+      color: #111;
+      outline: none;
+    }
+
+    .fraction-col input:focus { border-color: #f5a800; }
+
+    .fraction-line {
+      width: 46px;
+      height: 2px;
+      background: #333;
+      border-radius: 1px;
+    }
+
+    .fraction-op-sel {
+      width: 38px;
+      height: 38px;
+      text-align: center;
+      border: 1px solid #aaa;
+      border-radius: 8px;
+      background: #f0f0f0;
+      font-size: 16px;
+      font-weight: 700;
+      color: #111;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .p2-btn {
+      width: 100%;
+      height: 32px;
+      border: none;
+      border-radius: 9px;
+      background: linear-gradient(180deg, #222, #111);
+      color: #f5c800;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      margin-top: 4px;
+      box-shadow: 0 3px 7px rgba(0,0,0,0.35);
+      transition: all 0.12s;
+    }
+    .p2-btn:hover { background: linear-gradient(180deg, #333, #1a1a1a); }
+    .p2-btn:active { transform: scale(0.96); }
+
+    .p2-result {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a1a;
+      text-align: center;
+      min-height: 20px;
+    }
+
+    /* Unit converter */
+    .unit-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .unit-row input,
+    .unit-row select {
+      width: 100%;
+      height: 30px;
+      padding: 0 8px;
+      border: 1px solid #aaa;
+      border-radius: 8px;
+      background: #f0f0f0;
+      font-size: 13px;
+      color: #111;
+      outline: none;
+    }
+
+    .unit-row input:focus,
+    .unit-row select:focus { border-color: #f5a800; }
+
+    .unit-arrow {
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+      font-weight: 700;
+    }
+
+    /* Percent calc */
+    .pct-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .pct-row label {
+      font-size: 11px;
+      color: #555;
+      font-weight: 600;
+    }
+
+    .pct-row input {
+      width: 100%;
+      height: 30px;
+      padding: 0 8px;
+      border: 1px solid #aaa;
+      border-radius: 8px;
+      background: #f0f0f0;
+      font-size: 13px;
+      color: #111;
+      outline: none;
+    }
+
+    .pct-row input:focus { border-color: #f5a800; }
+
+    /* ── SPLASH SCREEN ────────────────────────────────── */
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: linear-gradient(160deg, #d0d0d0 0%, #b0b0b0 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    #splash.hide {
+      opacity: 0;
+      transform: scale(1.06);
+      pointer-events: none;
+    }
+
+    .splash-logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #ffe033, #f5a800);
+      border-radius: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 8px 24px rgba(245,168,0,0.55),
+        0 2px 0 rgba(255,255,255,0.4) inset;
+      border: 1.5px solid #d48a00;
+      animation: splashBadge 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+
+    .splash-logo-big { font-size: 30px; font-weight: 900; color: #1a1a1a; line-height: 1; }
+    .splash-logo-sub { font-size: 11px; font-weight: 700; color: #1a1a1a; opacity: 0.6;
+                       letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .splash-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #1a1a1a;
+      letter-spacing: -0.5px;
+      animation: splashText 0.7s 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .splash-title span { color: #f5a800; }
+
+    .splash-sub {
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      animation: splashText 0.7s 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+
+    .splash-bar {
+      width: 160px;
+      height: 3px;
+      background: #ccc;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 10px;
+      animation: splashText 0.5s 0.6s ease both;
+    }
+
+    .splash-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ffe033, #f5a800);
+      border-radius: 2px;
+      animation: barFill 2s 0.8s ease forwards;
+    }
+
+    @keyframes splashBadge {
+      from { opacity: 0; transform: scale(0.4) rotate(-10deg); }
+      to   { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+
+    @keyframes splashText {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes barFill {
+      to { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="splash-logo">
+    <div class="splash-logo-big">D</div>
+    <div class="splash-logo-sub">ENNIS</div>
+  </div>
+  <div class="splash-title">Dennis <span>Pro Rechner</span></div>
+  <div class="splash-sub">Dein smarter Taschenrechner</div>
+  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+</div>
+
+<div class="calculator">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">
+      <div class="logo-badge">
+        <div>
+          <div class="logo-text">D</div>
+          <div class="logo-sub">ENNIS</div>
+        </div>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="model-label">Pro Calc</span>
+      <span class="power-dot"></span>
+    </div>
+  </div>
+
+  <!-- DISPLAY -->
+  <div class="display">
+    <div class="display-glare"></div>
+    <div class="expression" id="expression"></div>
+    <div class="result" id="result">0</div>
+  </div>
+
+  <!-- PAGE TABS -->
+  <div class="page-tabs">
+    <button class="page-tab active"   id="tab1" onclick="switchPage(1)">▣  Pro Rechner</button>
+    <button class="page-tab inactive" id="tab2" onclick="switchPage(2)">⊞  Seite 2</button>
+  </div>
+
+  <!-- PAGE 1: STANDARD CALCULATOR -->
+  <div class="page visible" id="page1">
+    <div class="buttons">
+      <button class="calc-btn btn-clear"  onclick="clearAll()">AC</button>
+      <button class="calc-btn btn-func"   onclick="toggleSign()">+/−</button>
+      <button class="calc-btn btn-func"   onclick="percentage()">%</button>
+      <button class="calc-btn btn-op"     onclick="inputOp('/')">÷</button>
+
+      <button class="calc-btn btn-func"   onclick="squareRoot()">√</button>
+      <button class="calc-btn btn-func"   onclick="square()">x²</button>
+      <button class="calc-btn btn-func"   onclick="reciprocal()">1/x</button>
+      <button class="calc-btn btn-op"     onclick="inputOp('*')">×</button>
+
+      <button class="calc-btn btn-num"    onclick="inputNum('7')">7</button>
+      <button class="calc-btn btn-num"    onclick="inputNum('8')">8</button>
+      <button class="calc-btn btn-num"    onclick="inputNum('9')">9</button>
+      <button class="calc-btn btn-op"     onclick="inputOp('-')">−</button>
+
+      <button class="calc-btn btn-num"    onclick="inputNum('4')">4</button>
+      <button class="calc-btn btn-num"    onclick="inputNum('5')">5</button>
+      <button class="calc-btn btn-num"    onclick="inputNum('6')">6</button>
+      <button class="calc-btn btn-op"     onclick="inputOp('+')">+</button>
+
+      <button class="calc-btn btn-num"    onclick="inputNum('1')">1</button>
+      <button class="calc-btn btn-num"    onclick="inputNum('2')">2</button>
+      <button class="calc-btn btn-num"    onclick="inputNum('3')">3</button>
+      <button class="calc-btn btn-func"   onclick="backspace()">⌫</button>
+
+      <button class="calc-btn btn-num btn-zero" onclick="inputNum('0')">0</button>
+      <button class="calc-btn btn-num"    onclick="inputDot()">.</button>
+      <button class="calc-btn btn-equals" onclick="calculate()">=</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2: EXTRA TOOLS -->
+  <div class="page" id="page2">
+    <div class="p2-grid">
+
+      <!-- Bruchrechnung -->
+      <div class="p2-card full">
+        <h3><span class="card-icon">½</span>Bruchrechnung</h3>
+        <div class="fraction-row">
+          <div class="fraction-col">
+            <input type="number" id="z1" placeholder="0" />
+            <div class="fraction-line"></div>
+            <input type="number" id="n1" placeholder="1" />
+          </div>
+          <select class="fraction-op-sel" id="fop">
+            <option>+</option>
+            <option>−</option>
+            <option>×</option>
+            <option>÷</option>
+          </select>
+          <div class="fraction-col">
+            <input type="number" id="z2" placeholder="0" />
+            <div class="fraction-line"></div>
+            <input type="number" id="n2" placeholder="1" />
+          </div>
+        </div>
+        <button class="p2-btn" onclick="calcFraction()">= Berechnen</button>
+        <div class="p2-result" id="fraction-result">–</div>
+      </div>
+
+      <!-- Maßeinheiten -->
+      <div class="p2-card full">
+        <h3><span class="card-icon">⇄</span>Maßeinheiten</h3>
+        <div class="unit-row">
+          <select id="unit-cat" onchange="updateUnitSelects()">
+            <option value="length">Länge</option>
+            <option value="weight">Gewicht</option>
+            <option value="temp">Temperatur</option>
+            <option value="area">Fläche</option>
+            <option value="speed">Geschwindigkeit</option>
+          </select>
+          <input type="number" id="unit-val" placeholder="Wert eingeben" oninput="convertUnit()" />
+          <select id="unit-from" onchange="convertUnit()"></select>
+          <div class="unit-arrow">↓</div>
+          <select id="unit-to" onchange="convertUnit()"></select>
+        </div>
+        <div class="p2-result" id="unit-result">–</div>
+      </div>
+
+      <!-- Prozentrechnng -->
+      <div class="p2-card">
+        <h3><span class="card-icon">%</span>Prozent</h3>
+        <div class="pct-row">
+          <label>Grundwert</label>
+          <input type="number" id="pct-base" placeholder="z.B. 200" oninput="calcPercent()" />
+          <label>Prozentsatz %</label>
+          <input type="number" id="pct-rate" placeholder="z.B. 15" oninput="calcPercent()" />
+        </div>
+        <div class="p2-result" id="pct-result">–</div>
+      </div>
+
+      <!-- Pythagoras -->
+      <div class="p2-card">
+        <h3><span class="card-icon">△</span>Pythagoras</h3>
+        <div class="pct-row">
+          <label>Seite a</label>
+          <input type="number" id="py-a" placeholder="z.B. 3" oninput="calcPyth()" />
+          <label>Seite b</label>
+          <input type="number" id="py-b" placeholder="z.B. 4" oninput="calcPyth()" />
+        </div>
+        <div class="p2-result" id="pyth-result">c = –</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   PAGE SWITCHING
+═══════════════════════════════════════════════════ */
+function switchPage(n) {
+  document.getElementById('page1').classList.toggle('visible', n === 1);
+  document.getElementById('page2').classList.toggle('visible', n === 2);
+  document.getElementById('tab1').className = 'page-tab ' + (n === 1 ? 'active' : 'inactive');
+  document.getElementById('tab2').className = 'page-tab ' + (n === 2 ? 'active' : 'inactive');
+}
+
+/* ═══════════════════════════════════════════════════
+   CALCULATOR LOGIC
+═══════════════════════════════════════════════════ */
+let current = '0', expression = '', operator = null, operand = null, justCalculated = false;
+
+const resultEl     = document.getElementById('result');
+const expressionEl = document.getElementById('expression');
+
+function updateDisplay() {
+  resultEl.className = 'result';
+  if (current.length > 14) resultEl.classList.add('xsmall');
+  else if (current.length > 9) resultEl.classList.add('small');
+  resultEl.textContent = current;
+  expressionEl.textContent = expression;
+}
+
+function inputNum(n) {
+  if (justCalculated) { current = n; expression = ''; justCalculated = false; }
+  else if (current === '0') current = n;
+  else if (current.length < 16) current += n;
+  updateDisplay();
+}
+
+function inputDot() {
+  if (justCalculated) { current = '0.'; justCalculated = false; }
+  else if (!current.includes('.')) current += '.';
+  updateDisplay();
+}
+
+function inputOp(op) {
+  const sym = { '+': '+', '-': '−', '*': '×', '/': '÷' };
+  if (operator && !justCalculated) {
+    const val = compute(parseFloat(operand), parseFloat(current), operator);
+    if (val === null) return;
+    current = fmt(val);
+    operand = current;
+  } else { operand = current; }
+  operator = op;
+  expression = operand + ' ' + sym[op];
+  justCalculated = false;
+  current = '0';
+  updateDisplay();
+}
+
+function compute(a, b, op) {
+  if (op === '/' && b === 0) { current = 'Fehler'; expression = ''; operator = null; operand = null; updateDisplay(); return null; }
+  if (op === '+') return a + b;
+  if (op === '-') return a - b;
+  if (op === '*') return a * b;
+  if (op === '/') return a / b;
+}
+
+function calculate() {
+  if (!operator || operand === null) return;
+  const sym = { '+': '+', '-': '−', '*': '×', '/': '÷' };
+  expression = operand + ' ' + sym[operator] + ' ' + current + ' =';
+  const val = compute(parseFloat(operand), parseFloat(current), operator);
+  if (val === null) return;
+  current = fmt(val); operator = null; operand = null; justCalculated = true;
+  updateDisplay();
+}
+
+function fmt(n) {
+  if (!isFinite(n)) return 'Fehler';
+  return String(parseFloat(n.toPrecision(12)));
+}
+
+function clearAll() {
+  current = '0'; expression = ''; operator = null; operand = null; justCalculated = false;
+  updateDisplay();
+}
+
+function backspace() {
+  if (justCalculated) return;
+  current = current.length > 1 ? current.slice(0, -1) : '0';
+  updateDisplay();
+}
+
+function toggleSign() {
+  if (current === '0' || current === 'Fehler') return;
+  current = current.startsWith('-') ? current.slice(1) : '-' + current;
+  updateDisplay();
+}
+
+function percentage() {
+  const v = parseFloat(current);
+  current = fmt(operand !== null ? (parseFloat(operand) * v / 100) : v / 100);
+  updateDisplay();
+}
+
+function squareRoot() {
+  const v = parseFloat(current);
+  if (v < 0) { current = 'Fehler'; updateDisplay(); return; }
+  expression = '√(' + current + ')';
+  current = fmt(Math.sqrt(v)); justCalculated = true; updateDisplay();
+}
+
+function square() {
+  expression = '(' + current + ')²';
+  const v = parseFloat(current);
+  current = fmt(v * v); justCalculated = true; updateDisplay();
+}
+
+function reciprocal() {
+  const v = parseFloat(current);
+  if (v === 0) { current = 'Fehler'; updateDisplay(); return; }
+  expression = '1/(' + current + ')';
+  current = fmt(1 / v); justCalculated = true; updateDisplay();
+}
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('page2').classList.contains('visible')) return;
+  if (e.key >= '0' && e.key <= '9') inputNum(e.key);
+  else if (e.key === '.') inputDot();
+  else if (e.key === '+') inputOp('+');
+  else if (e.key === '-') inputOp('-');
+  else if (e.key === '*') inputOp('*');
+  else if (e.key === '/') { e.preventDefault(); inputOp('/'); }
+  else if (e.key === 'Enter' || e.key === '=') calculate();
+  else if (e.key === 'Backspace') backspace();
+  else if (e.key === 'Escape') clearAll();
+});
+
+/* ═══════════════════════════════════════════════════
+   BRUCHRECHNUNG
+═══════════════════════════════════════════════════ */
+function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+
+function calcFraction() {
+  const z1 = parseInt(document.getElementById('z1').value) || 0;
+  const n1 = parseInt(document.getElementById('n1').value) || 1;
+  const z2 = parseInt(document.getElementById('z2').value) || 0;
+  const n2 = parseInt(document.getElementById('n2').value) || 1;
+  const op = document.getElementById('fop').value;
+
+  let rz, rn;
+  if (op === '+') { rz = z1 * n2 + z2 * n1; rn = n1 * n2; }
+  else if (op === '−') { rz = z1 * n2 - z2 * n1; rn = n1 * n2; }
+  else if (op === '×') { rz = z1 * z2; rn = n1 * n2; }
+  else { rz = z1 * n2; rn = n1 * z2; }
+
+  if (rn === 0) { document.getElementById('fraction-result').textContent = 'Fehler'; return; }
+  const g = gcd(Math.abs(rz), Math.abs(rn));
+  const sz = rz / g, sn = rn / g;
+  const decimal = (sz / sn).toFixed(4).replace(/\.?0+$/, '');
+  document.getElementById('fraction-result').textContent =
+    sn === 1 ? sz : sz + ' / ' + sn + '  ≈  ' + decimal;
+}
+
+/* ═══════════════════════════════════════════════════
+   MAßEINHEITEN
+═══════════════════════════════════════════════════ */
+const units = {
+  length:  { m: 1, km: 1000, cm: 0.01, mm: 0.001, mi: 1609.34, yd: 0.9144, ft: 0.3048, in: 0.0254 },
+  weight:  { kg: 1, g: 0.001, mg: 0.000001, t: 1000, lb: 0.453592, oz: 0.0283495 },
+  area:    { 'm²': 1, 'km²': 1e6, 'cm²': 0.0001, 'mm²': 0.000001, ha: 10000, 'ft²': 0.092903 },
+  speed:   { 'km/h': 1, 'm/s': 3.6, 'mph': 1.60934, knot: 1.852 },
+  temp:    { '°C': null, '°F': null, K: null }
+};
+
+function updateUnitSelects() {
+  const cat = document.getElementById('unit-cat').value;
+  const keys = Object.keys(units[cat]);
+  ['unit-from', 'unit-to'].forEach((id, i) => {
+    const sel = document.getElementById(id);
+    sel.innerHTML = keys.map(k => `<option value="${k}">${k}</option>`).join('');
+    sel.selectedIndex = i === 1 ? Math.min(1, keys.length - 1) : 0;
+  });
+  convertUnit();
+}
+
+function convertUnit() {
+  const cat  = document.getElementById('unit-cat').value;
+  const val  = parseFloat(document.getElementById('unit-val').value);
+  const from = document.getElementById('unit-from').value;
+  const to   = document.getElementById('unit-to').value;
+  const el   = document.getElementById('unit-result');
+
+  if (isNaN(val)) { el.textContent = '–'; return; }
+
+  let result;
+  if (cat === 'temp') {
+    if (from === '°C' && to === '°F') result = val * 9/5 + 32;
+    else if (from === '°F' && to === '°C') result = (val - 32) * 5/9;
+    else if (from === '°C' && to === 'K')  result = val + 273.15;
+    else if (from === 'K'  && to === '°C') result = val - 273.15;
+    else if (from === '°F' && to === 'K')  result = (val - 32) * 5/9 + 273.15;
+    else if (from === 'K'  && to === '°F') result = (val - 273.15) * 9/5 + 32;
+    else result = val;
+  } else {
+    const f = units[cat][from], t = units[cat][to];
+    result = val * f / t;
+  }
+
+  el.textContent = parseFloat(result.toPrecision(8)) + ' ' + to;
+}
+
+/* ═══════════════════════════════════════════════════
+   PROZENTRECHNUNG
+═══════════════════════════════════════════════════ */
+function calcPercent() {
+  const base = parseFloat(document.getElementById('pct-base').value);
+  const rate = parseFloat(document.getElementById('pct-rate').value);
+  const el   = document.getElementById('pct-result');
+  if (isNaN(base) || isNaN(rate)) { el.textContent = '–'; return; }
+  const val = base * rate / 100;
+  el.textContent = rate + '% von ' + base + ' = ' + parseFloat(val.toPrecision(10));
+}
+
+/* ═══════════════════════════════════════════════════
+   PYTHAGORAS
+═══════════════════════════════════════════════════ */
+function calcPyth() {
+  const a = parseFloat(document.getElementById('py-a').value);
+  const b = parseFloat(document.getElementById('py-b').value);
+  const el = document.getElementById('pyth-result');
+  if (isNaN(a) || isNaN(b)) { el.textContent = 'c = –'; return; }
+  const c = Math.sqrt(a * a + b * b);
+  el.textContent = 'c = ' + parseFloat(c.toPrecision(8));
+}
+
+/* Init unit selects */
+updateUnitSelects();
+
+/* ═══════════════════════════════════════════════════
+   SPLASH SCREEN
+═══════════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  const splash = document.getElementById('splash');
+  setTimeout(() => {
+    splash.classList.add('hide');
+    setTimeout(() => splash.remove(), 800);
+  }, 2400);
+});
+</script>
+
+</body>
+</html>
