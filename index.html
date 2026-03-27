@@ -2040,18 +2040,19 @@ updateUnitSelects();
 /* ═══════════════════════════════════════════════════
    SPLASH SCREEN
 ═══════════════════════════════════════════════════ */
-window.addEventListener('DOMContentLoaded', () => {
+// Runs immediately — script is at bottom of body, DOM is already ready
+(function init() {
   // Default language: Deutsch
   document.getElementById('lang-select').value = 'de';
   applyLanguage('de');
 
-  // Splash screen
+  // Splash screen — dismiss after 2.4 s
   const splash = document.getElementById('splash');
   setTimeout(() => {
     splash.classList.add('hide');
-    setTimeout(() => splash.remove(), 800);
+    setTimeout(() => { if (splash.parentNode) splash.remove(); }, 900);
   }, 2400);
-});
+})();
 </script>
 
 </body>
