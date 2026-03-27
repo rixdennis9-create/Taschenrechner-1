@@ -147,24 +147,20 @@
 
     /* ── SPEECH BUBBLE ────────────────────────────────────── */
     .speech-bubble {
-      display: none;
       position: fixed;
       z-index: 9000;
       transform-origin: left top;
+      opacity: 0;
+      transform: scale(0.7);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s cubic-bezier(.34,1.56,.64,1);
     }
     .speech-bubble.open {
-      display: block;
-      animation: bubbleIn 0.35s cubic-bezier(.34,1.56,.64,1) both;
-    }
-    .speech-bubble.closing {
-      display: block;
-      animation: bubbleOut 0.2s ease-in both;
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
     }
 
-    @keyframes bubbleIn {
-      from { opacity: 0; transform: scale(0.6) translateX(-10px); }
-      to   { opacity: 1; transform: scale(1) translateX(0); }
-    }
     @keyframes bubbleOut {
       from { opacity: 1; transform: scale(1); }
       to   { opacity: 0; transform: scale(0.75); }
@@ -235,29 +231,21 @@
 
     /* ── SETTINGS OVERLAY — modernized ───────────────────── */
     #settings-overlay {
-      display: none;
       position: fixed;
       inset: 0;
       z-index: 8000;
+      display: flex;
       flex-direction: column;
       overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(.32,1.1,.64,1);
     }
     #settings-overlay.open {
-      display: flex;
-      animation: settingsSlideIn 0.38s cubic-bezier(.32,1.1,.64,1) both;
-    }
-    #settings-overlay.closing {
-      display: flex;
-      animation: settingsSlideOut 0.25s ease-in both;
-    }
-
-    @keyframes settingsSlideIn {
-      from { opacity: 0; transform: translateY(40px) scale(0.97); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    @keyframes settingsSlideOut {
-      from { opacity: 1; transform: translateY(0) scale(1); }
-      to   { opacity: 0; transform: translateY(30px) scale(0.97); }
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
     /* frosted glass backdrop */
@@ -1587,14 +1575,10 @@
    SETTINGS
 ═══════════════════════════════════════════════════ */
 function openSettings() {
-  const el = document.getElementById('settings-overlay');
-  el.classList.remove('closing');
-  el.classList.add('open');
+  document.getElementById('settings-overlay').classList.add('open');
 }
 function closeSettings() {
-  const el = document.getElementById('settings-overlay');
-  el.classList.add('closing');
-  setTimeout(() => { el.classList.remove('open', 'closing'); }, 280);
+  document.getElementById('settings-overlay').classList.remove('open');
 }
 
 // ── Notification / speech bubble ──
@@ -1604,26 +1588,19 @@ function toggleNotif(e) {
   const bubble = document.getElementById('speech-bubble');
   if (notifOpen) {
     bubble.classList.remove('open');
-    bubble.classList.add('closing');
-    bubble.addEventListener('animationend', () => bubble.classList.remove('closing'), { once: true });
     notifOpen = false;
   } else {
-    // Position bubble relative to the button using fixed coords
     const btn = e.currentTarget;
     const rect = btn.getBoundingClientRect();
-    bubble.style.left = (rect.right + 8) + 'px';
-    bubble.style.top  = (rect.top) + 'px';
-    bubble.classList.remove('closing');
+    bubble.style.left = (rect.right + 10) + 'px';
+    bubble.style.top  = rect.top + 'px';
     bubble.classList.add('open');
     notifOpen = true;
   }
 }
 document.addEventListener('click', () => {
   if (!notifOpen) return;
-  const bubble = document.getElementById('speech-bubble');
-  bubble.classList.remove('open');
-  bubble.classList.add('closing');
-  bubble.addEventListener('animationend', () => bubble.classList.remove('closing'), { once: true });
+  document.getElementById('speech-bubble').classList.remove('open');
   notifOpen = false;
 });
 
