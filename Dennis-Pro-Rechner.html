@@ -52,6 +52,17 @@
 
     .calculator > * { position: relative; z-index: 1; }
 
+    /* Full-calculator starry bg (shown when page2 is active) */
+    #kl-fullbg {
+      position: absolute !important;
+      inset: 0;
+      z-index: 0 !important;
+      pointer-events: none;
+      display: none;
+      overflow: hidden;
+      border-radius: 32px;
+    }
+
     /* ── HEADER ───────────────────────────────────────────── */
     .header {
       display: flex;
@@ -1409,6 +1420,8 @@
 </div>
 
 <div class="calculator">
+  <!-- Full starry bg — sits behind header, display, nav when page2 active -->
+  <div class="kl-bg" id="kl-fullbg"></div>
 
   <!-- HEADER -->
   <div class="header">
@@ -1474,9 +1487,6 @@
 
   <!-- PAGE 2: PRO RECHNER / EXTRA TOOLS -->
   <div class="page" id="page2">
-
-    <!-- Animated background covers all of page2 (grid + chat) -->
-    <div class="kl-bg" id="kl-bg"></div>
 
     <!-- CLASS SELECTION — BUBBLE WORLD -->
     <div id="klassen-grid-view">
@@ -1734,6 +1744,9 @@ function _renderPage(n) {
     var nb = document.getElementById('nav'+i);
     if (nb) nb.classList.toggle('active', i === n);
   });
+  /* Show full starry bg only when Pro Rechner (page2) is active */
+  var fullbg = document.getElementById('kl-fullbg');
+  if (fullbg) fullbg.style.display = (n === 2) ? 'block' : 'none';
 }
 
 function switchPage(n) {
@@ -2027,7 +2040,7 @@ function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
 ═══════════════════════════════════════════════════ */
 /* ── BUBBLE WORLD: Stars, Clouds, Blub-Sound ─────── */
 (function initKlasseWorld() {
-  var bg = document.getElementById('kl-bg');
+  var bg = document.getElementById('kl-fullbg');
   if (!bg) return;
 
   var cloudCols = ['#5030a0','#2a3580','#703060','#1a2860','#406050','#603020'];
