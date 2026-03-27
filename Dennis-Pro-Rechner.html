@@ -289,7 +289,7 @@
       font-size: 12px;
       font-weight: 700;
       color: #fff;
-      animation: tickerRun 7s linear infinite;
+      animation: tickerRun 22s linear infinite;
       text-shadow: 0 0 12px rgba(130,170,255,0.6);
     }
 
@@ -1690,7 +1690,7 @@
       backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
       overflow:hidden;
     }
-    .profile-overlay.open, .tasche-overlay.open { display:flex; animation:page-fadein .22s ease-out; }
+    /* overlay .open is handled by transform transition — see Update 4.0 CSS block */
     .overlay-header {
       display:flex; align-items:center; justify-content:space-between;
       padding:18px 18px 12px; border-bottom:1px solid rgba(255,255,255,0.07);
@@ -2019,6 +2019,378 @@
     }
     .bubble-notes-list li:last-child { border-bottom: none; }
 
+
+    /* ═══════════════════════ UPDATE 4.0 CSS ═══════════════════════ */
+
+    /* ── Missing cosmetics CSS (10 extras) ── */
+    body.c-btn-purple .btn-num   { background: rgba(130,60,200,0.25) !important; }
+    body.c-btn-purple .btn-func  { background: rgba(100,40,180,0.25) !important; }
+    body.c-btn-purple .btn-op    { background: rgba(160,80,220,0.35) !important; }
+    body.c-btn-purple .btn-eq    { background: rgba(140,60,210,0.55) !important; }
+    body.c-btn-purple .btn-clear { background: rgba(180,60,200,0.45) !important; }
+
+    body.c-btn-amber .btn-num   { background: rgba(200,140,20,0.22) !important; }
+    body.c-btn-amber .btn-func  { background: rgba(180,120,15,0.22) !important; }
+    body.c-btn-amber .btn-op    { background: rgba(220,160,10,0.35) !important; }
+    body.c-btn-amber .btn-eq    { background: rgba(200,150,0,0.55) !important; }
+    body.c-btn-amber .btn-clear { background: rgba(210,100,10,0.45) !important; }
+
+    body.c-disp-pink .display {
+      background: radial-gradient(ellipse at 30% 30%, rgba(240,100,180,0.18) 0%, rgba(20,8,30,0.97) 70%) !important;
+      border-color: rgba(240,100,180,0.3) !important;
+    }
+    body.c-disp-pink .result { color: #f9a8d4 !important; }
+
+    body.c-disp-cyber .display {
+      background: radial-gradient(ellipse at 50% 20%, rgba(50,50,0,0.3) 0%, rgba(10,10,0,0.98) 70%) !important;
+      border-color: rgba(245,230,60,0.4) !important;
+    }
+    body.c-disp-cyber .result  { color: #f5e642 !important; text-shadow: 0 0 8px #f5e64299; }
+    body.c-disp-cyber .expression { color: #b8b000 !important; }
+
+    body.c-bg-lava #kl-fullbg {
+      background: radial-gradient(ellipse at 20% 80%, #ff4500 0%, #cc1100 25%, #1a0000 60%, #0a0005 100%) !important;
+    }
+    body.c-bg-ocean #kl-fullbg {
+      background: radial-gradient(ellipse at 50% 40%, #006080 0%, #002244 40%, #000814 100%) !important;
+    }
+
+    body.c-nav-cyber .bottom-nav {
+      background: rgba(10,0,25,0.97) !important;
+      border-top: 1px solid #f5e64288 !important;
+    }
+    body.c-nav-cyber .nav-btn.active { color: #f5e642 !important; }
+    body.c-nav-cyber .nav-btn.active .nav-icon { color: #f5e642 !important; }
+
+    body.c-fr-fire .profile-avatar,
+    body.c-fr-fire #hdr-avatar { border-color: #ff4500 !important; box-shadow: 0 0 10px #ff4500aa !important; }
+
+    body.c-fx-matrix .calc-btn::after { background: radial-gradient(circle, #00ff4166, transparent 70%) !important; }
+    body.c-fx-matrix .display { border-color: rgba(0,255,65,0.3) !important; }
+
+    @keyframes aurora-shift {
+      0%   { filter: hue-rotate(0deg) brightness(1); }
+      100% { filter: hue-rotate(40deg) brightness(1.08); }
+    }
+    body.c-fx-aurora .calculator { animation: aurora-shift 4s ease infinite alternate !important; }
+
+    /* ── Performance: overlay slide-up with transform ── */
+    .profile-overlay, .tasche-overlay {
+      display: flex !important;
+      will-change: transform, opacity;
+      transform: translateY(100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.22s ease;
+    }
+    .profile-overlay.open, .tasche-overlay.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── Profile: photo upload ring ── */
+    .profile-photo-wrap {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .profile-photo-wrap:active .profile-avatar-big { filter: brightness(0.8); }
+    .profile-photo-hint {
+      font-size: 9px;
+      color: rgba(160,140,255,0.55);
+      letter-spacing: .04em;
+    }
+
+    /* ── Profile: preview section ── */
+    .profile-preview-section {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border-radius: 14px;
+      padding: 12px 14px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .profile-preview-title {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: rgba(165,180,252,0.65);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 10px;
+    }
+    .profile-preview-items {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .profile-preview-items::-webkit-scrollbar { display: none; }
+    .profile-preview-item {
+      flex: 0 0 64px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 8px 4px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    .profile-preview-item .pi-icon { font-size: 22px; }
+    .profile-preview-item .pi-name { font-size: 7.5px; color: rgba(200,185,255,0.6); margin-top: 3px; }
+    .profile-preview-item .pi-lvl  { font-size: 7px; color: rgba(160,145,220,0.5); margin-top: 1px; }
+
+    /* ── Profile: color picker ── */
+    .profile-color-section {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border-radius: 14px;
+      padding: 12px 14px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .profile-color-title {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: rgba(165,180,252,0.65);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 10px;
+    }
+    .profile-color-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .profile-color-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2.5px solid transparent;
+      cursor: pointer;
+      transition: transform .15s, border-color .15s;
+    }
+    .profile-color-swatch.active {
+      border-color: #fff;
+      transform: scale(1.2);
+    }
+
+    /* ── Cosmetic preview button ── */
+    .cosm-preview-btn {
+      background: none;
+      border: none;
+      color: rgba(165,180,252,0.5);
+      font-size: 11px;
+      cursor: pointer;
+      padding: 1px 3px;
+      margin-top: 2px;
+      transition: color .15s;
+    }
+    .cosm-preview-btn:active { color: rgba(165,180,252,0.9); }
+    .cosm-card.previewing { outline: 2px solid rgba(165,180,252,0.5); }
+
+    /* ── History panel ── */
+    .history-btn {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: rgba(200,185,255,0.8);
+      font-size: 13px;
+      padding: 5px 8px;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .history-btn:active { background: rgba(255,255,255,0.15); }
+
+    .history-panel {
+      display: none;
+      position: absolute;
+      left: 10px; right: 10px;
+      bottom: calc(60px + max(0px, env(safe-area-inset-bottom)));
+      background: rgba(12,8,28,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      z-index: 500;
+      max-height: 240px;
+      overflow-y: auto;
+      padding: 10px 0;
+    }
+    .history-panel::-webkit-scrollbar { display: none; }
+    .history-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 14px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .history-panel-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(165,180,252,0.7);
+    }
+    .history-clear-btn {
+      background: none;
+      border: none;
+      color: rgba(200,100,100,0.6);
+      font-size: 10px;
+      cursor: pointer;
+    }
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .history-item:last-child { border-bottom: none; }
+    .history-expr { font-size: 11px; color: rgba(180,165,255,0.6); }
+    .history-val  { font-size: 13px; font-weight: 700; color: #e0d8ff; }
+    .history-empty {
+      text-align: center;
+      padding: 20px;
+      font-size: 11px;
+      color: rgba(180,165,255,0.35);
+    }
+
+    /* ── PDF print overlay ── */
+    .pdf-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: rgba(0,0,0,0.85);
+      align-items: center;
+      justify-content: center;
+    }
+    .pdf-modal-box {
+      background: #0e0a1e;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 22px 20px;
+      width: min(340px, 92vw);
+      max-height: 70vh;
+      overflow-y: auto;
+      color: #e0d8ff;
+    }
+    .pdf-modal-title { font-size: 15px; font-weight: 800; margin-bottom: 12px; }
+    .pdf-modal-status { font-size: 11px; color: rgba(165,180,252,0.65); margin-bottom: 14px; }
+    .pdf-modal-actions { display: flex; gap: 10px; margin-top: 14px; }
+    .pdf-dl-btn {
+      flex: 1; padding: 10px; border: none; border-radius: 12px;
+      background: rgba(120,80,255,0.35); color: #e0d8ff;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+    }
+    .pdf-close-btn {
+      padding: 10px 16px; border: none; border-radius: 12px;
+      background: rgba(255,255,255,0.07); color: rgba(200,185,255,0.7);
+      font-size: 12px; cursor: pointer;
+    }
+
+    /* ── PDF gen button in chat ── */
+    .pdf-gen-btn {
+      background: rgba(120,80,255,0.18);
+      border: 1px solid rgba(120,80,255,0.3);
+      border-radius: 10px;
+      color: rgba(180,160,255,0.8);
+      font-size: 16px;
+      width: 38px; height: 38px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background .15s;
+    }
+    .pdf-gen-btn:active { background: rgba(120,80,255,0.35); }
+
+    /* ── Action btn group (camera + pdf) ── */
+    .action-btn-group {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    /* ── AI page header expanded (no outer header) ── */
+    #page3.visible .ai-new-header {
+      padding-top: max(18px, env(safe-area-inset-top));
+    }
+
+    /* ── Professional home header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px 6px;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .header-left {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .header-right {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .gear-btn {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 11px;
+      color: rgba(200,185,255,0.85);
+      font-size: 12px;
+      padding: 5px 9px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background .15s;
+    }
+    .gear-btn:active { background: rgba(255,255,255,0.15); }
+    .gear-icon { font-size: 13px; }
+    .gear-label { font-size: 10px; font-weight: 600; }
+    .notif-btn {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 11px;
+      color: rgba(200,185,255,0.85);
+      padding: 5px 9px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      transition: background .15s;
+    }
+    .notif-btn:active { background: rgba(255,255,255,0.15); }
+    .notif-box {
+      width: 16px; height: 16px;
+      background: rgba(255,120,60,0.7);
+      border-radius: 5px;
+      font-size: 9px;
+      font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+    }
+    .notif-label { font-size: 10px; font-weight: 600; }
+
+    /* ── Print styles ── */
+    @media print {
+      body > * { display: none !important; }
+      #pdf-content { display: block !important; color: #000; background: #fff; font-family: serif; }
+      #pdf-content h1 { font-size: 18pt; margin-bottom: 8pt; }
+      #pdf-content .pdf-task { margin-bottom: 14pt; font-size: 12pt; }
+      #pdf-content .pdf-task-num { font-weight: bold; }
+      #pdf-content .pdf-answer-line { border-bottom: 1px solid #999; height: 24pt; margin-top: 4pt; }
+    }
+    #pdf-content { display: none; }
+
+    /* Level-up style variants */
+    .levelup-overlay[data-lstyle="fire"]    .levelup-banner { border-color: rgba(255,80,0,0.5); }
+    .levelup-overlay[data-lstyle="ice"]     .levelup-banner { border-color: rgba(80,200,255,0.5); }
+    .levelup-overlay[data-lstyle="rainbow"] .levelup-banner { border-color: rgba(200,100,255,0.5); }
+    .levelup-overlay[data-lstyle="gold"]    .levelup-banner { border-color: rgba(255,200,0,0.6); box-shadow: 0 0 40px rgba(255,200,0,0.25); }
+    .levelup-overlay[data-lstyle="cosmic"]  .levelup-banner { border-color: rgba(100,80,255,0.5); }
+
   </style>
 </head>
 <body>
@@ -2206,6 +2578,15 @@
   <!-- Full starry bg — sits behind header, display, nav when page2 active -->
   <div class="kl-bg" id="kl-fullbg"></div>
 
+  <!-- HISTORY PANEL (absolute inside calculator) -->
+  <div class="history-panel" id="history-panel">
+    <div class="history-panel-header">
+      <span class="history-panel-title">📋 Verlauf</span>
+      <button class="history-clear-btn" onclick="clearHistory()">✕ Löschen</button>
+    </div>
+    <div id="history-list"><div class="history-empty">Noch keine Rechnungen</div></div>
+  </div>
+
   <!-- HEADER -->
   <div class="header">
     <div class="header-left">
@@ -2219,6 +2600,7 @@
       </button>
     </div>
     <div class="header-right">
+      <button class="history-btn" onclick="toggleHistory(event)" title="Verlauf">📋</button>
       <button class="tasche-btn" onclick="openTasche()" title="Tasche">🎒</button>
       <button class="profile-btn" onclick="openProfile()">
         <div class="profile-avatar" id="hdr-avatar">👤</div>
@@ -2378,7 +2760,10 @@
       </div>
       <div class="ai-input-bar">
         <input type="file" id="klasse-img-input" accept="image/*" style="display:none" onchange="klasseImgSelected(this)">
-        <button class="img-upload-btn" onclick="document.getElementById('klasse-img-input').click()" title="Bild hochladen">📷</button>
+        <div class="action-btn-group">
+          <button class="img-upload-btn" onclick="document.getElementById('klasse-img-input').click()" title="Bild hochladen">📷</button>
+          <button class="pdf-gen-btn" onclick="openPdfGenerator()" title="Mathearbeit als PDF erstellen">📄</button>
+        </div>
         <textarea id="klasse-input" placeholder="Frage stellen…" onkeydown="klasseKeyDown(event)"></textarea>
         <button class="ai-send-btn" id="klasse-send-btn" onclick="klasseSend()">➤</button>
       </div>
@@ -2393,7 +2778,7 @@
     <div class="ai-new-header">
       <button class="ai-new-back" onclick="switchPage(1)" aria-label="Zurück">‹</button>
       <div class="ai-new-title-wrap">
-        <span class="ai-new-name">Dennis AI-Assistent</span>
+        <span class="ai-new-name">Taschenrechner AI</span>
         <span class="ai-new-dot"></span>
       </div>
       <button class="ai-new-menu-btn" onclick="toggleAiModel()" title="Modell wählen">···</button>
@@ -2413,7 +2798,7 @@
     <div class="ai-chat-window" id="ai-chat-window">
       <div class="ai-welcome">
         <span class="ai-welcome-icon">🤖</span>
-        <strong style="color:#a5b4fc;font-size:13px;">Dennis AI-Assistent</strong><br>
+        <strong style="color:#a5b4fc;font-size:13px;">Taschenrechner AI</strong><br>
         Ich beantworte Fragen auf <strong>Deutsch</strong> und <strong>Englisch</strong>.<br>
         Ich gebe nur <strong>wahre, faktische Antworten</strong>.<br><br>
         <span style="font-size:10px;color:rgba(196,181,253,0.5);">🔒 Sicherer Backend-Modus aktiv</span>
@@ -2659,6 +3044,16 @@ function _renderPage(n) {
   /* Hide calculator display when not on page1 */
   var dispEl = document.querySelector('.display');
   if (dispEl) dispEl.style.display = (n === 1) ? '' : 'none';
+  /* Hide header on pages 2+3, show only on home */
+  var hdr = document.querySelector('.header');
+  if (hdr) hdr.style.display = (n === 1) ? '' : 'none';
+  /* Hide speech bubble when not on page1 */
+  var sb = document.getElementById('speech-bubble');
+  if (sb && notifOpen) { sb.style.display = 'none'; notifOpen = false; }
+  /* Hide history panel on page switch */
+  var hp = document.getElementById('history-panel');
+  if (hp) hp.style.display = 'none';
+  _historyOpen = false;
 }
 
 function switchPage(n) {
@@ -2927,6 +3322,7 @@ function calculate() {
   if (val === null) return;
   current = fmt(val); operator = null; operand = null; justCalculated = true;
   updateDisplay();
+  addToHistory(expression, current);
   earnXP(1);
 }
 
@@ -3395,7 +3791,7 @@ let profile = {
   unlocked: []
 };
 
-function xpForLevel(lvl) { return 50 + (lvl - 1) * 25; }
+function xpForLevel(lvl) { return Math.min(100, 50 + (lvl - 1) * 25); }
 
 function loadProfile() {
   try {
@@ -3438,6 +3834,7 @@ function checkLevelUp(newLevel) {
 }
 
 function getLevelColor(lvl) {
+  if (profile && profile.customColor) return profile.customColor;
   return LEVEL_COLORS[Math.min(lvl - 1, LEVEL_COLORS.length - 1)] || '#888';
 }
 
@@ -3467,14 +3864,14 @@ function applyProfileCosmetics() {
 
 function openProfile() {
   renderProfile();
+  renderProfilePreview();
+  renderProfileColors();
   var ov = document.getElementById('profile-overlay');
-  ov.style.display = 'flex';
   requestAnimationFrame(function() { ov.classList.add('open'); });
 }
 function closeProfile() {
   var ov = document.getElementById('profile-overlay');
   ov.classList.remove('open');
-  setTimeout(function() { ov.style.display = 'none'; }, 220);
 }
 
 function renderProfile() {
@@ -3484,10 +3881,21 @@ function renderProfile() {
   var pct = Math.min(100, Math.round(profile.xp / needed * 100));
   var bigAvatar = document.getElementById('prof-avatar-big');
   if (bigAvatar) {
-    bigAvatar.textContent = (profile.name && profile.name.length) ? profile.name[0].toUpperCase() : '?';
-    bigAvatar.style.background = 'radial-gradient(circle at 35% 35%,' + col + '55,' + col + '22)';
+    if (!profile.photoDataUrl) {
+      bigAvatar.textContent = (profile.name && profile.name.length) ? profile.name[0].toUpperCase() : '?';
+      bigAvatar.style.backgroundImage = '';
+      bigAvatar.style.backgroundSize = '';
+    }
+    bigAvatar.style.background = profile.photoDataUrl
+      ? 'none' : 'radial-gradient(circle at 35% 35%,' + col + '55,' + col + '22)';
     bigAvatar.style.border = '3px solid ' + col;
     bigAvatar.style.color = col;
+    if (profile.photoDataUrl) {
+      bigAvatar.textContent = '';
+      bigAvatar.style.backgroundImage = 'url(' + profile.photoDataUrl + ')';
+      bigAvatar.style.backgroundSize = 'cover';
+      bigAvatar.style.backgroundPosition = 'center';
+    }
   }
   var nameInput = document.getElementById('prof-name-input');
   if (nameInput) nameInput.value = profile.name || '';
@@ -3525,13 +3933,11 @@ var tascheActiveCat = 'Alle';
 function openTasche() {
   renderTasche();
   var ov = document.getElementById('tasche-overlay');
-  ov.style.display = 'flex';
   requestAnimationFrame(function() { ov.classList.add('open'); });
 }
 function closeTasche() {
   var ov = document.getElementById('tasche-overlay');
   ov.classList.remove('open');
-  setTimeout(function() { ov.style.display = 'none'; }, 220);
 }
 
 function renderTasche() {
@@ -3547,16 +3953,22 @@ function renderTasche() {
   var items = tascheActiveCat === 'Alle' ? COSMETICS
     : COSMETICS.filter(function(c) { return c.cat === tascheActiveCat; });
   var lvl = profile.level;
-  grid.innerHTML = items.map(function(c) {
+  var frag = document.createDocumentFragment();
+  items.forEach(function(c) {
     var unlocked = profile.unlocked.indexOf(c.id) !== -1 || c.lvl <= lvl;
     var equippedInCat = profile.equipped[c.cat] === c.id;
-    var cls = 'cosm-card' + (!unlocked ? ' locked' : '') + (equippedInCat ? ' equipped' : '');
-    return '<div class="' + cls + '" onclick="equipCosmetic(\'' + c.id + '\')">' +
-           '<div class="cosm-icon">' + c.icon + '</div>' +
-           '<div class="cosm-name">' + c.name + '</div>' +
-           '<div class="cosm-req">' + (unlocked ? (equippedInCat ? '✓ Aktiv' : 'Ausrüsten') : 'Lvl ' + c.lvl) + '</div>' +
-           '</div>';
-  }).join('');
+    var div = document.createElement('div');
+    div.className = 'cosm-card' + (!unlocked ? ' locked' : '') + (equippedInCat ? ' equipped' : '');
+    div.innerHTML =
+      '<div class="cosm-icon">' + c.icon + '</div>' +
+      '<div class="cosm-name">' + c.name + '</div>' +
+      '<div class="cosm-req">' + (unlocked ? (equippedInCat ? '✓ Aktiv' : 'Ausrüsten') : 'Lvl ' + c.lvl) + '</div>' +
+      (unlocked ? '<button class="cosm-preview-btn" onclick="event.stopPropagation();previewCosmetic(\'' + c.id + '\')">👁 Vorschau</button>' : '');
+    if (unlocked) div.onclick = function() { equipCosmetic(c.id); };
+    frag.appendChild(div);
+  });
+  grid.innerHTML = '';
+  grid.appendChild(frag);
 }
 
 function setTascheCat(cat) {
@@ -3632,6 +4044,377 @@ function toggleBubbleNotes(e) {
   if (btn) btn.textContent = bubbleNotesOpen ? '▲ Weniger' : '▼ Mehr';
 }
 
+
+/* ═══════════════════════════════════════════════════
+   UPDATE 4.0 — NEW FUNCTIONS
+═══════════════════════════════════════════════════ */
+
+// ── Calculation history ───────────────────────────
+var calcHistory = [];
+var _historyOpen = false;
+
+function addToHistory(expr, val) {
+  calcHistory.unshift({ expr: expr, val: val });
+  if (calcHistory.length > 25) calcHistory.pop();
+}
+
+function toggleHistory(e) {
+  if (e) e.stopPropagation();
+  var hp = document.getElementById('history-panel');
+  if (!hp) return;
+  _historyOpen = !_historyOpen;
+  if (_historyOpen) {
+    renderHistory();
+    hp.style.display = 'block';
+  } else {
+    hp.style.display = 'none';
+  }
+}
+
+function renderHistory() {
+  var list = document.getElementById('history-list');
+  if (!list) return;
+  if (calcHistory.length === 0) {
+    list.innerHTML = '<div class="history-empty">Noch keine Rechnungen</div>';
+    return;
+  }
+  var frag = document.createDocumentFragment();
+  calcHistory.forEach(function(item) {
+    var div = document.createElement('div');
+    div.className = 'history-item';
+    div.innerHTML = '<span class="history-expr">' + item.expr + '</span>' +
+                    '<span class="history-val">' + item.val + '</span>';
+    div.onclick = function() {
+      current = item.val;
+      justCalculated = true;
+      updateDisplay();
+      toggleHistory();
+    };
+    frag.appendChild(div);
+  });
+  list.innerHTML = '';
+  list.appendChild(frag);
+}
+
+function clearHistory() {
+  calcHistory = [];
+  renderHistory();
+}
+
+// Close history on outside click
+document.addEventListener('click', function(e) {
+  if (!_historyOpen) return;
+  var hp = document.getElementById('history-panel');
+  if (hp && !hp.contains(e.target) && e.target.className !== 'history-btn') {
+    hp.style.display = 'none';
+    _historyOpen = false;
+  }
+});
+
+// ── Profile photo upload ──────────────────────────
+function profPhotoSelected(input) {
+  var file = input.files && input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    profile.photoDataUrl = e.target.result;
+    saveProfile();
+    renderProfile();
+    updateProfilePhotoHeader();
+  };
+  reader.readAsDataURL(file);
+  input.value = '';
+}
+
+function updateProfilePhotoHeader() {
+  var hdrAvatar = document.getElementById('hdr-avatar');
+  if (!hdrAvatar) return;
+  if (profile.photoDataUrl) {
+    hdrAvatar.textContent = '';
+    hdrAvatar.style.backgroundImage = 'url(' + profile.photoDataUrl + ')';
+    hdrAvatar.style.backgroundSize = 'cover';
+    hdrAvatar.style.backgroundPosition = 'center';
+  } else {
+    hdrAvatar.style.backgroundImage = '';
+    hdrAvatar.textContent = (profile.name && profile.name.length) ? profile.name[0].toUpperCase() : '?';
+  }
+}
+
+// ── Profile preview section ───────────────────────
+function renderProfilePreview() {
+  var el = document.getElementById('prof-preview-section');
+  if (!el) return;
+  var lvl = profile.level;
+  var next = COSMETICS
+    .filter(function(c) { return c.lvl > lvl; })
+    .sort(function(a,b) { return a.lvl - b.lvl; })
+    .slice(0, 5);
+  if (next.length === 0) {
+    el.innerHTML = '<div style="font-size:10px;color:rgba(180,165,255,0.5);text-align:center;padding:8px;">Alle Kosmetiken freigeschaltet!</div>';
+    return;
+  }
+  el.innerHTML = next.map(function(c) {
+    return '<div class="profile-preview-item">' +
+      '<div class="pi-icon">' + c.icon + '</div>' +
+      '<div class="pi-name">' + c.name + '</div>' +
+      '<div class="pi-lvl">Lvl ' + c.lvl + '</div>' +
+      '</div>';
+  }).join('');
+}
+
+// ── Profile color customization ───────────────────
+var PROFILE_COLORS = [
+  '#4fc3f7','#f472b6','#34d399','#fb923c','#a78bfa',
+  '#f87171','#38bdf8','#fbbf24','#4ade80','#e879f9',
+  '#f9a8d4','#ffffff'
+];
+
+function renderProfileColors() {
+  var row = document.getElementById('prof-color-row');
+  if (!row) return;
+  row.innerHTML = PROFILE_COLORS.map(function(col) {
+    var active = profile.customColor === col ? ' active' : '';
+    return '<div class="profile-color-swatch' + active + '" style="background:' + col + '" ' +
+           'onclick="setCustomColor(\'' + col + '\')" title="' + col + '"></div>';
+  }).join('') +
+  '<div class="profile-color-swatch' + (!profile.customColor ? ' active' : '') + '" ' +
+  'style="background:linear-gradient(135deg,#4fc3f7,#f472b6,#34d399)" ' +
+  'onclick="setCustomColor(null)" title="Auto (nach Level)"></div>';
+}
+
+function setCustomColor(col) {
+  profile.customColor = col;
+  saveProfile();
+  renderProfile();
+  renderProfileColors();
+  renderProfileHeader();
+}
+
+// ── Cosmetic preview (3s temp apply) ─────────────
+var _previewTimer = null;
+var _previewId = null;
+
+function previewCosmetic(id) {
+  if (_previewTimer) { clearTimeout(_previewTimer); _previewTimer = null; }
+  if (_previewId && _previewId !== id) {
+    var c2 = null;
+    for (var j = 0; j < COSMETICS.length; j++) { if (COSMETICS[j].id === _previewId) { c2 = COSMETICS[j]; break; } }
+    if (c2 && profile.equipped[c2.cat] !== _previewId) document.body.classList.remove('c-' + _previewId);
+  }
+  document.body.classList.add('c-' + id);
+  _previewId = id;
+  _previewTimer = setTimeout(function() {
+    var c = null;
+    for (var i = 0; i < COSMETICS.length; i++) { if (COSMETICS[i].id === id) { c = COSMETICS[i]; break; } }
+    if (c && profile.equipped[c.cat] !== id) document.body.classList.remove('c-' + id);
+    _previewId = null;
+    _previewTimer = null;
+  }, 3000);
+}
+
+// ── Level-up styles (50 unique per level) ─────────
+var LEVELUP_STYLES = (function() {
+  var palettes = [
+    ['#ff6b6b','#ffd93d','#6bcb77','#4d96ff'],    // 1
+    ['#4d96ff','#c77dff','#00b4d8','#90e0ef'],    // 2
+    ['#f72585','#7209b7','#3a0ca3','#4361ee'],    // 3
+    ['#2dc653','#0fa3b1','#f7a072','#e9c46a'],    // 4
+    ['#ff9f1c','#ffbf69','#cbf3f0','#2ec4b6'],    // 5
+    ['#e63946','#457b9d','#1d3557','#a8dadc'],    // 6
+    ['#f4a261','#e76f51','#264653','#2a9d8f'],    // 7
+    ['#9b2226','#ae2012','#bb3e03','#ca6702'],    // 8
+    ['#606c38','#283618','#fefae0','#dda15e'],    // 9
+    ['#03045e','#0077b6','#00b4d8','#90e0ef'],    // 10
+    ['#480ca8','#560bad','#7209b7','#b5179e'],    // 11
+    ['#f72585','#b5179e','#7209b7','#560bad'],    // 12
+    ['#ffba08','#faa307','#f48c06','#e85d04'],    // 13
+    ['#d62828','#f77f00','#fcbf49','#eae2b7'],    // 14
+    ['#606c38','#dda15e','#bc6c25','#283618'],    // 15
+    ['#7400b8','#6930c3','#5e60ce','#4ea8de'],    // 16
+    ['#80b918','#2dc653','#37b244','#208b3a'],    // 17
+    ['#f94144','#f3722c','#f8961e','#f9c74f'],    // 18
+    ['#006466','#065a60','#144552','#1b4332'],    // 19
+    ['#ff4d6d','#c9184a','#a4133c','#800f2f'],    // 20
+    ['#ffe169','#fad643','#edc531','#dbb42c'],    // 21
+    ['#00b4d8','#0096c7','#0077b6','#023e8a'],    // 22
+    ['#9d0208','#d00000','#e85d04','#f48c06'],    // 23
+    ['#240046','#3c096c','#5a189a','#7b2fbe'],    // 24
+    ['#c77dff','#e0aaff','#7b2fbe','#9d4edd'],    // 25
+    ['#006d77','#83c5be','#edf6f9','#ffddd2'],    // 26
+    ['#e9c46a','#f4a261','#e76f51','#264653'],    // 27
+    ['#3d405b','#81b29a','#f2cc8f','#e07a5f'],    // 28
+    ['#2b2d42','#8d99ae','#edf2f4','#ef233c'],    // 29
+    ['#ffd700','#ffa500','#ff8c00','#ff4500'],    // 30 gold
+    ['#4cc9f0','#4361ee','#3a0ca3','#7209b7'],    // 31
+    ['#f77f00','#d62828','#023e8a','#eae2b7'],    // 32
+    ['#52b788','#74c69d','#95d5b2','#b7e4c7'],    // 33
+    ['#ee9b00','#ca6702','#bb3e03','#ae2012'],    // 34
+    ['#a8dadc','#457b9d','#1d3557','#f1faee'],    // 35
+    ['#e040fb','#7c4dff','#40c4ff','#1de9b6'],    // 36 electric
+    ['#ff6e40','#ff3d00','#ff1744','#f50057'],    // 37
+    ['#00e5ff','#1de9b6','#76ff03','#ffea00'],    // 38
+    ['#ff80ab','#ea80fc','#8c9eff','#80d8ff'],    // 39 pastel
+    ['#ffffff','#e0e0e0','#bdbdbd','#9e9e9e'],    // 40 silver
+    ['#ffd700','#fff176','#ffee58','#fdd835'],    // 41 golden
+    ['#b9fbc0','#98f5e1','#8eecf5','#90dbf4'],    // 42
+    ['#ef233c','#d90429','#8d99ae','#edf2f4'],    // 43
+    ['#f72585','#4361ee','#4cc9f0','#7209b7'],    // 44
+    ['#000000','#e63946','#ffffff','#a8dadc'],    // 45
+    ['#ff9a00','#ff0080','#0000ff','#00ffff'],    // 46 cyber
+    ['#7fff00','#00ff7f','#00ffff','#ff00ff'],    // 47 neon
+    ['#ff6347','#ff4500','#ff8c00','#ffa07a'],    // 48
+    ['#da70d6','#ee82ee','#dda0dd','#d8bfd8'],    // 49
+    ['#ffd700','#ff69b4','#00bfff','#7fff00'],    // 50 MAX
+  ];
+  var shapes = ['circle','star','square','diamond','circle','star','square','diamond','circle','star',
+                'circle','star','square','diamond','circle','star','square','diamond','circle','star',
+                'circle','star','square','diamond','circle','star','square','diamond','circle','star',
+                'circle','star','square','diamond','circle','star','square','diamond','circle','star',
+                'circle','star','square','diamond','circle','star','square','diamond','circle','star'];
+  var styles = ['','fire','ice','rainbow','cosmic','gold','fire','ice','rainbow','cosmic',
+                'gold','fire','ice','rainbow','cosmic','gold','fire','ice','rainbow','cosmic',
+                'gold','fire','ice','rainbow','cosmic','gold','fire','ice','rainbow','cosmic',
+                'gold','fire','ice','rainbow','cosmic','gold','fire','ice','rainbow','cosmic',
+                'gold','fire','ice','rainbow','cosmic','gold','fire','ice','rainbow','gold'];
+  return palettes.map(function(colors, i) {
+    return { colors: colors, shape: shapes[i], style: styles[i] };
+  });
+})();
+
+// Override showLevelUpAnim with per-level styles
+function showLevelUpAnim(newLevel) {
+  var ov = document.getElementById('levelup-overlay');
+  var numEl = document.getElementById('levelup-num');
+  var tagEl = document.getElementById('levelup-tag');
+  var unlockEl = document.getElementById('levelup-unlock');
+  var container = document.getElementById('confetti-container');
+  if (!ov) return;
+  var lvlStyle = LEVELUP_STYLES[Math.min(newLevel - 1, LEVELUP_STYLES.length - 1)];
+  var col = getLevelColor(newLevel);
+  if (numEl) { numEl.textContent = newLevel; numEl.style.color = col; }
+  if (tagEl) tagEl.textContent = LEVEL_TITLES[newLevel] || '';
+  var newUnlocks = COSMETICS.filter(function(c) { return c.lvl === newLevel; });
+  if (unlockEl) {
+    unlockEl.textContent = newUnlocks.length
+      ? '🎁 Freigeschaltet: ' + newUnlocks.map(function(c) { return c.icon + ' ' + c.name; }).join(', ')
+      : '';
+  }
+  ov.setAttribute('data-lstyle', lvlStyle.style || '');
+  if (container) {
+    container.innerHTML = '';
+    var colors = lvlStyle.colors;
+    var count = newLevel >= 40 ? 90 : newLevel >= 20 ? 75 : 60;
+    for (var i = 0; i < count; i++) {
+      var piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      var isCircle = lvlStyle.shape === 'circle' || (lvlStyle.shape === 'star' && Math.random() > 0.5);
+      piece.style.cssText =
+        'left:' + (Math.random() * 100) + '%;' +
+        'animation-delay:' + (Math.random() * 2) + 's;' +
+        'animation-duration:' + (1.8 + Math.random() * 2.5) + 's;' +
+        'background:' + colors[Math.floor(Math.random() * colors.length)] + ';' +
+        'width:' + (5 + Math.random() * 10) + 'px;' +
+        'height:' + (5 + Math.random() * 10) + 'px;' +
+        'border-radius:' + (isCircle ? '50%' : '2px') + ';' +
+        'transform:rotate(' + (Math.random() * 360) + 'deg);';
+      container.appendChild(piece);
+    }
+  }
+  ov.style.display = 'flex';
+  setTimeout(closeLevelUp, 6000);
+}
+
+// ── PDF Generator ─────────────────────────────────
+var _pdfContent = '';
+
+function openPdfGenerator() {
+  var modal = document.getElementById('pdf-modal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  var statusEl = document.getElementById('pdf-modal-status');
+  var dlBtn = document.getElementById('pdf-dl-btn');
+  var preview = document.getElementById('pdf-preview');
+  if (statusEl) statusEl.textContent = '⏳ Generiere Mathearbeit…';
+  if (dlBtn) dlBtn.style.display = 'none';
+  if (preview) preview.style.display = 'none';
+  _pdfContent = '';
+
+  var klasse = activeKlasse || 1;
+  var systemPrompts = typeof klasseSystemPrompts !== 'undefined' ? klasseSystemPrompts : {};
+  var klasseName = 'Klasse ' + klasse;
+  var systemCtx = systemPrompts[klasse] || ('Du bist ein Mathe-Lehrer für ' + klasseName);
+
+  var prompt = 'Erstelle eine zufällige Mathearbeit für ' + klasseName + '. ' +
+    'Generiere genau 12 Aufgaben (zufällig zwischen 10-15). ' +
+    'Format: Jede Aufgabe mit Nummer, Aufgabenstellung und einer Leerzeile für die Lösung. ' +
+    'Passe den Schwierigkeitsgrad an die Klasse an. ' +
+    'Beginne mit: "Mathearbeit — ' + klasseName + '" und dem Datum. ' +
+    'Füge am Ende eine Notenskala hinzu.';
+
+  fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5',
+      system: systemCtx,
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 1800
+    })
+  }).then(function(res) {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  }).then(function(data) {
+    var text = data.content && data.content[0] ? data.content[0].text : '';
+    _pdfContent = text;
+    if (statusEl) statusEl.textContent = '✅ Mathearbeit bereit!';
+    if (preview) { preview.textContent = text.slice(0, 600) + (text.length > 600 ? '…' : ''); preview.style.display = 'block'; }
+    if (dlBtn) dlBtn.style.display = '';
+  }).catch(function(err) {
+    if (statusEl) statusEl.textContent = '⚠️ Fehler: ' + err.message;
+  });
+}
+
+function printPdf() {
+  var contentEl = document.getElementById('pdf-content');
+  if (!contentEl || !_pdfContent) return;
+  var lines = _pdfContent.split('\n');
+  var taskNum = 0;
+  contentEl.innerHTML = '<h1 style="font-family:serif;font-size:20pt;margin-bottom:6pt;">' + (lines[0] || 'Mathearbeit') + '</h1>' +
+    lines.slice(1).map(function(line) {
+      var trimmed = line.trim();
+      if (!trimmed) return '<br>';
+      var m = trimmed.match(/^(\d+)\./);
+      if (m) {
+        taskNum++;
+        return '<div class="pdf-task"><span class="pdf-task-num">' + trimmed + '</span>' +
+               '<div class="pdf-answer-line"></div></div>';
+      }
+      return '<p style="margin:3pt 0;">' + trimmed + '</p>';
+    }).join('');
+  closePdfModal();
+  setTimeout(function() { window.print(); }, 100);
+}
+
+function closePdfModal() {
+  var modal = document.getElementById('pdf-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+// ── renderProfileHeader patch: include photo ─────
+var _origRenderProfileHeader = renderProfileHeader;
+renderProfileHeader = function() {
+  _origRenderProfileHeader();
+  updateProfilePhotoHeader();
+};
+
+// ── loadProfile patch: restore photo ─────────────
+var _origLoadProfile = loadProfile;
+loadProfile = function() {
+  _origLoadProfile();
+  updateProfilePhotoHeader();
+};
+
+
 // ── Load profile on startup ──
 loadProfile();
 </script>
@@ -3646,7 +4429,13 @@ loadProfile();
     <button class="overlay-close-btn" onclick="closeProfile()">✕</button>
   </div>
   <div class="profile-body">
-    <div class="profile-avatar-big" id="prof-avatar-big">👤</div>
+    <!-- Photo upload -->
+    <div class="profile-photo-wrap" onclick="document.getElementById('prof-photo-input').click()">
+      <div class="profile-avatar-big" id="prof-avatar-big">👤</div>
+      <span class="profile-photo-hint">📷 Foto ändern</span>
+    </div>
+    <input type="file" id="prof-photo-input" accept="image/*" style="display:none" onchange="profPhotoSelected(this)" />
+
     <input class="profile-name-input" id="prof-name-input" type="text" maxlength="20"
            placeholder="Dein Name…" oninput="saveProfileName(this.value)" />
     <div class="profile-title-badge" id="prof-title-badge">Einsteiger</div>
@@ -3656,6 +4445,13 @@ loadProfile();
         <div class="profile-xp-fill" id="prof-xp-fill" style="width:0%"></div>
       </div>
     </div>
+
+    <!-- Upcoming unlocks preview -->
+    <div class="profile-preview-section">
+      <div class="profile-preview-title">Nächste Freischaltungen</div>
+      <div class="profile-preview-items" id="prof-preview-section"></div>
+    </div>
+
     <div class="profile-stats-grid">
       <div class="profile-stat-card">
         <div class="profile-stat-val" id="stat-calcs">0</div>
@@ -3673,6 +4469,12 @@ loadProfile();
         <div class="profile-stat-val" id="stat-unlocks">0</div>
         <div class="profile-stat-lbl">Freigeschaltet</div>
       </div>
+    </div>
+
+    <!-- Profile color customization -->
+    <div class="profile-color-section">
+      <div class="profile-color-title">Profilfarbe anpassen</div>
+      <div class="profile-color-row" id="prof-color-row"></div>
     </div>
   </div>
 </div>
@@ -3702,6 +4504,22 @@ loadProfile();
     <button style="margin-top:18px;padding:10px 28px;border:none;border-radius:20px;background:rgba(120,80,255,0.4);color:#e0d8ff;font-size:13px;cursor:pointer;" onclick="closeLevelUp()">Weiter</button>
   </div>
   <div class="confetti-container" id="confetti-container"></div>
+</div>
+
+<!-- PDF printable content -->
+<div id="pdf-content"></div>
+
+<!-- PDF Generator Modal -->
+<div class="pdf-modal" id="pdf-modal">
+  <div class="pdf-modal-box">
+    <div class="pdf-modal-title">📄 Mathearbeit Generator</div>
+    <div class="pdf-modal-status" id="pdf-modal-status">Bereit zum Generieren…</div>
+    <div id="pdf-preview" style="font-size:11px;color:rgba(200,185,255,0.7);max-height:200px;overflow-y:auto;border-top:1px solid rgba(255,255,255,0.07);padding-top:10px;margin-top:8px;display:none;white-space:pre-wrap;"></div>
+    <div class="pdf-modal-actions">
+      <button class="pdf-dl-btn" id="pdf-dl-btn" onclick="printPdf()" style="display:none">🖨️ Als PDF speichern</button>
+      <button class="pdf-close-btn" onclick="closePdfModal()">Schließen</button>
+    </div>
+  </div>
 </div>
 </body>
 </html>
