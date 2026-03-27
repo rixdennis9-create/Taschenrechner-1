@@ -149,16 +149,7 @@
     .speech-bubble {
       position: fixed;
       z-index: 9000;
-      transform-origin: left top;
-      opacity: 0;
-      transform: scale(0.7);
-      pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.25s cubic-bezier(.34,1.56,.64,1);
-    }
-    .speech-bubble.open {
-      opacity: 1;
-      transform: scale(1);
-      pointer-events: auto;
+      display: none;
     }
 
     @keyframes bubbleOut {
@@ -232,30 +223,18 @@
     /* ── SETTINGS OVERLAY — modernized ───────────────────── */
     #settings-overlay {
       position: fixed;
-      inset: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       z-index: 8000;
-      display: flex;
+      display: none;
       flex-direction: column;
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(30px);
-      pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(.32,1.1,.64,1);
+      background: rgba(6,8,18,0.97);
+      overflow-y: auto;
     }
     #settings-overlay.open {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
+      display: flex;
     }
 
     /* frosted glass backdrop */
-    .settings-backdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(6, 8, 18, 0.95);
-      backdrop-filter: blur(20px) saturate(1.4);
-    }
-
     .settings-inner {
       position: relative;
       z-index: 1;
@@ -1280,9 +1259,8 @@
   <div class="splash-bar"><div class="splash-bar-fill"></div></div>
 </div>
 
-<!-- SETTINGS OVERLAY — outside .calculator so overflow:hidden doesn't clip it -->
+<!-- SETTINGS OVERLAY -->
 <div id="settings-overlay">
-  <div class="settings-backdrop"></div>
   <div class="settings-inner">
     <div class="settings-header">
       <div class="settings-title">
@@ -1563,10 +1541,10 @@
    SETTINGS
 ═══════════════════════════════════════════════════ */
 function openSettings() {
-  document.getElementById('settings-overlay').classList.add('open');
+  document.getElementById('settings-overlay').style.display = 'flex';
 }
 function closeSettings() {
-  document.getElementById('settings-overlay').classList.remove('open');
+  document.getElementById('settings-overlay').style.display = 'none';
 }
 
 // ── Notification / speech bubble ──
@@ -1575,20 +1553,20 @@ function toggleNotif(e) {
   e.stopPropagation();
   const bubble = document.getElementById('speech-bubble');
   if (notifOpen) {
-    bubble.classList.remove('open');
+    bubble.style.display = 'none';
     notifOpen = false;
   } else {
     const btn = e.currentTarget;
     const rect = btn.getBoundingClientRect();
     bubble.style.left = (rect.right + 10) + 'px';
     bubble.style.top  = rect.top + 'px';
-    bubble.classList.add('open');
+    bubble.style.display = 'block';
     notifOpen = true;
   }
 }
 document.addEventListener('click', () => {
   if (!notifOpen) return;
-  document.getElementById('speech-bubble').classList.remove('open');
+  document.getElementById('speech-bubble').style.display = 'none';
   notifOpen = false;
 });
 
