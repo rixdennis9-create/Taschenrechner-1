@@ -834,7 +834,127 @@
       background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6);
     }
 
-    /* ── AI CHAT UI ───────────────────────────────────── */
+    /* ── BUBBLE WORLD (Page 2) ────────────────────────── */
+    #klassen-grid-view {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      min-height: 530px;
+      margin: -4px -4px 0;
+    }
+    .kl-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 25% 15%, #1e0d50 0%, #0c0828 40%, #04030f 100%);
+      overflow: hidden;
+      z-index: 0;
+    }
+    .kl-star {
+      position: absolute;
+      border-radius: 50%;
+      background: #fff;
+      animation: kl-twinkle var(--dur,2s) ease-in-out infinite;
+      animation-delay: var(--delay,0s);
+    }
+    @keyframes kl-twinkle {
+      0%,100% { opacity: var(--lo,.08); transform: scale(1); }
+      50%      { opacity: var(--hi,.9);  transform: scale(1.7); }
+    }
+    .kl-cloud {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(38px);
+      opacity: 0.2;
+      animation: kl-drift var(--drift,9s) ease-in-out infinite alternate;
+      animation-delay: var(--ddelay,0s);
+    }
+    @keyframes kl-drift {
+      0%   { transform: translateX(-20px) translateY(0)   scale(1); }
+      100% { transform: translateX(20px)  translateY(-14px) scale(1.06); }
+    }
+    .kl-spark {
+      position: absolute;
+      width: 4px; height: 4px;
+      background: #fff;
+      border-radius: 50%;
+      animation: kl-spark-anim var(--sd,3s) ease-in-out infinite;
+      animation-delay: var(--sdelay,0s);
+    }
+    @keyframes kl-spark-anim {
+      0%,100% { opacity:0; transform:scale(0) rotate(0deg); }
+      45%,55%  { opacity:1; transform:scale(2) rotate(180deg); }
+    }
+    .kl-content {
+      position: relative;
+      z-index: 1;
+      padding: 14px 10px 20px;
+    }
+    .kl-title-text {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 900;
+      color: rgba(255,255,255,.88);
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      text-shadow: 0 0 18px rgba(160,130,255,.9), 0 0 40px rgba(100,80,200,.5);
+    }
+    .kl-row { display: flex; gap: 9px; margin-bottom: 9px; }
+    .kl-center-row { justify-content: center; }
+    .kl-bubble {
+      flex: 1;
+      border-radius: 22px;
+      padding: 11px 8px 13px;
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      cursor: pointer;
+      position: relative;
+      border: 1.5px solid rgba(255,255,255,.15);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .kl-center { flex: 0 0 55%; max-width: 55%; }
+    .kl-small  { padding: 8px 6px 10px; }
+    .kl-tiny   { padding: 6px 4px 8px; opacity: .72; }
+    .kl-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -9px; left: 20px;
+      border-left: 9px solid transparent;
+      border-right: 5px solid transparent;
+      border-top-width: 10px;
+      border-top-style: solid;
+    }
+    @keyframes kl-squish {
+      0%   { transform: scale(1); }
+      20%  { transform: scale(1.14,.87); }
+      50%  { transform: scale(.93,1.1); }
+      75%  { transform: scale(1.04,.97); }
+      100% { transform: scale(1); }
+    }
+    .kl-bubble:active { animation: kl-squish .35s ease; }
+    .b1  { background:rgba(28,55,180,.5);  box-shadow:0 0 22px rgba(80,120,255,.55),inset 0 1px 0 rgba(255,255,255,.18); border-color:rgba(120,160,255,.45); }
+    .b1::after  { border-top-color:rgba(28,55,180,.75); }
+    .b2  { background:rgba(170,70,15,.5);  box-shadow:0 0 22px rgba(255,130,50,.55),inset 0 1px 0 rgba(255,255,255,.18); border-color:rgba(255,160,70,.45); }
+    .b2::after  { border-top-color:rgba(170,70,15,.75); }
+    .b3  { background:rgba(150,100,5,.55); box-shadow:0 0 28px rgba(255,195,30,.65),inset 0 1px 0 rgba(255,255,255,.2);  border-color:rgba(255,215,60,.5); }
+    .b3::after  { border-top-color:rgba(150,100,5,.8); }
+    .b4  { background:rgba(15,105,65,.5);  box-shadow:0 0 22px rgba(50,195,120,.55),inset 0 1px 0 rgba(255,255,255,.18); border-color:rgba(70,220,145,.45); }
+    .b4::after  { border-top-color:rgba(15,105,65,.75); }
+    .b5  { background:rgba(70,20,150,.5);  box-shadow:0 0 22px rgba(150,90,255,.55),inset 0 1px 0 rgba(255,255,255,.18); border-color:rgba(175,120,255,.45); }
+    .b5::after  { border-top-color:rgba(70,20,150,.75); }
+    .b6  { background:rgba(140,15,110,.5); box-shadow:0 0 26px rgba(255,70,195,.6),inset 0 1px 0 rgba(255,255,255,.18);  border-color:rgba(255,110,220,.45); }
+    .b6::after  { border-top-color:rgba(140,15,110,.75); }
+    .b7,.b8 { background:rgba(35,35,85,.38); box-shadow:0 0 14px rgba(100,100,210,.35),inset 0 1px 0 rgba(255,255,255,.08); border-color:rgba(140,140,240,.22); }
+    .b7::after,.b8::after { border-top-color:rgba(35,35,85,.55); }
+    .b9,.b10{ background:rgba(25,25,60,.28); box-shadow:0 0 8px rgba(80,80,160,.2); border-color:rgba(110,110,200,.15); }
+    .b9::after,.b10::after { border-top-color:rgba(25,25,60,.45); }
+    .kl-icon { font-size:8px; font-weight:800; color:rgba(255,255,255,.65); background:rgba(255,255,255,.12); border-radius:7px; padding:2px 6px; letter-spacing:.03em; margin-bottom:1px; }
+    .kl-num { font-size:32px; font-weight:900; color:#fff; line-height:1; text-shadow:0 2px 10px rgba(0,0,0,.5); }
+    .kl-num-sm { font-size:24px; }
+    .kl-num-xs { font-size:18px; }
+    .kl-klasse-label { font-size:8px; font-weight:800; color:rgba(255,255,255,.5); letter-spacing:.15em; text-transform:uppercase; }
+    .kl-topics-text { font-size:8px; color:rgba(255,255,255,.45); text-align:center; line-height:1.4; margin-top:2px; }
+
     /* ── AI CHAT UI ───────────────────────────────────── */
     #page3 {
       display: none;
@@ -1330,62 +1450,96 @@
   <!-- PAGE 2: PRO RECHNER / EXTRA TOOLS -->
   <div class="page" id="page2">
 
-    <!-- CLASS SELECTION GRID -->
+    <!-- CLASS SELECTION — BUBBLE WORLD -->
     <div id="klassen-grid-view">
-      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">Wähle deine Klasse</div>
-      <div class="klassen-grid">
-        <div class="klasse-card k1" onclick="openKlasse(1)">
-          <span class="klasse-num">1</span>
-          <span class="klasse-label">Klasse</span>
-          <span class="klasse-topics">Zahlen · Formen<br>Einfaches Rechnen</span>
+      <!-- Animated background (stars + clouds injected by JS) -->
+      <div class="kl-bg" id="kl-bg"></div>
+
+      <div class="kl-content">
+        <div class="kl-title-text">✦ Wähle deine Klasse ✦</div>
+
+        <!-- Row 1: K1 K2 -->
+        <div class="kl-row">
+          <div class="kl-bubble b1" onclick="klasseClick(1)">
+            <div class="kl-icon">1+1</div>
+            <div class="kl-num">1</div>
+            <div class="kl-klasse-label">Klasse</div>
+            <div class="kl-topics-text">Zahlen &amp; Formen<br>Einfaches Rechnen</div>
+          </div>
+          <div class="kl-bubble b2" onclick="klasseClick(2)">
+            <div class="kl-icon">15−6</div>
+            <div class="kl-num">2</div>
+            <div class="kl-klasse-label">Klasse</div>
+            <div class="kl-topics-text">Addition &amp; Subtraktion<br>Zahlen bis 100</div>
+          </div>
         </div>
-        <div class="klasse-card k2" onclick="openKlasse(2)">
-          <span class="klasse-num">2</span>
-          <span class="klasse-label">Klasse</span>
-          <span class="klasse-topics">Addition · Subtraktion<br>Bis 100</span>
+
+        <!-- Row 2 center: K3 -->
+        <div class="kl-row kl-center-row">
+          <div class="kl-bubble b3 kl-center" onclick="klasseClick(3)">
+            <div class="kl-icon">3×5</div>
+            <div class="kl-num">3</div>
+            <div class="kl-klasse-label">Klasse</div>
+            <div class="kl-topics-text">Einmaleins &amp; Division<br>Geometrie</div>
+          </div>
         </div>
-        <div class="klasse-card k3" onclick="openKlasse(3)">
-          <span class="klasse-num">3</span>
-          <span class="klasse-label">Klasse</span>
-          <span class="klasse-topics">Einmaleins · Division<br>Geometrie</span>
+
+        <!-- Row 3: K4 K5 -->
+        <div class="kl-row">
+          <div class="kl-bubble b4" onclick="klasseClick(4)">
+            <div class="kl-icon">½ · 0.5</div>
+            <div class="kl-num">4</div>
+            <div class="kl-klasse-label">Klasse</div>
+            <div class="kl-topics-text">Brüche &amp; Dezimal<br>Sachaufgaben</div>
+          </div>
+          <div class="kl-bubble b5" onclick="klasseClick(5)">
+            <div class="kl-icon">% · V</div>
+            <div class="kl-num">5</div>
+            <div class="kl-klasse-label">Klasse</div>
+            <div class="kl-topics-text">Bruchrechnung &amp; Prozent<br>Flächen &amp; Volumen</div>
+          </div>
         </div>
-        <div class="klasse-card k4" onclick="openKlasse(4)">
-          <span class="klasse-num">4</span>
-          <span class="klasse-label">Klasse</span>
-          <span class="klasse-topics">Brüche · Dezimalzahlen<br>Sachaufgaben</span>
+
+        <!-- Row 4 center: K6 -->
+        <div class="kl-row kl-center-row">
+          <div class="kl-bubble b6 kl-center" onclick="klasseClick(6)">
+            <div class="kl-icon">−7</div>
+            <div class="kl-num">6</div>
+            <div class="kl-klasse-label">Klasse</div>
+            <div class="kl-topics-text">Negative Zahlen<br>Verhältnisse</div>
+          </div>
         </div>
-        <div class="klasse-card k5" onclick="openKlasse(5)">
-          <span class="klasse-num">5</span>
-          <span class="klasse-label">Klasse</span>
-          <span class="klasse-topics">Bruchrechnung · Prozent<br>Flächen &amp; Volumen</span>
+
+        <!-- Row 5: K7 K8 (small) -->
+        <div class="kl-row">
+          <div class="kl-bubble b7 kl-small" onclick="klasseClick(7)">
+            <div class="kl-num kl-num-sm">7</div>
+            <div class="kl-klasse-label">Klasse</div>
+            <div class="kl-topics-text">Algebra · Gleichungen</div>
+          </div>
+          <div class="kl-bubble b8 kl-small" onclick="klasseClick(8)">
+            <div class="kl-num kl-num-sm">8</div>
+            <div class="kl-klasse-label">Klasse</div>
+            <div class="kl-topics-text">Lineare Funktionen<br>Pythagoras</div>
+          </div>
         </div>
-        <div class="klasse-card k6" onclick="openKlasse(6)">
-          <span class="klasse-num">6</span>
-          <span class="klasse-label">Klasse</span>
-          <span class="klasse-topics">Negative Zahlen<br>Verhältnisse · Zuordnung</span>
+
+        <!-- Row 6: K9 K10 (tiny) -->
+        <div class="kl-row">
+          <div class="kl-bubble b9 kl-tiny" onclick="klasseClick(9)">
+            <div class="kl-num kl-num-xs">9</div>
+            <div class="kl-klasse-label">Klasse</div>
+            <div class="kl-topics-text">Quadratische Fkt.<br>Trigonometrie</div>
+          </div>
+          <div class="kl-bubble b10 kl-tiny" onclick="klasseClick(10)">
+            <div class="kl-num kl-num-xs">10</div>
+            <div class="kl-klasse-label">Klasse</div>
+            <div class="kl-topics-text">Analytische Geometrie<br>Ableitungen</div>
+          </div>
         </div>
-        <div class="klasse-card k7" onclick="openKlasse(7)">
-          <span class="klasse-num">7</span>
-          <span class="klasse-label">Klasse</span>
-          <span class="klasse-topics">Algebra · Gleichungen<br>Wahrscheinlichkeit</span>
-        </div>
-        <div class="klasse-card k8" onclick="openKlasse(8)">
-          <span class="klasse-num">8</span>
-          <span class="klasse-label">Klasse</span>
-          <span class="klasse-topics">Lineare Funktionen<br>Pythagoras · Kongruenz</span>
-        </div>
-        <div class="klasse-card k9" onclick="openKlasse(9)">
-          <span class="klasse-num">9</span>
-          <span class="klasse-label">Klasse</span>
-          <span class="klasse-topics">Quadratische Funktionen<br>Trigonometrie</span>
-        </div>
-        <div class="klasse-card k10" onclick="openKlasse(10)">
-          <span class="klasse-num">10</span>
-          <span class="klasse-label">Klasse</span>
-          <span class="klasse-topics">Analytische Geometrie<br>Stochastik · Ableitungen</span>
-        </div>
-      </div>
-    </div>
+
+      </div><!-- .kl-content -->
+    </div><!-- #klassen-grid-view -->
 
     <!-- CLASS CHAT VIEW (hidden by default) -->
     <div class="klasse-chat-view" id="klasse-chat-view">
@@ -1817,6 +1971,73 @@ function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
 /* ═══════════════════════════════════════════════════
    KLASSEN-KI — PRO RECHNER
 ═══════════════════════════════════════════════════ */
+/* ── BUBBLE WORLD: Stars, Clouds, Blub-Sound ─────── */
+(function initKlasseWorld() {
+  var bg = document.getElementById('kl-bg');
+  if (!bg) return;
+
+  var cloudCols = ['#5030a0','#2a3580','#703060','#1a2860','#406050','#603020'];
+  for (var c = 0; c < 7; c++) {
+    var cl = document.createElement('div');
+    cl.className = 'kl-cloud';
+    cl.style.cssText =
+      'width:'  + (70  + Math.random()*130) + 'px;' +
+      'height:' + (45  + Math.random()*90)  + 'px;' +
+      'left:'   + (Math.random()*110 - 5)   + '%;' +
+      'top:'    + (Math.random()*110 - 5)   + '%;' +
+      'background:' + cloudCols[c % cloudCols.length] + ';' +
+      '--drift:' + (6 + Math.random()*8)    + 's;' +
+      '--ddelay:-' + (Math.random()*8)      + 's';
+    bg.appendChild(cl);
+  }
+
+  for (var s = 0; s < 70; s++) {
+    var el = document.createElement('div');
+    var big = Math.random() < 0.15;
+    var sz  = big ? 2.5 : (Math.random() < 0.45 ? 1.5 : 1);
+    el.className = big ? 'kl-spark' : 'kl-star';
+    if (big) {
+      el.style.cssText =
+        'left:' + (Math.random()*100) + '%;' +
+        'top:'  + (Math.random()*100) + '%;' +
+        '--sd:' + (2 + Math.random()*4) + 's;' +
+        '--sdelay:-' + (Math.random()*4) + 's';
+    } else {
+      el.style.cssText =
+        'width:'  + sz + 'px;height:' + sz + 'px;' +
+        'left:'   + (Math.random()*100) + '%;' +
+        'top:'    + (Math.random()*100) + '%;' +
+        '--dur:'  + (1.2 + Math.random()*3.5) + 's;' +
+        '--delay:-' + (Math.random()*3.5) + 's;' +
+        '--lo:'   + (0.04 + Math.random()*0.08) + ';' +
+        '--hi:'   + (0.55 + Math.random()*0.45);
+    }
+    bg.appendChild(el);
+  }
+})();
+
+function blubSound() {
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc  = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(580, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.18);
+    gain.gain.setValueAtTime(0.38, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.22);
+  } catch(e) {}
+}
+
+function klasseClick(n) {
+  blubSound();
+  setTimeout(function() { openKlasse(n); }, 130);
+}
+
 var klasseHistories = {};
 var activeKlasse = 0;
 
