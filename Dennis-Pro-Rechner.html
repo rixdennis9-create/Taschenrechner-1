@@ -725,187 +725,113 @@
     }
     .btn-clear:hover { background: linear-gradient(160deg, #f04444, #ba1818); }
 
-    /* ── PAGE 2 ───────────────────────────────────────────── */
-    .p2-grid {
+    /* ── PAGE 2: MATHE KLASSEN ───────────────────────────── */
+    .klassen-header {
+      padding: 8px 2px 12px;
+      text-align: center;
+    }
+    .klassen-header h2 {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+    .klassen-header p {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      margin-top: 3px;
+    }
+    .klassen-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      padding-bottom: 6px;
     }
-
-    .p2-card {
-      background: rgba(255,255,255,0.04);
+    .klasse-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 16px;
-      padding: 14px;
-      box-shadow:
-        0 4px 16px rgba(0,0,0,0.3),
-        0 1px 0 rgba(255,255,255,0.05) inset;
-      border: 1px solid rgba(255,255,255,0.07);
+      padding: 16px 12px 14px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
     }
-
-    .p2-card h3 {
-      font-size: 12px;
+    .klasse-card:active { transform: scale(0.95); }
+    .klasse-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 16px 16px 0 0;
+    }
+    .klasse-card.k1::before  { background: linear-gradient(90deg,#f87171,#fb923c); }
+    .klasse-card.k2::before  { background: linear-gradient(90deg,#fb923c,#fbbf24); }
+    .klasse-card.k3::before  { background: linear-gradient(90deg,#fbbf24,#a3e635); }
+    .klasse-card.k4::before  { background: linear-gradient(90deg,#a3e635,#34d399); }
+    .klasse-card.k5::before  { background: linear-gradient(90deg,#34d399,#22d3ee); }
+    .klasse-card.k6::before  { background: linear-gradient(90deg,#22d3ee,#60a5fa); }
+    .klasse-card.k7::before  { background: linear-gradient(90deg,#60a5fa,#818cf8); }
+    .klasse-card.k8::before  { background: linear-gradient(90deg,#818cf8,#a78bfa); }
+    .klasse-card.k9::before  { background: linear-gradient(90deg,#a78bfa,#e879f9); }
+    .klasse-card.k10::before { background: linear-gradient(90deg,#e879f9,#f43f5e); }
+    .klasse-num {
+      font-size: 30px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+    }
+    .klasse-label {
+      font-size: 10px;
       font-weight: 700;
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.4);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
-
-    .p2-card h3 .card-icon {
-      width: 22px;
-      height: 22px;
-      background: linear-gradient(135deg, #ffe033, #f5a800);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
+    .klasse-topics {
+      font-size: 9px;
+      color: rgba(255,255,255,0.25);
+      text-align: center;
+      line-height: 1.4;
     }
-
-    .p2-card.full { grid-column: span 2; }
-
-    /* Fraction inputs */
-    .fraction-row {
+    .klasse-chat-view {
+      display: none;
+      flex-direction: column;
+      height: 420px;
+    }
+    .klasse-chat-header {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
+      padding: 4px 0 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
       margin-bottom: 8px;
+      flex-shrink: 0;
     }
-
-    .fraction-col {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .fraction-col input {
-      width: 46px;
-      height: 30px;
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      background: rgba(255,255,255,0.07);
-      font-size: 14px;
-      font-weight: 600;
-      color: #fff;
-      outline: none;
-    }
-
-    .fraction-col input:focus { border-color: #f5a800; }
-
-    .fraction-line {
-      width: 46px;
-      height: 2px;
-      background: rgba(255,255,255,0.4);
-      border-radius: 1px;
-    }
-
-    .fraction-op-sel {
-      width: 38px;
-      height: 38px;
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      background: rgba(255,255,255,0.07);
-      font-size: 16px;
-      font-weight: 700;
-      color: #fff;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .p2-btn {
-      width: 100%;
-      height: 32px;
+    .klasse-back-btn {
+      width: 32px; height: 32px;
       border: none;
-      border-radius: 9px;
-      background: linear-gradient(180deg, #222, #111);
-      color: #f5c800;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.7);
+      font-size: 16px;
       cursor: pointer;
-      margin-top: 4px;
-      box-shadow: 0 3px 7px rgba(0,0,0,0.35);
-      transition: all 0.12s;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
     }
-    .p2-btn:hover { background: linear-gradient(180deg, #333, #1a1a1a); }
-    .p2-btn:active { transform: scale(0.96); }
-
-    .fraction-op-sel option { background: #1e2235; color: #fff; }
-
-    .p2-result {
-      margin-top: 8px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #f5c800;
-      text-align: center;
-      min-height: 20px;
+    .klasse-chat-title { font-size: 15px; font-weight: 800; color: #fff; }
+    .klasse-chat-badge {
+      font-size: 9px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-left: auto;
+      background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6);
     }
 
-    /* Unit converter */
-    .unit-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .unit-row input,
-    .unit-row select {
-      width: 100%;
-      height: 30px;
-      padding: 0 8px;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      background: rgba(255,255,255,0.07);
-      font-size: 13px;
-      color: #fff;
-      outline: none;
-    }
-
-    .unit-row input:focus,
-    .unit-row select:focus { border-color: #f5a800; }
-
-    .unit-row select option { background: #1e2235; color: #fff; }
-
-    .unit-arrow {
-      text-align: center;
-      font-size: 14px;
-      color: rgba(255,255,255,0.4);
-      font-weight: 700;
-    }
-
-    /* Percent calc */
-    .pct-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .pct-row label {
-      font-size: 11px;
-      color: rgba(255,255,255,0.45);
-      font-weight: 600;
-    }
-
-    .pct-row input {
-      width: 100%;
-      height: 30px;
-      padding: 0 8px;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      background: rgba(255,255,255,0.07);
-      font-size: 13px;
-      color: #fff;
-      outline: none;
-    }
-
-    .pct-row input:focus { border-color: #f5a800; }
-
+    /* ── AI CHAT UI ───────────────────────────────────── */
     /* ── AI CHAT UI ───────────────────────────────────── */
     #page3 {
       display: none;
@@ -1400,77 +1326,79 @@
 
   <!-- PAGE 2: PRO RECHNER / EXTRA TOOLS -->
   <div class="page" id="page2">
-    <div class="p2-grid">
 
-      <!-- Bruchrechnung -->
-      <div class="p2-card full">
-        <h3><span class="card-icon">½</span>Bruchrechnung</h3>
-        <div class="fraction-row">
-          <div class="fraction-col">
-            <input type="number" id="z1" placeholder="0" />
-            <div class="fraction-line"></div>
-            <input type="number" id="n1" placeholder="1" />
-          </div>
-          <select class="fraction-op-sel" id="fop">
-            <option>+</option>
-            <option>−</option>
-            <option>×</option>
-            <option>÷</option>
-          </select>
-          <div class="fraction-col">
-            <input type="number" id="z2" placeholder="0" />
-            <div class="fraction-line"></div>
-            <input type="number" id="n2" placeholder="1" />
-          </div>
+    <!-- CLASS SELECTION GRID -->
+    <div id="klassen-grid-view">
+      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">Wähle deine Klasse</div>
+      <div class="klassen-grid">
+        <div class="klasse-card k1" onclick="openKlasse(1)">
+          <span class="klasse-num">1</span>
+          <span class="klasse-label">Klasse</span>
+          <span class="klasse-topics">Zahlen · Formen<br>Einfaches Rechnen</span>
         </div>
-        <button class="p2-btn" onclick="calcFraction()">= Berechnen</button>
-        <div class="p2-result" id="fraction-result">–</div>
-      </div>
-
-      <!-- Maßeinheiten -->
-      <div class="p2-card full">
-        <h3><span class="card-icon">⇄</span>Maßeinheiten</h3>
-        <div class="unit-row">
-          <select id="unit-cat" onchange="updateUnitSelects()">
-            <option value="length">Länge</option>
-            <option value="weight">Gewicht</option>
-            <option value="temp">Temperatur</option>
-            <option value="area">Fläche</option>
-            <option value="speed">Geschwindigkeit</option>
-          </select>
-          <input type="number" id="unit-val" placeholder="Wert eingeben" oninput="convertUnit()" />
-          <select id="unit-from" onchange="convertUnit()"></select>
-          <div class="unit-arrow">↓</div>
-          <select id="unit-to" onchange="convertUnit()"></select>
+        <div class="klasse-card k2" onclick="openKlasse(2)">
+          <span class="klasse-num">2</span>
+          <span class="klasse-label">Klasse</span>
+          <span class="klasse-topics">Addition · Subtraktion<br>Bis 100</span>
         </div>
-        <div class="p2-result" id="unit-result">–</div>
-      </div>
-
-      <!-- Prozentrechnng -->
-      <div class="p2-card">
-        <h3><span class="card-icon">%</span>Prozent</h3>
-        <div class="pct-row">
-          <label>Grundwert</label>
-          <input type="number" id="pct-base" placeholder="z.B. 200" oninput="calcPercent()" />
-          <label>Prozentsatz %</label>
-          <input type="number" id="pct-rate" placeholder="z.B. 15" oninput="calcPercent()" />
+        <div class="klasse-card k3" onclick="openKlasse(3)">
+          <span class="klasse-num">3</span>
+          <span class="klasse-label">Klasse</span>
+          <span class="klasse-topics">Einmaleins · Division<br>Geometrie</span>
         </div>
-        <div class="p2-result" id="pct-result">–</div>
-      </div>
-
-      <!-- Pythagoras -->
-      <div class="p2-card">
-        <h3><span class="card-icon">△</span>Pythagoras</h3>
-        <div class="pct-row">
-          <label>Seite a</label>
-          <input type="number" id="py-a" placeholder="z.B. 3" oninput="calcPyth()" />
-          <label>Seite b</label>
-          <input type="number" id="py-b" placeholder="z.B. 4" oninput="calcPyth()" />
+        <div class="klasse-card k4" onclick="openKlasse(4)">
+          <span class="klasse-num">4</span>
+          <span class="klasse-label">Klasse</span>
+          <span class="klasse-topics">Brüche · Dezimalzahlen<br>Sachaufgaben</span>
         </div>
-        <div class="p2-result" id="pyth-result">c = –</div>
+        <div class="klasse-card k5" onclick="openKlasse(5)">
+          <span class="klasse-num">5</span>
+          <span class="klasse-label">Klasse</span>
+          <span class="klasse-topics">Bruchrechnung · Prozent<br>Flächen &amp; Volumen</span>
+        </div>
+        <div class="klasse-card k6" onclick="openKlasse(6)">
+          <span class="klasse-num">6</span>
+          <span class="klasse-label">Klasse</span>
+          <span class="klasse-topics">Negative Zahlen<br>Verhältnisse · Zuordnung</span>
+        </div>
+        <div class="klasse-card k7" onclick="openKlasse(7)">
+          <span class="klasse-num">7</span>
+          <span class="klasse-label">Klasse</span>
+          <span class="klasse-topics">Algebra · Gleichungen<br>Wahrscheinlichkeit</span>
+        </div>
+        <div class="klasse-card k8" onclick="openKlasse(8)">
+          <span class="klasse-num">8</span>
+          <span class="klasse-label">Klasse</span>
+          <span class="klasse-topics">Lineare Funktionen<br>Pythagoras · Kongruenz</span>
+        </div>
+        <div class="klasse-card k9" onclick="openKlasse(9)">
+          <span class="klasse-num">9</span>
+          <span class="klasse-label">Klasse</span>
+          <span class="klasse-topics">Quadratische Funktionen<br>Trigonometrie</span>
+        </div>
+        <div class="klasse-card k10" onclick="openKlasse(10)">
+          <span class="klasse-num">10</span>
+          <span class="klasse-label">Klasse</span>
+          <span class="klasse-topics">Analytische Geometrie<br>Stochastik · Ableitungen</span>
+        </div>
       </div>
-
     </div>
+
+    <!-- CLASS CHAT VIEW (hidden by default) -->
+    <div class="klasse-chat-view" id="klasse-chat-view">
+      <div class="klasse-chat-header">
+        <button class="klasse-back-btn" onclick="backToKlassen()">←</button>
+        <span class="klasse-chat-title" id="klasse-chat-title">Klasse 1</span>
+        <span class="klasse-chat-badge" id="klasse-chat-badge">Mathe KI</span>
+      </div>
+      <div class="ai-chat-window" id="klasse-chat-window"></div>
+      <div class="ai-status" id="klasse-status"></div>
+      <div class="ai-input-bar">
+        <textarea id="klasse-input" placeholder="Frage stellen…" onkeydown="klasseKeyDown(event)"></textarea>
+        <button class="ai-send-btn" id="klasse-send-btn" onclick="klasseSend()">➤</button>
+      </div>
+    </div>
+
   </div>
 
   <!-- PAGE 3: AI CHAT -->
@@ -1883,97 +1811,106 @@ document.addEventListener('keydown', e => {
 ═══════════════════════════════════════════════════ */
 function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
 
-function calcFraction() {
-  const z1 = parseInt(document.getElementById('z1').value) || 0;
-  const n1 = parseInt(document.getElementById('n1').value) || 1;
-  const z2 = parseInt(document.getElementById('z2').value) || 0;
-  const n2 = parseInt(document.getElementById('n2').value) || 1;
-  const op = document.getElementById('fop').value;
-
-  let rz, rn;
-  if (op === '+') { rz = z1 * n2 + z2 * n1; rn = n1 * n2; }
-  else if (op === '−') { rz = z1 * n2 - z2 * n1; rn = n1 * n2; }
-  else if (op === '×') { rz = z1 * z2; rn = n1 * n2; }
-  else { rz = z1 * n2; rn = n1 * z2; }
-
-  if (rn === 0) { document.getElementById('fraction-result').textContent = 'Fehler'; return; }
-  const g = gcd(Math.abs(rz), Math.abs(rn));
-  const sz = rz / g, sn = rn / g;
-  const decimal = (sz / sn).toFixed(4).replace(/\.?0+$/, '');
-  document.getElementById('fraction-result').textContent =
-    sn === 1 ? sz : sz + ' / ' + sn + '  ≈  ' + decimal;
-}
-
 /* ═══════════════════════════════════════════════════
-   MAßEINHEITEN
+   KLASSEN-KI — PRO RECHNER
 ═══════════════════════════════════════════════════ */
-const units = {
-  length:  { m: 1, km: 1000, cm: 0.01, mm: 0.001, mi: 1609.34, yd: 0.9144, ft: 0.3048, in: 0.0254 },
-  weight:  { kg: 1, g: 0.001, mg: 0.000001, t: 1000, lb: 0.453592, oz: 0.0283495 },
-  area:    { 'm²': 1, 'km²': 1e6, 'cm²': 0.0001, 'mm²': 0.000001, ha: 10000, 'ft²': 0.092903 },
-  speed:   { 'km/h': 1, 'm/s': 3.6, 'mph': 1.60934, knot: 1.852 },
-  temp:    { '°C': null, '°F': null, K: null }
+var klasseHistories = {};
+var activeKlasse = 0;
+
+var klasseSystemPrompts = {
+  1: 'Du bist ein freundlicher Mathe-Assistent für Klasse 1 (6-7 Jahre). Du erklärst nur Themen der 1. Klasse: Zahlen von 1-20, einfaches Zählen, erste Addition und Subtraktion bis 20, einfache Formen. Benutze sehr einfache Sprache, kurze Sätze und viele Beispiele mit kleinen Zahlen. Wenn jemand etwas fragt das nicht zur 1. Klasse gehört, sage freundlich dass du nur Klasse-1-Themen erklärst.',
+  2: 'Du bist ein freundlicher Mathe-Assistent für Klasse 2 (7-8 Jahre). Deine Themen: Addition und Subtraktion bis 100, Verdoppeln und Halbieren, einfache Malaufgaben, Zahlen bis 1000, Uhrzeit, einfache Geometrie. Erkläre einfach und mit Beispielen. Wenn jemand etwas fragt das nicht zur 2. Klasse gehört, weise freundlich darauf hin.',
+  3: 'Du bist ein Mathe-Assistent für Klasse 3 (8-9 Jahre). Themen: Das kleine Einmaleins (1×1), Division, schriftliche Addition und Subtraktion, Zahlen bis 10.000, Längen/Gewichte/Volumen messen, einfache Geometrie (Rechteck, Quadrat, Umfang). Nur Klasse-3-Niveau.',
+  4: 'Du bist ein Mathe-Assistent für Klasse 4 (9-10 Jahre). Themen: Schriftliches Multiplizieren und Dividieren, Brüche einführen (Hälften, Viertel, Achtel), Dezimalzahlen, Zahlen bis 1.000.000, Fläche berechnen, Sachaufgaben. Erkläre Schritt für Schritt auf Klasse-4-Niveau.',
+  5: 'Du bist ein Mathe-Assistent für Klasse 5 (10-11 Jahre). Themen: Bruchrechnung (kürzen, erweitern, +−×÷), Dezimalzahlen, Prozentrechnung, Grundlagen Geometrie (Dreiecke, Vierecke), Flächen- und Volumenberechnung, natürliche Zahlen. Erkläre auf Klasse-5-Niveau.',
+  6: 'Du bist ein Mathe-Assistent für Klasse 6 (11-12 Jahre). Themen: Negative Zahlen, rationale Zahlen, Verhältnisse und Proportionen, direkte und indirekte Proportionalität, Prozent- und Zinsrechnung, Geometrie (Kreisberechnung, Körper). Nur Klasse-6-Themen.',
+  7: 'Du bist ein Mathe-Assistent für Klasse 7 (12-13 Jahre). Themen: Terme und Gleichungen aufstellen und lösen, lineare Gleichungen, Zuordnungen, Dreisatz, Prozentrechnungen (Rabatt, Mehrwertsteuer), Statistik (Mittelwert, Median), Wahrscheinlichkeitsrechnung Grundlagen. Nur Klasse-7-Niveau.',
+  8: 'Du bist ein Mathe-Assistent für Klasse 8 (13-14 Jahre). Themen: Lineare Funktionen (y=mx+b), Gleichungssysteme, Pythagoras, Ähnlichkeit und Kongruenz, Zylinder/Kegel/Kugel Berechnungen, Binomische Formeln. Erkläre mit Formeln und Beispielen auf Klasse-8-Niveau.',
+  9: 'Du bist ein Mathe-Assistent für Klasse 9 (14-15 Jahre). Themen: Quadratische Funktionen und Gleichungen (pq-Formel, Mitternachtsformel), Trigonometrie (Sinus, Kosinus, Tangens), Ähnlichkeitssätze, Exponentialfunktionen Einführung, Stochastik. Nur Klasse-9-Niveau.',
+  10: 'Du bist ein Mathe-Assistent für Klasse 10 (15-16 Jahre). Themen: Analytische Geometrie (Geraden, Vektoren Grundlagen), Potenz- und Exponentialfunktionen, Logarithmen, Einführung Differentialrechnung (Ableitungsregeln), Stochastik (Binomialverteilung). Erkläre auf Klasse-10-Niveau mit vollständigen Lösungswegen.'
 };
 
-function updateUnitSelects() {
-  const cat = document.getElementById('unit-cat').value;
-  const keys = Object.keys(units[cat]);
-  ['unit-from', 'unit-to'].forEach((id, i) => {
-    const sel = document.getElementById(id);
-    sel.innerHTML = keys.map(k => `<option value="${k}">${k}</option>`).join('');
-    sel.selectedIndex = i === 1 ? Math.min(1, keys.length - 1) : 0;
-  });
-  convertUnit();
+var klasseNames = ['','Klasse 1','Klasse 2','Klasse 3','Klasse 4','Klasse 5','Klasse 6','Klasse 7','Klasse 8','Klasse 9','Klasse 10'];
+var klasseColors = ['','#f87171','#fb923c','#fbbf24','#a3e635','#34d399','#22d3ee','#60a5fa','#818cf8','#a78bfa','#e879f9'];
+
+function openKlasse(n) {
+  activeKlasse = n;
+  if (!klasseHistories[n]) klasseHistories[n] = [];
+  document.getElementById('klassen-grid-view').style.display = 'none';
+  var chatView = document.getElementById('klasse-chat-view');
+  chatView.style.display = 'flex';
+  document.getElementById('klasse-chat-title').textContent = klasseNames[n];
+  var badge = document.getElementById('klasse-chat-badge');
+  badge.textContent = 'Mathe KI';
+  badge.style.background = klasseColors[n] + '33';
+  badge.style.color = klasseColors[n];
+  renderKlasseChat();
+  document.getElementById('klasse-status').textContent = '';
 }
 
-function convertUnit() {
-  const cat  = document.getElementById('unit-cat').value;
-  const val  = parseFloat(document.getElementById('unit-val').value);
-  const from = document.getElementById('unit-from').value;
-  const to   = document.getElementById('unit-to').value;
-  const el   = document.getElementById('unit-result');
+function backToKlassen() {
+  document.getElementById('klasse-chat-view').style.display = 'none';
+  document.getElementById('klassen-grid-view').style.display = 'block';
+  activeKlasse = 0;
+}
 
-  if (isNaN(val)) { el.textContent = '–'; return; }
-
-  let result;
-  if (cat === 'temp') {
-    if (from === '°C' && to === '°F') result = val * 9/5 + 32;
-    else if (from === '°F' && to === '°C') result = (val - 32) * 5/9;
-    else if (from === '°C' && to === 'K')  result = val + 273.15;
-    else if (from === 'K'  && to === '°C') result = val - 273.15;
-    else if (from === '°F' && to === 'K')  result = (val - 32) * 5/9 + 273.15;
-    else if (from === 'K'  && to === '°F') result = (val - 273.15) * 9/5 + 32;
-    else result = val;
-  } else {
-    const f = units[cat][from], t = units[cat][to];
-    result = val * f / t;
+function renderKlasseChat() {
+  var win = document.getElementById('klasse-chat-window');
+  var hist = klasseHistories[activeKlasse] || [];
+  if (hist.length === 0) {
+    win.innerHTML = '<div class="ai-welcome"><span class="ai-welcome-icon">🎓</span><strong style="color:' + klasseColors[activeKlasse] + ';font-size:13px;">' + klasseNames[activeKlasse] + ' — Mathe KI</strong><br>Ich beantworte nur Fragen zu deiner Klasse.<br>Was möchtest du wissen?<br><br><span style="font-size:10px;color:rgba(255,255,255,0.3);">🔒 Sicherer Backend-Modus aktiv</span></div>';
+    return;
   }
-
-  el.textContent = parseFloat(result.toPrecision(8)) + ' ' + to;
+  win.innerHTML = hist.map(function(m) {
+    var isUser = m.role === 'user';
+    return '<div class="ai-msg ' + (isUser ? 'ai-msg-user' : 'ai-msg-ai') + '">' + klasseEscape(m.content) + '</div>';
+  }).join('');
+  win.scrollTop = win.scrollHeight;
 }
 
-/* ═══════════════════════════════════════════════════
-   PROZENTRECHNUNG
-═══════════════════════════════════════════════════ */
-function calcPercent() {
-  const base = parseFloat(document.getElementById('pct-base').value);
-  const rate = parseFloat(document.getElementById('pct-rate').value);
-  const el   = document.getElementById('pct-result');
-  if (isNaN(base) || isNaN(rate)) { el.textContent = '–'; return; }
-  const val = base * rate / 100;
-  el.textContent = rate + '% von ' + base + ' = ' + parseFloat(val.toPrecision(10));
+function klasseEscape(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 }
 
-/* ═══════════════════════════════════════════════════
-   PYTHAGORAS
-═══════════════════════════════════════════════════ */
-function calcPyth() {
-  const a = parseFloat(document.getElementById('py-a').value);
-  const b = parseFloat(document.getElementById('py-b').value);
-  const el = document.getElementById('pyth-result');
-  if (isNaN(a) || isNaN(b)) { el.textContent = 'c = –'; return; }
-  const c = Math.sqrt(a * a + b * b);
-  el.textContent = 'c = ' + parseFloat(c.toPrecision(8));
+function klasseKeyDown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); klasseSend(); }
+}
+
+async function klasseSend() {
+  if (!activeKlasse) return;
+  var input = document.getElementById('klasse-input');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  var hist = klasseHistories[activeKlasse];
+  hist.push({ role: 'user', content: text });
+  renderKlasseChat();
+  var statusEl = document.getElementById('klasse-status');
+  var sendBtn = document.getElementById('klasse-send-btn');
+  statusEl.textContent = '⏳ Denkt nach…';
+  sendBtn.disabled = true;
+  try {
+    var res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5',
+        system: klasseSystemPrompts[activeKlasse],
+        messages: hist,
+        max_tokens: 800
+      })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    var data = await res.json();
+    var reply = data.content && data.content[0] ? data.content[0].text : '(keine Antwort)';
+    hist.push({ role: 'assistant', content: reply });
+    statusEl.textContent = '';
+  } catch(err) {
+    hist.pop();
+    statusEl.textContent = '⚠️ Fehler: ' + err.message;
+  }
+  sendBtn.disabled = false;
+  renderKlasseChat();
 }
 
 /* ── Splash: FIRST thing — hide after 2.5s no matter what ── */
