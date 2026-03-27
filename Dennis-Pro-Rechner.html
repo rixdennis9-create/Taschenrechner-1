@@ -913,54 +913,187 @@
       0%   { transform: translate(0,0)   rotate(0deg)  scale(1);    }
       100% { transform: translate(4%,3%) rotate(4deg)  scale(1.06); }
     }
-    /* Planet elements — slow 3D drift */
+    /* ── CINEMATIC 3D PLANETS ─────────────────────────── */
     .galaxy-planet {
       position: absolute;
       border-radius: 50%;
       pointer-events: none;
       opacity: 0;
-      animation:
-        planet-drift var(--pdur, 60s) ease-in-out infinite,
-        planet-spin  var(--pspin, 45s) linear infinite;
-      animation-delay: var(--pdelay, 0s);
-      overflow: hidden;
+      overflow: visible;
+      animation: planet-drift var(--pdur,80s) ease-in-out infinite;
+      animation-delay: var(--pdelay,0s);
     }
-    .galaxy-planet::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: linear-gradient(135deg,
-        rgba(255,255,255,0.15) 0%,
-        rgba(255,255,255,0.04) 30%,
-        transparent 60%,
-        rgba(0,0,0,0.4) 100%);
-      z-index: 2;
+    /* ── Ice Giant (Neptune-like) ── */
+    .gp-ice {
+      background:
+        radial-gradient(circle at 32% 28%, #a0c8ff 0%, #3050c0 22%, #1828a0 48%, #0c1560 75%, #040a30 100%);
+      box-shadow:
+        inset -18px -18px 35px rgba(0,0,15,0.85),
+        inset  8px  8px 20px rgba(160,200,255,0.08),
+        0 0 35px rgba(60,100,255,0.22),
+        0 0 70px rgba(40,70,220,0.10);
     }
-    .galaxy-planet::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: repeating-linear-gradient(
-        170deg,
-        transparent 0%, transparent 12%,
-        rgba(255,255,255,0.03) 12%, rgba(255,255,255,0.03) 13%,
-        transparent 13%
-      );
-      animation: planet-spin var(--pspin, 45s) linear infinite;
-      z-index: 1;
+    .gp-ice::before {
+      content:''; position:absolute; inset:-3px; border-radius:50%;
+      background: radial-gradient(circle at 50% 50%,
+        transparent 48%,
+        rgba(120,180,255,0.22) 62%,
+        rgba(80,130,255,0.12) 76%,
+        rgba(40,80,220,0.04) 88%,
+        transparent 100%);
+      z-index:3; pointer-events:none;
+    }
+    .gp-ice::after {
+      content:''; position:absolute; inset:0; border-radius:50%;
+      background:
+        radial-gradient(circle at 78% 60%, transparent 42%, rgba(0,0,20,0.65) 100%),
+        repeating-linear-gradient(172deg,
+          transparent 0%, transparent 13%,
+          rgba(140,190,255,0.06) 13%, rgba(140,190,255,0.06) 14.5%,
+          rgba(80,120,220,0.04) 14.5%, rgba(80,120,220,0.04) 15.5%,
+          transparent 15.5%);
+      animation: planet-bands var(--pspin,55s) linear infinite;
+      z-index:2; pointer-events:none;
+    }
+    /* ── Gas Giant with rings (Saturn-like) ── */
+    .gp-gas {
+      background:
+        radial-gradient(circle at 30% 26%, #ffe4a0 0%, #d4a040 20%, #b07020 45%, #7a4010 68%, #3a1c06 100%);
+      box-shadow:
+        inset -22px -20px 40px rgba(10,4,0,0.9),
+        inset  10px  8px 22px rgba(255,230,150,0.1),
+        0 0 40px rgba(200,130,30,0.2),
+        0 0 80px rgba(180,100,20,0.09);
+    }
+    .gp-gas::before {
+      content:''; position:absolute; inset:-4px; border-radius:50%;
+      background: radial-gradient(circle at 50% 50%,
+        transparent 46%,
+        rgba(255,200,80,0.18) 60%,
+        rgba(220,160,50,0.10) 74%,
+        rgba(180,110,20,0.04) 88%,
+        transparent 100%);
+      z-index:3; pointer-events:none;
+    }
+    .gp-gas::after {
+      content:''; position:absolute; inset:0; border-radius:50%;
+      background:
+        radial-gradient(circle at 76% 58%, transparent 40%, rgba(5,2,0,0.7) 100%),
+        repeating-linear-gradient(178deg,
+          rgba(255,200,80,0.07) 0%,  rgba(255,200,80,0.07) 8%,
+          rgba(180,90,20,0.09) 8%,   rgba(180,90,20,0.09) 14%,
+          rgba(255,220,100,0.05) 14%, rgba(255,220,100,0.05) 20%,
+          rgba(140,60,10,0.08) 20%,  rgba(140,60,10,0.08) 27%,
+          rgba(200,130,40,0.06) 27%, rgba(200,130,40,0.06) 33%,
+          rgba(100,40,5,0.10) 33%,   rgba(100,40,5,0.10) 40%,
+          rgba(220,170,60,0.06) 40%, rgba(220,170,60,0.06) 48%,
+          rgba(130,55,8,0.08) 48%,   rgba(130,55,8,0.08) 55%,
+          rgba(200,140,50,0.05) 55%, rgba(200,140,50,0.05) 63%,
+          rgba(90,35,5,0.09) 63%,    rgba(90,35,5,0.09) 70%,
+          rgba(215,160,55,0.06) 70%, rgba(215,160,55,0.06) 78%,
+          rgba(110,45,6,0.08) 78%,   rgba(110,45,6,0.08) 86%,
+          rgba(190,120,35,0.05) 86%, rgba(190,120,35,0.05) 100%);
+      animation: planet-bands var(--pspin,70s) linear infinite;
+      z-index:2; pointer-events:none;
+    }
+    /* Ring system */
+    .planet-ring {
+      position:absolute; top:50%; left:50%;
+      width:230%; height:52%;
+      margin-left:-115%; margin-top:-26%;
+      border-radius:50%;
+      border:7px solid rgba(210,175,90,0.16);
+      box-shadow:
+        0 0 12px rgba(210,175,90,0.08),
+        inset 0 0 8px rgba(210,175,90,0.06);
+      transform: rotateZ(-18deg);
+      pointer-events:none;
+      z-index:0;
+      animation: ring-pulse 8s ease-in-out infinite;
+    }
+    .planet-ring::after {
+      content:''; position:absolute; inset:5px;
+      border-radius:50%;
+      border:3px solid rgba(180,140,60,0.09);
+    }
+    @keyframes ring-pulse {
+      0%,100% { opacity:0.7; }
+      50%      { opacity:1; }
+    }
+    /* ── Rocky Desert Planet (Mars-like) ── */
+    .gp-rocky {
+      background:
+        radial-gradient(circle at 34% 30%, #ff9060 0%, #d04020 25%, #962010 52%, #5a100a 76%, #280604 100%);
+      box-shadow:
+        inset -14px -14px 28px rgba(10,2,0,0.88),
+        inset  7px  7px 18px rgba(255,140,80,0.07),
+        0 0 28px rgba(200,60,20,0.18),
+        0 0 55px rgba(160,40,10,0.08);
+    }
+    .gp-rocky::before {
+      content:''; position:absolute; inset:-2px; border-radius:50%;
+      background: radial-gradient(circle at 50% 50%,
+        transparent 50%,
+        rgba(255,120,60,0.15) 64%,
+        rgba(200,70,20,0.08) 78%,
+        rgba(140,40,10,0.03) 90%,
+        transparent 100%);
+      z-index:3; pointer-events:none;
+    }
+    .gp-rocky::after {
+      content:''; position:absolute; inset:0; border-radius:50%;
+      background:
+        radial-gradient(circle at 77% 62%, transparent 38%, rgba(8,2,0,0.72) 100%),
+        radial-gradient(ellipse at 50% 12%, rgba(255,220,200,0.12) 0%, transparent 28%),
+        repeating-linear-gradient(168deg,
+          transparent 0%, transparent 18%,
+          rgba(255,120,60,0.04) 18%, rgba(255,120,60,0.04) 20%,
+          transparent 20%);
+      animation: planet-bands var(--pspin,40s) linear infinite;
+      z-index:2; pointer-events:none;
+    }
+    /* ── Ocean Planet (Earth-like) ── */
+    .gp-ocean {
+      background:
+        radial-gradient(circle at 31% 27%, #80d4ff 0%, #1878d0 22%, #0c50a8 48%, #062870 72%, #020f38 100%);
+      box-shadow:
+        inset -16px -16px 32px rgba(0,5,20,0.86),
+        inset  9px  8px 20px rgba(120,200,255,0.09),
+        0 0 32px rgba(30,130,255,0.2),
+        0 0 65px rgba(20,90,220,0.09);
+    }
+    .gp-ocean::before {
+      content:''; position:absolute; inset:-3px; border-radius:50%;
+      background: radial-gradient(circle at 50% 50%,
+        transparent 49%,
+        rgba(100,200,255,0.20) 63%,
+        rgba(60,150,240,0.12) 77%,
+        rgba(30,100,200,0.04) 89%,
+        transparent 100%);
+      z-index:3; pointer-events:none;
+    }
+    .gp-ocean::after {
+      content:''; position:absolute; inset:0; border-radius:50%;
+      background:
+        radial-gradient(circle at 77% 60%, transparent 40%, rgba(0,4,20,0.68) 100%),
+        repeating-linear-gradient(173deg,
+          transparent 0%, transparent 16%,
+          rgba(200,235,255,0.07) 16%, rgba(200,235,255,0.07) 18%,
+          rgba(40,100,200,0.05) 18%, rgba(40,100,200,0.05) 20%,
+          transparent 20%);
+      animation: planet-bands var(--pspin,80s) linear infinite;
+      z-index:2; pointer-events:none;
     }
     @keyframes planet-drift {
-      0%   { opacity: 0;              transform: translate(0,0)    scale(0.6); }
-      12%  { opacity: var(--pop,0.22); }
-      50%  { opacity: var(--pop,0.22); transform: translate(var(--px,15px), var(--py,-10px)) scale(1); }
-      88%  { opacity: var(--pop,0.22); }
-      100% { opacity: 0;              transform: translate(var(--px2,30px), var(--py2,-20px)) scale(0.6); }
+      0%   { opacity:0;               transform:translate(0,0)                               scale(0.55); }
+      10%  { opacity:var(--pop,0.25); }
+      50%  { opacity:var(--pop,0.25); transform:translate(var(--px,15px),var(--py,-10px))    scale(1); }
+      90%  { opacity:var(--pop,0.25); }
+      100% { opacity:0;               transform:translate(var(--px2,30px),var(--py2,-20px)) scale(0.55); }
     }
-    @keyframes planet-spin {
-      from { transform: rotateZ(0deg); }
-      to   { transform: rotateZ(360deg); }
+    @keyframes planet-bands {
+      from { transform:rotateZ(0deg); }
+      to   { transform:rotateZ(360deg); }
     }
     /* Grid view scrolls, sits above bg */
     #klassen-grid-view {
@@ -2288,26 +2421,27 @@ function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
   }
 
   // Inject planets
+  // 4 cinematic 3D planets — each a different type
   var planetDefs = [
-    { size: 110, col1: '#3a1a7a', col2: '#1a0840', ring: false, pop: 0.2,  dur: 80, spin: 55, delay: -15, px: '25px', py: '-15px', px2: '50px', py2: '-30px', l: '12%', t: '18%' },
-    { size: 150, col1: '#0d2060', col2: '#05100a', ring: true,  pop: 0.16, dur: 95, spin: 70, delay: -30, px: '-20px', py: '12px', px2: '-40px', py2: '24px', l: '58%', t: '52%' },
-    { size: 80,  col1: '#4a0a30', col2: '#1a0514', ring: false, pop: 0.24, dur: 65, spin: 40, delay: -45, px: '18px', py: '-25px', px2: '35px', py2: '-50px', l: '72%', t: '12%' },
-    { size: 100, col1: '#0a3050', col2: '#020c18', ring: false, pop: 0.14, dur: 110,spin: 80, delay: -20, px: '-12px', py: '18px', px2: '-24px', py2: '36px', l: '28%', t: '68%' }
+    { cls:'gp-ice',   size:115, ring:false, pop:0.22, dur:85,  spin:55,  delay:-15, px:'22px', py:'-14px', px2:'44px', py2:'-28px', l:'10%', t:'16%' },
+    { cls:'gp-gas',   size:160, ring:true,  pop:0.18, dur:100, spin:72,  delay:-32, px:'-18px',py:'11px',  px2:'-36px',py2:'22px',   l:'56%', t:'50%' },
+    { cls:'gp-rocky', size:82,  ring:false, pop:0.26, dur:68,  spin:42,  delay:-48, px:'16px', py:'-22px', px2:'32px', py2:'-44px',  l:'70%', t:'10%' },
+    { cls:'gp-ocean', size:105, ring:false, pop:0.15, dur:115, spin:85,  delay:-22, px:'-11px',py:'16px',  px2:'-22px',py2:'32px',   l:'25%', t:'65%' }
   ];
   planetDefs.forEach(function(p) {
     var pl = document.createElement('div');
-    pl.className = 'galaxy-planet';
+    pl.className = 'galaxy-planet ' + p.cls;
     pl.style.cssText =
       'width:' + p.size + 'px;height:' + p.size + 'px;' +
       'left:' + p.l + ';top:' + p.t + ';' +
-      'background:radial-gradient(ellipse at 35% 30%,' + p.col1 + ' 0%,' + p.col2 + ' 70%);' +
-      'box-shadow:0 0 ' + Math.round(p.size*0.5) + 'px ' + p.col1 + '55;' +
       '--pdur:' + p.dur + 's;--pspin:' + p.spin + 's;--pdelay:' + p.delay + 's;' +
       '--pop:' + p.pop + ';' +
       '--px:' + p.px + ';--py:' + p.py + ';' +
       '--px2:' + p.px2 + ';--py2:' + p.py2;
     if (p.ring) {
-      pl.style.boxShadow += ',0 ' + Math.round(p.size*0.06) + 'px 0 ' + Math.round(p.size*0.55) + 'px rgba(100,140,255,0.06)';
+      var ring = document.createElement('div');
+      ring.className = 'planet-ring';
+      pl.appendChild(ring);
     }
     bg.appendChild(pl);
   });
