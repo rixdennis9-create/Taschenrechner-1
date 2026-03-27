@@ -1068,7 +1068,8 @@
     }
     /* Model panel */
     .ai-model-panel {
-      display: none; margin-bottom: 6px; flex-shrink: 0;
+      display: none; flex-direction: column; gap: 6px;
+      margin-bottom: 6px; flex-shrink: 0;
     }
     .ai-model-panel select {
       width: 100%; height: 30px;
@@ -1076,6 +1077,12 @@
       padding: 0 8px; font-size: 11px; font-weight: 600;
       background: rgba(30,27,58,.9); color: #a5b4fc; outline: none; cursor: pointer;
     }
+    .ai-clear-btn {
+      width: 100%; height: 28px; border-radius: 10px; border: none;
+      background: rgba(180,30,30,.35); color: rgba(255,150,150,.9);
+      font-size: 11px; font-weight: 600; cursor: pointer;
+    }
+    .ai-clear-btn:active { background: rgba(220,40,40,.5); }
     /* Chat window */
     .ai-chat-window {
       flex: 1; overflow-y: auto;
@@ -1656,6 +1663,7 @@
         <option value="claude-sonnet-4-6">⚖ Claude Sonnet 4.6 — ausgewogen</option>
         <option value="claude-opus-4-6">🏆 Claude Opus 4.6 — stärkst</option>
       </select>
+      <button class="ai-clear-btn" onclick="clearChat()">✕ Chat löschen</button>
     </div>
 
     <!-- Chat Window -->
@@ -1816,7 +1824,7 @@ function _renderPage(n) {
   if (fullbg) fullbg.style.display = (n === 2 || n === 3) ? 'block' : 'none';
   /* Hide calculator display when not on page1 */
   var dispEl = document.querySelector('.display');
-  if (dispEl) dispEl.style.visibility = (n === 1) ? '' : 'hidden';
+  if (dispEl) dispEl.style.display = (n === 1) ? '' : 'none';
 }
 
 function switchPage(n) {
@@ -1936,7 +1944,8 @@ function appendMsg(role, text, extraClass) {
 
 function toggleAiModel() {
   const panel = document.getElementById('ai-model-panel');
-  if (panel) panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+  if (!panel) return;
+  panel.style.display = (panel.style.display === 'flex') ? 'none' : 'flex';
 }
 
 function aiQuickAction(type) {
@@ -2283,10 +2292,18 @@ function renderKlasseChat() {
     win.innerHTML = '<div class="ai-welcome"><span class="ai-welcome-icon">🎓</span><strong style="color:' + klasseColors[activeKlasse] + ';font-size:13px;">' + klasseNames[activeKlasse] + ' — Mathe KI</strong><br>Ich beantworte nur Fragen zu deiner Klasse.<br>Was möchtest du wissen?<br><br><span style="font-size:10px;color:rgba(255,255,255,0.3);">🔒 Sicherer Backend-Modus aktiv</span></div>';
     return;
   }
-  win.innerHTML = hist.map(function(m) {
+  var html = '';
+  hist.forEach(function(m) {
     var isUser = m.role === 'user';
-    return '<div class="ai-msg ' + (isUser ? 'ai-msg-user' : 'ai-msg-ai') + '">' + klasseEscape(m.content) + '</div>';
-  }).join('');
+    var escaped = klasseEscape(m.content);
+    if (isUser) {
+      var d = new Date(); var ts = d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+      html += '<div class="ai-msg-user"><div class="ai-msg-bubble"><div class="ai-msg-text">' + escaped + '</div><div class="ai-msg-ts">' + ts + ' ✓</div></div></div>';
+    } else {
+      html += '<div class="ai-msg-bot"><div class="ai-msg-avatar">🤖</div><div class="ai-msg-bubble"><div class="ai-msg-author">Mathe KI</div><div class="ai-msg-text">' + escaped + '</div></div></div>';
+    }
+  });
+  win.innerHTML = html;
   win.scrollTop = win.scrollHeight;
 }
 
