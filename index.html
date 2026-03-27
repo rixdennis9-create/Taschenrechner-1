@@ -236,11 +236,10 @@
     /* ── SETTINGS OVERLAY — modernized ───────────────────── */
     #settings-overlay {
       display: none;
-      position: absolute;
+      position: fixed;
       inset: 0;
-      z-index: 500;
+      z-index: 8000;
       flex-direction: column;
-      border-radius: 30px;
       overflow: hidden;
     }
     #settings-overlay.open {
@@ -265,9 +264,8 @@
     .settings-backdrop {
       position: absolute;
       inset: 0;
-      background: rgba(6, 8, 18, 0.88);
+      background: rgba(6, 8, 18, 0.95);
       backdrop-filter: blur(20px) saturate(1.4);
-      border-radius: 30px;
     }
 
     .settings-inner {
@@ -1596,9 +1594,7 @@ function openSettings() {
 function closeSettings() {
   const el = document.getElementById('settings-overlay');
   el.classList.add('closing');
-  el.addEventListener('animationend', () => {
-    el.classList.remove('open', 'closing');
-  }, { once: true });
+  setTimeout(() => { el.classList.remove('open', 'closing'); }, 280);
 }
 
 // ── Notification / speech bubble ──
