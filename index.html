@@ -57,7 +57,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 18px;
+      margin-bottom: 10px;
     }
 
     /* Gear / Settings Button */
@@ -148,11 +148,9 @@
     /* ── SPEECH BUBBLE ────────────────────────────────────── */
     .speech-bubble {
       display: none;
-      position: absolute;
-      left: 46px;
-      top: 30px;
-      z-index: 600;
-      transform-origin: left center;
+      position: fixed;
+      z-index: 9000;
+      transform-origin: left top;
     }
     .speech-bubble.open {
       display: block;
@@ -532,9 +530,9 @@
     .display {
       background: rgba(0,0,0,0.35);
       border-radius: 20px;
-      padding: 18px 22px 16px;
-      margin-bottom: 18px;
-      min-height: 108px;
+      padding: 14px 18px 12px;
+      margin-bottom: 10px;
+      min-height: 90px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -670,14 +668,14 @@
     .buttons {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      padding-bottom: 4px;
-      gap: 9px;
+      padding-bottom: 2px;
+      gap: 6px;
     }
 
     button.calc-btn {
-      height: 68px;
+      height: 58px;
       border: none;
-      border-radius: 18px;
+      border-radius: 16px;
       font-size: 20px;
       font-weight: 600;
       cursor: pointer;
@@ -1614,6 +1612,11 @@ function toggleNotif(e) {
     bubble.addEventListener('animationend', () => bubble.classList.remove('closing'), { once: true });
     notifOpen = false;
   } else {
+    // Position bubble relative to the button using fixed coords
+    const btn = e.currentTarget;
+    const rect = btn.getBoundingClientRect();
+    bubble.style.left = (rect.right + 8) + 'px';
+    bubble.style.top  = (rect.top) + 'px';
     bubble.classList.remove('closing');
     bubble.classList.add('open');
     notifOpen = true;
