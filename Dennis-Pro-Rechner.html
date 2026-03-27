@@ -16,6 +16,24 @@
       font-family: 'Segoe UI', system-ui, sans-serif;
       overflow: hidden;
     }
+    /* iOS/Android safe area support */
+    @supports (padding-top: env(safe-area-inset-top)) {
+      .calculator {
+        padding-top: max(18px, env(safe-area-inset-top));
+      }
+      .bottom-nav {
+        padding-bottom: max(0px, env(safe-area-inset-bottom));
+      }
+    }
+    /* iOS/Android safe area support */
+    @supports (padding-top: env(safe-area-inset-top)) {
+      .calculator {
+        padding-top: max(18px, env(safe-area-inset-top));
+      }
+      .bottom-nav {
+        padding-bottom: max(0px, env(safe-area-inset-bottom));
+      }
+    }
 
     /* ── CALCULATOR SHELL ─────────────────────────────────── */
     .calculator {
@@ -56,7 +74,7 @@
       pointer-events: none;
       display: none;
       overflow: hidden;
-      border-radius: 32px;
+      border-radius: 0;
     }
 
     /* ── HEADER ───────────────────────────────────────────── */
@@ -558,7 +576,7 @@
       margin-top: auto;
       border-top: 1px solid rgba(255,255,255,0.06);
       background: rgba(0,0,0,0.3);
-      border-radius: 0 0 30px 30px;
+      border-radius: 0;
       overflow: hidden;
       backdrop-filter: blur(8px);
     }
@@ -599,10 +617,15 @@
     .nav-btn.active::before {
       content: '';
       position: absolute;
-      top: 0; left: 25%; right: 25%;
+      top: 0; left: 20%; right: 20%;
       height: 2px;
       background: linear-gradient(90deg, transparent, #f5c800, transparent);
-      border-radius: 0 0 2px 2px;
+      border-radius: 0 0 3px 3px;
+      animation: nav-indicator 0.3s ease-out forwards;
+    }
+    @keyframes nav-indicator {
+      from { opacity: 0; transform: scaleX(0.3); }
+      to   { opacity: 1; transform: scaleX(1); }
     }
 
     .nav-btn:not(.active):hover {
@@ -635,8 +658,12 @@
     }
     .calc-content::-webkit-scrollbar { display: none; }
 
-    .page { display: none; }
-    .page.visible { display: block; }
+    .page { display: none; opacity: 0; }
+    .page.visible { display: block; animation: page-fadein 0.25s ease-out forwards; }
+    @keyframes page-fadein {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
     /* Page 2 fills calc-content as a flex column */
     #page2 { position: relative; overflow: hidden; }
@@ -644,6 +671,7 @@
       display: flex !important;
       flex-direction: column;
       height: 100%;
+      animation: page-fadein 0.25s ease-out forwards;
     }
 
     /* ── BUTTON GRID (Page 1) ─────────────────────────────── */
@@ -668,79 +696,72 @@
       letter-spacing: -0.3px;
     }
 
-    button.calc-btn:active {
-      transform: scale(0.92) translateY(2px);
-      filter: brightness(0.85);
+    /* Ripple keyframe */
+    @keyframes btn-ripple {
+      0%   { transform: scale(0); opacity: 0.5; }
+      100% { transform: scale(2.5); opacity: 0; }
     }
-
-    /* Dark function buttons */
-    .btn-func {
-      background: rgba(80,85,110,0.7);
-      color: #e8eaf0;
-      box-shadow:
-        0 6px 14px rgba(0,0,0,0.4),
-        0 1px 0 rgba(255,255,255,0.08) inset;
-      font-size: 15px;
-      font-weight: 600;
-      border: 1px solid rgba(255,255,255,0.06);
-      backdrop-filter: blur(4px);
-    }
-    .btn-func:hover { background: rgba(95,100,130,0.8); }
-
-    /* Operator buttons – vivid red with glow */
-    .btn-op {
-      background: linear-gradient(160deg, #e83333 0%, #b81515 100%);
-      color: #ffffff;
-      font-size: 24px;
-      font-weight: 700;
-      box-shadow:
-        0 6px 18px rgba(220,30,30,0.45),
-        0 1px 0 rgba(255,180,180,0.3) inset;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,100,100,0.2);
-    }
-    .btn-op:hover { background: linear-gradient(160deg, #f04444, #cc1a1a); }
-
-    /* Number buttons – dark glass */
     .btn-num {
-      background: rgba(44,48,68,0.9);
-      color: #ffffff;
-      font-size: 24px;
-      font-weight: 400;
-      box-shadow:
-        0 6px 14px rgba(0,0,0,0.4),
-        0 1px 0 rgba(255,255,255,0.06) inset;
-      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.07);
+      color: #e8e0ff;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top: 1px solid rgba(255,255,255,0.17);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.35), 0 0 0 0.5px rgba(255,255,255,0.05) inset;
     }
-    .btn-num:hover { background: rgba(56,62,86,0.95); }
-
-    .btn-zero { grid-column: span 2; }
-
-    /* Equals – gold glow */
-    .btn-equals {
-      background: linear-gradient(160deg, #ffe033 0%, #e89800 100%);
-      color: #1a1a1a;
-      font-size: 26px;
-      font-weight: 600;
-      box-shadow:
-        0 6px 20px rgba(245,168,0,0.55),
-        0 1px 0 rgba(255,255,200,0.4) inset;
-      border: 1px solid rgba(255,200,0,0.3);
+    .btn-func {
+      background: rgba(255,255,255,0.09);
+      color: rgba(200,190,255,0.88);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
     }
-    .btn-equals:hover { background: linear-gradient(160deg, #ffec55, #f5a800); }
-
-    /* Clear button – vivid red */
-    .btn-clear {
-      background: linear-gradient(160deg, #e83333, #a81515);
+    .btn-op {
+      background: rgba(200,30,30,0.55);
       color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      box-shadow:
-        0 6px 16px rgba(200,20,20,0.4),
-        0 1px 0 rgba(255,150,150,0.2) inset;
-      border: 1px solid rgba(255,100,100,0.2);
+      border: 1px solid rgba(255,80,80,0.25);
+      border-top: 1px solid rgba(255,120,120,0.35);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 18px rgba(200,20,20,0.4), 0 0 15px rgba(220,30,30,0.2);
     }
-    .btn-clear:hover { background: linear-gradient(160deg, #f04444, #ba1818); }
+    .btn-equals, .btn-eq {
+      background: rgba(220,170,0,0.75);
+      color: #1a1000;
+      font-weight: 700;
+      border: 1px solid rgba(255,210,50,0.35);
+      border-top: 1px solid rgba(255,230,80,0.5);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(240,185,0,0.45), 0 0 20px rgba(255,200,0,0.2);
+    }
+    .btn-clear {
+      background: rgba(200,30,30,0.58);
+      color: #fff;
+      font-weight: 700;
+      border: 1px solid rgba(255,80,80,0.25);
+      border-top: 1px solid rgba(255,120,120,0.35);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 18px rgba(200,20,20,0.4), 0 0 15px rgba(220,30,30,0.2);
+    }
+    .btn-zero { grid-column: span 2; }
+    .calc-btn:active {
+      filter: brightness(1.3) saturate(1.2);
+      box-shadow: 0 0 25px rgba(180,140,255,0.4), 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .calc-btn::after {
+      content: '';
+      position: absolute;
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      transform: scale(0); opacity: 0;
+      pointer-events: none;
+      top: 50%; left: 50%;
+      margin: -30px 0 0 -30px;
+    }
+    .calc-btn:active::after {
+      animation: btn-ripple 0.5s ease-out forwards;
+    }
 
     /* ── PAGE 2: MATHE KLASSEN ───────────────────────────── */
     .klassen-header {
@@ -892,21 +913,187 @@
       0%   { transform: translate(0,0)   rotate(0deg)  scale(1);    }
       100% { transform: translate(4%,3%) rotate(4deg)  scale(1.06); }
     }
-    /* Planet elements */
+    /* ── CINEMATIC 3D PLANETS ─────────────────────────── */
     .galaxy-planet {
       position: absolute;
       border-radius: 50%;
       pointer-events: none;
       opacity: 0;
-      animation: planet-drift var(--pdur, 25s) ease-in-out infinite;
-      animation-delay: var(--pdelay, 0s);
+      overflow: visible;
+      animation: planet-drift var(--pdur,80s) ease-in-out infinite;
+      animation-delay: var(--pdelay,0s);
+    }
+    /* ── Ice Giant (Neptune-like) ── */
+    .gp-ice {
+      background:
+        radial-gradient(circle at 32% 28%, #a0c8ff 0%, #3050c0 22%, #1828a0 48%, #0c1560 75%, #040a30 100%);
+      box-shadow:
+        inset -18px -18px 35px rgba(0,0,15,0.85),
+        inset  8px  8px 20px rgba(160,200,255,0.08),
+        0 0 35px rgba(60,100,255,0.22),
+        0 0 70px rgba(40,70,220,0.10);
+    }
+    .gp-ice::before {
+      content:''; position:absolute; inset:-3px; border-radius:50%;
+      background: radial-gradient(circle at 50% 50%,
+        transparent 48%,
+        rgba(120,180,255,0.22) 62%,
+        rgba(80,130,255,0.12) 76%,
+        rgba(40,80,220,0.04) 88%,
+        transparent 100%);
+      z-index:3; pointer-events:none;
+    }
+    .gp-ice::after {
+      content:''; position:absolute; inset:0; border-radius:50%;
+      background:
+        radial-gradient(circle at 78% 60%, transparent 42%, rgba(0,0,20,0.65) 100%),
+        repeating-linear-gradient(172deg,
+          transparent 0%, transparent 13%,
+          rgba(140,190,255,0.06) 13%, rgba(140,190,255,0.06) 14.5%,
+          rgba(80,120,220,0.04) 14.5%, rgba(80,120,220,0.04) 15.5%,
+          transparent 15.5%);
+      animation: planet-bands var(--pspin,55s) linear infinite;
+      z-index:2; pointer-events:none;
+    }
+    /* ── Gas Giant with rings (Saturn-like) ── */
+    .gp-gas {
+      background:
+        radial-gradient(circle at 30% 26%, #ffe4a0 0%, #d4a040 20%, #b07020 45%, #7a4010 68%, #3a1c06 100%);
+      box-shadow:
+        inset -22px -20px 40px rgba(10,4,0,0.9),
+        inset  10px  8px 22px rgba(255,230,150,0.1),
+        0 0 40px rgba(200,130,30,0.2),
+        0 0 80px rgba(180,100,20,0.09);
+    }
+    .gp-gas::before {
+      content:''; position:absolute; inset:-4px; border-radius:50%;
+      background: radial-gradient(circle at 50% 50%,
+        transparent 46%,
+        rgba(255,200,80,0.18) 60%,
+        rgba(220,160,50,0.10) 74%,
+        rgba(180,110,20,0.04) 88%,
+        transparent 100%);
+      z-index:3; pointer-events:none;
+    }
+    .gp-gas::after {
+      content:''; position:absolute; inset:0; border-radius:50%;
+      background:
+        radial-gradient(circle at 76% 58%, transparent 40%, rgba(5,2,0,0.7) 100%),
+        repeating-linear-gradient(178deg,
+          rgba(255,200,80,0.07) 0%,  rgba(255,200,80,0.07) 8%,
+          rgba(180,90,20,0.09) 8%,   rgba(180,90,20,0.09) 14%,
+          rgba(255,220,100,0.05) 14%, rgba(255,220,100,0.05) 20%,
+          rgba(140,60,10,0.08) 20%,  rgba(140,60,10,0.08) 27%,
+          rgba(200,130,40,0.06) 27%, rgba(200,130,40,0.06) 33%,
+          rgba(100,40,5,0.10) 33%,   rgba(100,40,5,0.10) 40%,
+          rgba(220,170,60,0.06) 40%, rgba(220,170,60,0.06) 48%,
+          rgba(130,55,8,0.08) 48%,   rgba(130,55,8,0.08) 55%,
+          rgba(200,140,50,0.05) 55%, rgba(200,140,50,0.05) 63%,
+          rgba(90,35,5,0.09) 63%,    rgba(90,35,5,0.09) 70%,
+          rgba(215,160,55,0.06) 70%, rgba(215,160,55,0.06) 78%,
+          rgba(110,45,6,0.08) 78%,   rgba(110,45,6,0.08) 86%,
+          rgba(190,120,35,0.05) 86%, rgba(190,120,35,0.05) 100%);
+      animation: planet-bands var(--pspin,70s) linear infinite;
+      z-index:2; pointer-events:none;
+    }
+    /* Ring system */
+    .planet-ring {
+      position:absolute; top:50%; left:50%;
+      width:230%; height:52%;
+      margin-left:-115%; margin-top:-26%;
+      border-radius:50%;
+      border:7px solid rgba(210,175,90,0.16);
+      box-shadow:
+        0 0 12px rgba(210,175,90,0.08),
+        inset 0 0 8px rgba(210,175,90,0.06);
+      transform: rotateZ(-18deg);
+      pointer-events:none;
+      z-index:0;
+      animation: ring-pulse 8s ease-in-out infinite;
+    }
+    .planet-ring::after {
+      content:''; position:absolute; inset:5px;
+      border-radius:50%;
+      border:3px solid rgba(180,140,60,0.09);
+    }
+    @keyframes ring-pulse {
+      0%,100% { opacity:0.7; }
+      50%      { opacity:1; }
+    }
+    /* ── Rocky Desert Planet (Mars-like) ── */
+    .gp-rocky {
+      background:
+        radial-gradient(circle at 34% 30%, #ff9060 0%, #d04020 25%, #962010 52%, #5a100a 76%, #280604 100%);
+      box-shadow:
+        inset -14px -14px 28px rgba(10,2,0,0.88),
+        inset  7px  7px 18px rgba(255,140,80,0.07),
+        0 0 28px rgba(200,60,20,0.18),
+        0 0 55px rgba(160,40,10,0.08);
+    }
+    .gp-rocky::before {
+      content:''; position:absolute; inset:-2px; border-radius:50%;
+      background: radial-gradient(circle at 50% 50%,
+        transparent 50%,
+        rgba(255,120,60,0.15) 64%,
+        rgba(200,70,20,0.08) 78%,
+        rgba(140,40,10,0.03) 90%,
+        transparent 100%);
+      z-index:3; pointer-events:none;
+    }
+    .gp-rocky::after {
+      content:''; position:absolute; inset:0; border-radius:50%;
+      background:
+        radial-gradient(circle at 77% 62%, transparent 38%, rgba(8,2,0,0.72) 100%),
+        radial-gradient(ellipse at 50% 12%, rgba(255,220,200,0.12) 0%, transparent 28%),
+        repeating-linear-gradient(168deg,
+          transparent 0%, transparent 18%,
+          rgba(255,120,60,0.04) 18%, rgba(255,120,60,0.04) 20%,
+          transparent 20%);
+      animation: planet-bands var(--pspin,40s) linear infinite;
+      z-index:2; pointer-events:none;
+    }
+    /* ── Ocean Planet (Earth-like) ── */
+    .gp-ocean {
+      background:
+        radial-gradient(circle at 31% 27%, #80d4ff 0%, #1878d0 22%, #0c50a8 48%, #062870 72%, #020f38 100%);
+      box-shadow:
+        inset -16px -16px 32px rgba(0,5,20,0.86),
+        inset  9px  8px 20px rgba(120,200,255,0.09),
+        0 0 32px rgba(30,130,255,0.2),
+        0 0 65px rgba(20,90,220,0.09);
+    }
+    .gp-ocean::before {
+      content:''; position:absolute; inset:-3px; border-radius:50%;
+      background: radial-gradient(circle at 50% 50%,
+        transparent 49%,
+        rgba(100,200,255,0.20) 63%,
+        rgba(60,150,240,0.12) 77%,
+        rgba(30,100,200,0.04) 89%,
+        transparent 100%);
+      z-index:3; pointer-events:none;
+    }
+    .gp-ocean::after {
+      content:''; position:absolute; inset:0; border-radius:50%;
+      background:
+        radial-gradient(circle at 77% 60%, transparent 40%, rgba(0,4,20,0.68) 100%),
+        repeating-linear-gradient(173deg,
+          transparent 0%, transparent 16%,
+          rgba(200,235,255,0.07) 16%, rgba(200,235,255,0.07) 18%,
+          rgba(40,100,200,0.05) 18%, rgba(40,100,200,0.05) 20%,
+          transparent 20%);
+      animation: planet-bands var(--pspin,80s) linear infinite;
+      z-index:2; pointer-events:none;
     }
     @keyframes planet-drift {
-      0%   { opacity: 0;              transform: translate(0,       0)       scale(0.7); }
-      10%  { opacity: var(--pop,0.2); }
-      50%  { opacity: var(--pop,0.2); transform: translate(var(--px,20px), var(--py,-15px)) scale(1); }
-      90%  { opacity: var(--pop,0.2); }
-      100% { opacity: 0;              transform: translate(var(--px2,40px), var(--py2,-30px)) scale(0.7); }
+      0%   { opacity:0;               transform:translate(0,0)                               scale(0.55); }
+      10%  { opacity:var(--pop,0.25); }
+      50%  { opacity:var(--pop,0.25); transform:translate(var(--px,15px),var(--py,-10px))    scale(1); }
+      90%  { opacity:var(--pop,0.25); }
+      100% { opacity:0;               transform:translate(var(--px2,30px),var(--py2,-20px)) scale(0.55); }
+    }
+    @keyframes planet-bands {
+      from { transform:rotateZ(0deg); }
+      to   { transform:rotateZ(360deg); }
     }
     /* Grid view scrolls, sits above bg */
     #klassen-grid-view {
@@ -1062,7 +1249,7 @@
     /* ── AI CHAT UI ───────────────────────────────────── */
     /* ── AI CHAT (Page 3) redesign ── */
     #page3 { position: relative; overflow: hidden; }
-    #page3.visible { display: flex !important; flex-direction: column; height: 100%; padding: 10px 10px 6px; }
+    #page3.visible { display: flex !important; flex-direction: column; height: 100%; padding: 10px 10px 6px; animation: page-fadein 0.25s ease-out forwards; }
 
     /* Header */
     .ai-new-header {
@@ -1435,6 +1622,8 @@
             <option value="en">🇬🇧 English</option>
             <option value="ru">🇷🇺 Русский</option>
             <option value="hi">🇮🇳 हिन्दी</option>
+            <option value="ja">🇯🇵 日本語</option>
+            <option value="zh">🇨🇳 中文</option>
           </select>
         </div>
       </div>
@@ -1460,6 +1649,16 @@
             <input type="checkbox" id="anim-toggle" checked onchange="setAnimToggle(this.checked)">
             <div class="toggle-track"></div>
           </label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-icon" style="background:linear-gradient(135deg,rgba(99,200,255,0.3),rgba(30,120,255,0.2));">🔄</div>
+            <div>Bildwiederholrate<div class="settings-row-sublabel">Animationsflüssigkeit</div></div>
+          </div>
+          <div class="chip-group">
+            <div class="chip active" id="hz-60" onclick="setHz(60)">60 Hz</div>
+            <div class="chip" id="hz-120" onclick="setHz(120)">120 Hz</div>
+          </div>
         </div>
       </div>
 
@@ -1509,8 +1708,7 @@
       </button>
     </div>
     <div class="header-right">
-      <span class="model-label">Pro Calc</span>
-      <span class="power-dot"></span>
+
     </div>
   </div>
 
@@ -1790,7 +1988,9 @@ const LANG = {
   de: { home: 'Home', pro: 'Pro Rechner', ai: 'AI', settings: 'Einstellung', calcTitle: 'Pro Calc', acBtn: 'AC' },
   en: { home: 'Home', pro: 'Pro Tools',   ai: 'AI', settings: 'Settings',    calcTitle: 'Pro Calc', acBtn: 'AC' },
   ru: { home: 'Главная', pro: 'Про',      ai: 'ИИ', settings: 'Настройки',   calcTitle: 'Кальк',    acBtn: 'AC' },
-  hi: { home: 'होम',    pro: 'प्रो',      ai: 'AI', settings: 'सेटिंग',      calcTitle: 'कैल्क',    acBtn: 'AC' }
+  hi: { home: 'होम',    pro: 'प्रो',      ai: 'AI', settings: 'सेटिंग',      calcTitle: 'कैल्क',    acBtn: 'AC' },
+  ja: { home: 'ホーム',  pro: 'プロ',      ai: 'AI', settings: '設定',         calcTitle: '計算機',    acBtn: 'AC' },
+  zh: { home: '主页',   pro: '专业',       ai: 'AI', settings: '设置',         calcTitle: '计算器',    acBtn: 'AC' }
 };
 let currentLang = 'de';
 
@@ -1801,7 +2001,6 @@ function applyLanguage(lang) {
   document.getElementById('nav2-label').textContent = t.pro;
   document.getElementById('nav3-label').textContent = t.ai;
   document.querySelector('.gear-label').textContent = t.settings;
-  document.querySelector('.model-label').textContent = t.calcTitle;
   document.querySelector('.btn-clear').textContent = t.acBtn;
 }
 
@@ -1829,6 +2028,23 @@ function setAnimToggle(on) {
 
 // keep old setAnim for compatibility
 function setAnim(on) { setAnimToggle(on); }
+
+function setHz(hz) {
+  document.getElementById('hz-60').classList.toggle('active', hz === 60);
+  document.getElementById('hz-120').classList.toggle('active', hz === 120);
+  var root = document.documentElement;
+  if (hz === 120) {
+    root.style.setProperty('--anim-scale', '0.5'); /* halve durations for 120Hz feel */
+    document.querySelectorAll('.kl-cloud, .kl-star, .galaxy-planet').forEach(function(el) {
+      el.style.animationTimingFunction = 'linear';
+    });
+  } else {
+    root.style.setProperty('--anim-scale', '1');
+    document.querySelectorAll('.kl-cloud, .kl-star, .galaxy-planet').forEach(function(el) {
+      el.style.animationTimingFunction = '';
+    });
+  }
+}
 
 /* ═══════════════════════════════════════════════════
    PAGE SWITCHING
@@ -2205,26 +2421,27 @@ function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
   }
 
   // Inject planets
+  // 4 cinematic 3D planets — each a different type
   var planetDefs = [
-    { size: 80,  col1: '#3a1a7a', col2: '#1a0840', ring: false, pop: 0.18, dur: 28, delay: -5, px: '30px', py: '-20px', px2: '60px', py2: '-40px', l: '15%', t: '20%' },
-    { size: 120, col1: '#0d2060', col2: '#05100a', ring: true,  pop: 0.14, dur: 35, delay: -12, px: '-25px', py: '15px', px2: '-50px', py2: '30px', l: '60%', t: '55%' },
-    { size: 60,  col1: '#4a0a30', col2: '#1a0514', ring: false, pop: 0.22, dur: 22, delay: -18, px: '20px', py: '-30px', px2: '40px', py2: '-60px', l: '75%', t: '15%' },
-    { size: 90,  col1: '#0a3050', col2: '#020c18', ring: false, pop: 0.12, dur: 40, delay: -8,  px: '-15px', py: '20px', px2: '-30px', py2: '40px', l: '30%', t: '70%' }
+    { cls:'gp-ice',   size:115, ring:false, pop:0.22, dur:85,  spin:55,  delay:-15, px:'22px', py:'-14px', px2:'44px', py2:'-28px', l:'10%', t:'16%' },
+    { cls:'gp-gas',   size:160, ring:true,  pop:0.18, dur:100, spin:72,  delay:-32, px:'-18px',py:'11px',  px2:'-36px',py2:'22px',   l:'56%', t:'50%' },
+    { cls:'gp-rocky', size:82,  ring:false, pop:0.26, dur:68,  spin:42,  delay:-48, px:'16px', py:'-22px', px2:'32px', py2:'-44px',  l:'70%', t:'10%' },
+    { cls:'gp-ocean', size:105, ring:false, pop:0.15, dur:115, spin:85,  delay:-22, px:'-11px',py:'16px',  px2:'-22px',py2:'32px',   l:'25%', t:'65%' }
   ];
   planetDefs.forEach(function(p) {
     var pl = document.createElement('div');
-    pl.className = 'galaxy-planet';
+    pl.className = 'galaxy-planet ' + p.cls;
     pl.style.cssText =
       'width:' + p.size + 'px;height:' + p.size + 'px;' +
       'left:' + p.l + ';top:' + p.t + ';' +
-      'background:radial-gradient(ellipse at 35% 30%,' + p.col1 + ' 0%,' + p.col2 + ' 70%);' +
-      'box-shadow:0 0 ' + Math.round(p.size*0.5) + 'px ' + p.col1 + '55;' +
-      '--pdur:' + p.dur + 's;--pdelay:' + p.delay + 's;' +
+      '--pdur:' + p.dur + 's;--pspin:' + p.spin + 's;--pdelay:' + p.delay + 's;' +
       '--pop:' + p.pop + ';' +
       '--px:' + p.px + ';--py:' + p.py + ';' +
       '--px2:' + p.px2 + ';--py2:' + p.py2;
     if (p.ring) {
-      pl.style.boxShadow += ',0 ' + Math.round(p.size*0.06) + 'px 0 ' + Math.round(p.size*0.55) + 'px rgba(100,140,255,0.06)';
+      var ring = document.createElement('div');
+      ring.className = 'planet-ring';
+      pl.appendChild(ring);
     }
     bg.appendChild(pl);
   });
