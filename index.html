@@ -1036,171 +1036,171 @@
     .kl-topics-text  { font-size:8px; color:rgba(255,255,255,.48); text-align:center; line-height:1.5; margin-top:3px; position:relative; z-index:3; }
 
     /* ── AI CHAT UI ───────────────────────────────────── */
-    #page3 {
-      display: none;
-      flex-direction: column;
-      height: 420px;
-    }
-    #page3.visible {
-      display: flex;
-    }
+    /* ── AI CHAT (Page 3) redesign ── */
+    #page3 { position: relative; overflow: hidden; }
+    #page3.visible { display: flex !important; flex-direction: column; height: 100%; padding: 10px 10px 6px; }
 
-    .ai-model-row {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 8px;
+    /* Header */
+    .ai-new-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 16px;
+      background: rgba(8,5,28,.65);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      margin-bottom: 8px; flex-shrink: 0;
     }
-
-    .ai-model-row select {
-      flex: 1;
-      height: 28px;
-      border: 1px solid rgba(99,102,241,0.35);
-      border-radius: 8px;
-      padding: 0 6px;
-      font-size: 11px;
-      font-weight: 600;
-      background: rgba(30,27,58,0.9);
-      color: #a5b4fc;
-      outline: none;
-      cursor: pointer;
+    .ai-new-back {
+      width: 32px; height: 32px; border: none; border-radius: 10px;
+      background: rgba(255,255,255,.08); color: rgba(255,255,255,.7);
+      font-size: 17px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-
+    .ai-new-title-wrap { flex: 1; display: flex; align-items: center; gap: 7px; }
+    .ai-new-name { font-size: 13px; font-weight: 800; color: #fff; }
+    .ai-new-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #22c55e; box-shadow: 0 0 7px rgba(34,197,94,.85); flex-shrink: 0;
+    }
+    .ai-new-menu-btn {
+      border: none; background: rgba(255,255,255,.06);
+      border-radius: 10px; padding: 5px 9px;
+      color: rgba(255,255,255,.6); font-size: 15px;
+      cursor: pointer; letter-spacing: 2px;
+    }
+    /* Model panel */
+    .ai-model-panel {
+      display: none; flex-direction: column; gap: 6px;
+      margin-bottom: 6px; flex-shrink: 0;
+    }
+    .ai-model-panel select {
+      width: 100%; height: 30px;
+      border: 1px solid rgba(99,102,241,.35); border-radius: 10px;
+      padding: 0 8px; font-size: 11px; font-weight: 600;
+      background: rgba(30,27,58,.9); color: #a5b4fc; outline: none; cursor: pointer;
+    }
     .ai-clear-btn {
-      height: 28px;
-      padding: 0 10px;
-      border: 1px solid rgba(239,68,68,0.4);
-      border-radius: 8px;
-      background: rgba(239,68,68,0.1);
-      color: #fca5a5;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
+      width: 100%; height: 28px; border-radius: 10px; border: none;
+      background: rgba(180,30,30,.35); color: rgba(255,150,150,.9);
+      font-size: 11px; font-weight: 600; cursor: pointer;
     }
-    .ai-clear-btn:hover { background: rgba(239,68,68,0.2); }
-
+    .ai-clear-btn:active { background: rgba(220,40,40,.5); }
+    /* Chat window */
     .ai-chat-window {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding: 8px 4px;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(99,102,241,0.3) transparent;
+      flex: 1; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 4px 2px 6px; scrollbar-width: none;
     }
-
-    .ai-msg {
-      max-width: 88%;
-      padding: 9px 12px;
-      border-radius: 14px;
-      font-size: 12px;
-      line-height: 1.55;
-      word-break: break-word;
-      white-space: pre-wrap;
-    }
-
-    .ai-msg.user {
-      align-self: flex-end;
-      background: linear-gradient(135deg,#6366f1,#8b5cf6);
-      color: #fff;
-      border-bottom-right-radius: 4px;
-    }
-
-    .ai-msg.bot {
-      align-self: flex-start;
-      background: rgba(30,27,58,0.95);
-      color: #e0e7ff;
-      border: 1px solid rgba(99,102,241,0.25);
-      border-bottom-left-radius: 4px;
-    }
-
-    .ai-msg.bot.error {
-      background: rgba(127,29,29,0.6);
-      border-color: rgba(239,68,68,0.4);
-      color: #fca5a5;
-    }
-
-    .ai-msg.bot.thinking {
-      opacity: 0.6;
-      font-style: italic;
-    }
-
-    .ai-msg .ai-msg-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      opacity: 0.55;
-      margin-bottom: 3px;
-    }
-
-    .ai-input-bar {
-      display: flex;
-      gap: 6px;
-      margin-top: 6px;
-      padding: 8px 8px 4px;
-      border-top: 1px solid rgba(99,102,241,0.2);
-      background: rgba(5,3,20,0.55);
+    .ai-chat-window::-webkit-scrollbar { display: none; }
+    /* User message */
+    .ai-msg-user { display: flex; justify-content: flex-end; }
+    .ai-msg-user .ai-msg-bubble {
+      max-width: 78%;
+      background: rgba(105,125,255,.28);
+      border: 1px solid rgba(140,160,255,.35);
+      border-radius: 18px 18px 4px 18px;
+      padding: 10px 12px 7px;
       backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 14px;
-      flex-shrink: 0;
     }
-
+    .ai-msg-user .ai-msg-text {
+      font-size: 12px; color: rgba(255,255,255,.92); line-height: 1.5; word-break: break-word;
+    }
+    .ai-msg-user .ai-msg-ts {
+      font-size: 9px; color: rgba(255,255,255,.38); text-align: right; margin-top: 4px;
+    }
+    /* Bot message */
+    .ai-msg-bot { display: flex; align-items: flex-start; gap: 8px; }
+    .ai-msg-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(99,102,241,.28); border: 1px solid rgba(130,140,255,.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0; backdrop-filter: blur(8px);
+    }
+    .ai-msg-bot .ai-msg-bubble {
+      max-width: 80%;
+      background: rgba(18,14,46,.68);
+      border: 1px solid rgba(110,100,200,.3);
+      border-radius: 4px 18px 18px 18px;
+      padding: 8px 12px 10px;
+      backdrop-filter: blur(12px);
+    }
+    .ai-msg-author {
+      font-size: 10px; font-weight: 700;
+      color: rgba(165,150,255,.8); margin-bottom: 4px;
+    }
+    .ai-msg-bot .ai-msg-text {
+      font-size: 12px; color: rgba(255,255,255,.88);
+      line-height: 1.5; word-break: break-word; white-space: pre-wrap;
+    }
+    .ai-msg-bot.ai-msg-error .ai-msg-bubble {
+      background: rgba(160,30,30,.4); border-color: rgba(255,100,100,.3);
+    }
+    /* Typing dots */
+    .ai-typing-wrap { padding: 2px 38px 4px; flex-shrink: 0; }
+    .ai-typing-bubble {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(18,14,46,.68); border: 1px solid rgba(110,100,200,.3);
+      border-radius: 4px 18px 18px 18px; padding: 10px 14px;
+      backdrop-filter: blur(12px);
+    }
+    .ai-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(165,150,255,.8);
+      animation: ai-dot-bounce 1.4s ease-in-out infinite;
+    }
+    .ai-dot:nth-child(2) { animation-delay: .2s; }
+    .ai-dot:nth-child(3) { animation-delay: .4s; }
+    @keyframes ai-dot-bounce {
+      0%,60%,100% { transform: translateY(0); opacity: .45; }
+      30%          { transform: translateY(-5px); opacity: 1; }
+    }
+    /* Quick chips */
+    .ai-chips {
+      display: flex; gap: 6px; flex-wrap: wrap;
+      padding: 5px 0 2px; flex-shrink: 0;
+    }
+    .ai-chip {
+      padding: 5px 10px;
+      border: 1px solid rgba(130,120,220,.4); border-radius: 20px;
+      background: rgba(75,65,155,.22); color: rgba(200,195,255,.8);
+      font-size: 10px; font-weight: 600; cursor: pointer;
+      backdrop-filter: blur(8px); white-space: nowrap;
+    }
+    .ai-chip:active { background: rgba(100,90,200,.38); }
+    /* Input bar (shared with klasse chat) */
+    .ai-input-bar {
+      display: flex; gap: 6px; margin-top: 6px;
+      padding: 8px 8px 4px;
+      border-top: 1px solid rgba(99,102,241,.2);
+      background: rgba(5,3,20,.55);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-radius: 14px; flex-shrink: 0;
+    }
     .ai-input-bar textarea {
-      flex: 1;
-      height: 44px;
-      border: 1px solid rgba(99,102,241,0.4);
-      border-radius: 10px;
-      padding: 7px 10px;
-      font-size: 12px;
-      background: rgba(30,27,58,0.9);
-      color: #e0e7ff;
-      resize: none;
-      outline: none;
-      font-family: inherit;
+      flex: 1; height: 44px;
+      border: 1px solid rgba(99,102,241,.4); border-radius: 10px;
+      padding: 7px 10px; font-size: 12px;
+      background: rgba(20,16,44,.9); color: #e0e7ff;
+      resize: none; outline: none; font-family: inherit;
     }
     .ai-input-bar textarea:focus { border-color: #6366f1; }
-    .ai-input-bar textarea::placeholder { color: rgba(196,181,253,0.4); }
-
+    .ai-input-bar textarea::placeholder { color: rgba(196,181,253,.4); }
     .ai-send-btn {
-      width: 44px;
-      height: 44px;
-      border: none;
-      border-radius: 10px;
+      width: 44px; height: 44px; border: none; border-radius: 12px;
       background: linear-gradient(135deg,#6366f1,#8b5cf6);
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: filter 0.12s;
+      color: #fff; font-size: 18px; cursor: pointer; flex-shrink: 0;
+      box-shadow: 0 4px 15px rgba(99,102,241,.5);
+      display: flex; align-items: center; justify-content: center;
     }
-    .ai-send-btn:hover { filter: brightness(1.2); }
-    .ai-send-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-
+    .ai-send-btn:hover { filter: brightness(1.15); }
+    .ai-send-btn:disabled { opacity: .45; cursor: not-allowed; }
     .ai-status {
-      font-size: 10px;
-      color: rgba(196,181,253,0.55);
-      text-align: center;
-      margin-top: 2px;
-      min-height: 14px;
+      font-size: 10px; color: rgba(196,181,253,.55);
+      text-align: center; padding: 2px 0; min-height: 14px; flex-shrink: 0;
     }
-
     .ai-welcome {
-      text-align: center;
-      padding: 16px 8px;
-      color: rgba(196,181,253,0.6);
-      font-size: 12px;
-      line-height: 1.6;
+      text-align: center; padding: 20px 8px;
+      color: rgba(196,181,253,.6); font-size: 12px; line-height: 1.6;
     }
-    .ai-welcome .ai-welcome-icon {
-      font-size: 32px;
-      display: block;
-      margin-bottom: 8px;
-    }
+    .ai-welcome .ai-welcome-icon { font-size: 34px; display: block; margin-bottom: 10px; }
 
     /* ── SPLASH SCREEN ────────────────────────────────── */
     #splash {
@@ -1644,16 +1644,26 @@
   </div>
 
   <!-- PAGE 3: AI CHAT -->
-  <div class="page" id="page3" style="background:linear-gradient(160deg,#0f0d1f,#1a1740);border-radius:16px;padding:12px;">
+  <div class="page" id="page3">
 
-    <!-- Model + Clear -->
-    <div class="ai-model-row">
+    <!-- New Header -->
+    <div class="ai-new-header">
+      <button class="ai-new-back" onclick="switchPage(1)" aria-label="Zurück">‹</button>
+      <div class="ai-new-title-wrap">
+        <span class="ai-new-name">Dennis AI-Assistent</span>
+        <span class="ai-new-dot"></span>
+      </div>
+      <button class="ai-new-menu-btn" onclick="toggleAiModel()" title="Modell wählen">···</button>
+    </div>
+
+    <!-- Model Panel (hidden by default) -->
+    <div class="ai-model-panel" id="ai-model-panel">
       <select id="ai-model">
-        <option value="claude-haiku-4-5">Claude Haiku 4.5 — schnell &amp; günstig</option>
-        <option value="claude-sonnet-4-6">Claude Sonnet 4.6 — ausgewogen</option>
-        <option value="claude-opus-4-6">Claude Opus 4.6 — am stärksten</option>
+        <option value="claude-haiku-4-5">⚡ Claude Haiku 4.5 — schnell</option>
+        <option value="claude-sonnet-4-6">⚖ Claude Sonnet 4.6 — ausgewogen</option>
+        <option value="claude-opus-4-6">🏆 Claude Opus 4.6 — stärkst</option>
       </select>
-      <button class="ai-clear-btn" onclick="clearChat()">✕ Löschen</button>
+      <button class="ai-clear-btn" onclick="clearChat()">✕ Chat löschen</button>
     </div>
 
     <!-- Chat Window -->
@@ -1662,19 +1672,35 @@
         <span class="ai-welcome-icon">🤖</span>
         <strong style="color:#a5b4fc;font-size:13px;">Dennis AI-Assistent</strong><br>
         Ich beantworte Fragen auf <strong>Deutsch</strong> und <strong>Englisch</strong>.<br>
-        Ich gebe nur <strong>wahre, faktische Antworten</strong>.<br>
-        Falls ich etwas nicht weiß, sage ich es ehrlich.<br><br>
+        Ich gebe nur <strong>wahre, faktische Antworten</strong>.<br><br>
         <span style="font-size:10px;color:rgba(196,181,253,0.5);">🔒 Sicherer Backend-Modus aktiv</span>
+      </div>
+    </div>
+
+    <!-- Typing Dots (hidden by default) -->
+    <div class="ai-typing-wrap" id="ai-typing-wrap" style="display:none;">
+      <div class="ai-msg-bot">
+        <div class="ai-msg-avatar">🤖</div>
+        <div class="ai-typing-bubble">
+          <div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div>
+        </div>
       </div>
     </div>
 
     <!-- Status -->
     <div class="ai-status" id="ai-status"></div>
 
+    <!-- Quick Chips -->
+    <div class="ai-chips">
+      <button class="ai-chip" onclick="aiQuickAction('rechnen')">🔢 Rechnen</button>
+      <button class="ai-chip" onclick="aiQuickAction('erklären')">💡 Erklären</button>
+      <button class="ai-chip" onclick="aiQuickAction('umrechnen')">🔄 Umrechnen</button>
+    </div>
+
     <!-- Input Bar -->
     <div class="ai-input-bar">
       <textarea id="ai-user-input"
-        placeholder="Frage stellen… / Ask a question…"
+        placeholder="Nachricht schreiben…"
         onkeydown="aiKeyDown(event)"></textarea>
       <button class="ai-send-btn" id="ai-send-btn" onclick="aiSend()">➤</button>
     </div>
@@ -1793,9 +1819,12 @@ function _renderPage(n) {
     var nb = document.getElementById('nav'+i);
     if (nb) nb.classList.toggle('active', i === n);
   });
-  /* Show full starry bg only when Pro Rechner (page2) is active */
+  /* Show full starry bg for Pro Rechner (page2) and AI Chat (page3) */
   var fullbg = document.getElementById('kl-fullbg');
-  if (fullbg) fullbg.style.display = (n === 2) ? 'block' : 'none';
+  if (fullbg) fullbg.style.display = (n === 2 || n === 3) ? 'block' : 'none';
+  /* Hide calculator display when not on page1 */
+  var dispEl = document.querySelector('.display');
+  if (dispEl) dispEl.style.display = (n === 1) ? '' : 'none';
 }
 
 function switchPage(n) {
@@ -1865,27 +1894,70 @@ function clearChat() {
     <span class="ai-welcome-icon">🤖</span>
     <strong style="color:#a5b4fc;font-size:13px;">Dennis AI-Assistent</strong><br>
     Ich beantworte Fragen auf <strong>Deutsch</strong> und <strong>Englisch</strong>.<br>
-    Ich gebe nur <strong>wahre, faktische Antworten</strong>.<br>
-    Falls ich etwas nicht weiß, sage ich es ehrlich.<br><br>
+    Ich gebe nur <strong>wahre, faktische Antworten</strong>.<br><br>
     <span style="font-size:10px;color:rgba(196,181,253,0.5);">🔒 Sicherer Backend-Modus aktiv</span>
   </div>`;
+  const tw = document.getElementById('ai-typing-wrap');
+  if (tw) tw.style.display = 'none';
   setAiStatus('');
 }
 
 function appendMsg(role, text, extraClass) {
   const win = document.getElementById('ai-chat-window');
   const div = document.createElement('div');
-  div.className = 'ai-msg ' + role + (extraClass ? ' ' + extraClass : '');
-  const label = document.createElement('div');
-  label.className = 'ai-msg-label';
-  label.textContent = role === 'user' ? 'Du' : 'Dennis AI';
-  div.appendChild(label);
-  const content = document.createElement('div');
-  content.textContent = text;
-  div.appendChild(content);
+  if (role === 'user') {
+    div.className = 'ai-msg-user';
+    const bubble = document.createElement('div');
+    bubble.className = 'ai-msg-bubble';
+    const textEl = document.createElement('div');
+    textEl.className = 'ai-msg-text';
+    textEl.textContent = text;
+    const ts = document.createElement('div');
+    ts.className = 'ai-msg-ts';
+    const now = new Date();
+    ts.textContent = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0') + ' ✓';
+    bubble.appendChild(textEl);
+    bubble.appendChild(ts);
+    div.appendChild(bubble);
+  } else {
+    div.className = 'ai-msg-bot' + (extraClass === 'error' ? ' ai-msg-error' : '');
+    const avatar = document.createElement('div');
+    avatar.className = 'ai-msg-avatar';
+    avatar.textContent = '🤖';
+    const bubble = document.createElement('div');
+    bubble.className = 'ai-msg-bubble';
+    const author = document.createElement('div');
+    author.className = 'ai-msg-author';
+    author.textContent = 'Dennis AI-Assistent';
+    const textEl = document.createElement('div');
+    textEl.className = 'ai-msg-text';
+    textEl.textContent = text;
+    bubble.appendChild(author);
+    bubble.appendChild(textEl);
+    div.appendChild(avatar);
+    div.appendChild(bubble);
+  }
   win.appendChild(div);
   win.scrollTop = win.scrollHeight;
   return div;
+}
+
+function toggleAiModel() {
+  const panel = document.getElementById('ai-model-panel');
+  if (!panel) return;
+  panel.style.display = (panel.style.display === 'flex') ? 'none' : 'flex';
+}
+
+function aiQuickAction(type) {
+  const input = document.getElementById('ai-user-input');
+  if (!input) return;
+  const prompts = {
+    'rechnen':   'Rechne für mich: ',
+    'erklären':  'Erkläre mir: ',
+    'umrechnen': 'Rechne um: '
+  };
+  input.value = prompts[type] || '';
+  input.focus();
 }
 
 function aiKeyDown(e) {
@@ -1905,11 +1977,12 @@ async function aiSend() {
   appendMsg('user', text);
   input.value = '';
   sendBtn.disabled = true;
-  setAiStatus('✦ Dennis AI denkt nach…');
+  setAiStatus('');
 
   aiHistory.push({ role: 'user', content: text });
 
-  const thinkingDiv = appendMsg('bot', '…', 'thinking');
+  const typingWrap = document.getElementById('ai-typing-wrap');
+  if (typingWrap) { typingWrap.style.display = ''; document.getElementById('ai-chat-window').scrollTop = 99999; }
   const model = document.getElementById('ai-model').value;
 
   try {
@@ -1924,7 +1997,7 @@ async function aiSend() {
       })
     });
 
-    thinkingDiv.remove();
+    if (typingWrap) typingWrap.style.display = 'none';
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
@@ -1944,7 +2017,7 @@ async function aiSend() {
     setAiStatus(`✅ ${data.model || model} · ${data.usage?.output_tokens || '?'} Tokens`);
 
   } catch (e) {
-    thinkingDiv.remove();
+    if (typingWrap) typingWrap.style.display = 'none';
     appendMsg('bot',
       `❌ Verbindungsfehler zum Backend.\n\nStelle sicher, dass der Server läuft:\n  npm install\n  node server.js`,
       'error'
@@ -2219,10 +2292,18 @@ function renderKlasseChat() {
     win.innerHTML = '<div class="ai-welcome"><span class="ai-welcome-icon">🎓</span><strong style="color:' + klasseColors[activeKlasse] + ';font-size:13px;">' + klasseNames[activeKlasse] + ' — Mathe KI</strong><br>Ich beantworte nur Fragen zu deiner Klasse.<br>Was möchtest du wissen?<br><br><span style="font-size:10px;color:rgba(255,255,255,0.3);">🔒 Sicherer Backend-Modus aktiv</span></div>';
     return;
   }
-  win.innerHTML = hist.map(function(m) {
+  var html = '';
+  hist.forEach(function(m) {
     var isUser = m.role === 'user';
-    return '<div class="ai-msg ' + (isUser ? 'ai-msg-user' : 'ai-msg-ai') + '">' + klasseEscape(m.content) + '</div>';
-  }).join('');
+    var escaped = klasseEscape(m.content);
+    if (isUser) {
+      var d = new Date(); var ts = d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+      html += '<div class="ai-msg-user"><div class="ai-msg-bubble"><div class="ai-msg-text">' + escaped + '</div><div class="ai-msg-ts">' + ts + ' ✓</div></div></div>';
+    } else {
+      html += '<div class="ai-msg-bot"><div class="ai-msg-avatar">🤖</div><div class="ai-msg-bubble"><div class="ai-msg-author">Mathe KI</div><div class="ai-msg-text">' + escaped + '</div></div></div>';
+    }
+  });
+  win.innerHTML = html;
   win.scrollTop = win.scrollHeight;
 }
 
