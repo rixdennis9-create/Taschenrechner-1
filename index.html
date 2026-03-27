@@ -16,6 +16,24 @@
       font-family: 'Segoe UI', system-ui, sans-serif;
       overflow: hidden;
     }
+    /* iOS/Android safe area support */
+    @supports (padding-top: env(safe-area-inset-top)) {
+      .calculator {
+        padding-top: max(18px, env(safe-area-inset-top));
+      }
+      .bottom-nav {
+        padding-bottom: max(0px, env(safe-area-inset-bottom));
+      }
+    }
+    /* iOS/Android safe area support */
+    @supports (padding-top: env(safe-area-inset-top)) {
+      .calculator {
+        padding-top: max(18px, env(safe-area-inset-top));
+      }
+      .bottom-nav {
+        padding-bottom: max(0px, env(safe-area-inset-bottom));
+      }
+    }
 
     /* ── CALCULATOR SHELL ─────────────────────────────────── */
     .calculator {
@@ -56,7 +74,7 @@
       pointer-events: none;
       display: none;
       overflow: hidden;
-      border-radius: 32px;
+      border-radius: 0;
     }
 
     /* ── HEADER ───────────────────────────────────────────── */
@@ -558,7 +576,7 @@
       margin-top: auto;
       border-top: 1px solid rgba(255,255,255,0.06);
       background: rgba(0,0,0,0.3);
-      border-radius: 0 0 30px 30px;
+      border-radius: 0;
       overflow: hidden;
       backdrop-filter: blur(8px);
     }
@@ -599,10 +617,15 @@
     .nav-btn.active::before {
       content: '';
       position: absolute;
-      top: 0; left: 25%; right: 25%;
+      top: 0; left: 20%; right: 20%;
       height: 2px;
       background: linear-gradient(90deg, transparent, #f5c800, transparent);
-      border-radius: 0 0 2px 2px;
+      border-radius: 0 0 3px 3px;
+      animation: nav-indicator 0.3s ease-out forwards;
+    }
+    @keyframes nav-indicator {
+      from { opacity: 0; transform: scaleX(0.3); }
+      to   { opacity: 1; transform: scaleX(1); }
     }
 
     .nav-btn:not(.active):hover {
@@ -635,8 +658,12 @@
     }
     .calc-content::-webkit-scrollbar { display: none; }
 
-    .page { display: none; }
-    .page.visible { display: block; }
+    .page { display: none; opacity: 0; }
+    .page.visible { display: block; animation: page-fadein 0.25s ease-out forwards; }
+    @keyframes page-fadein {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
     /* Page 2 fills calc-content as a flex column */
     #page2 { position: relative; overflow: hidden; }
@@ -644,6 +671,7 @@
       display: flex !important;
       flex-direction: column;
       height: 100%;
+      animation: page-fadein 0.25s ease-out forwards;
     }
 
     /* ── BUTTON GRID (Page 1) ─────────────────────────────── */
@@ -668,79 +696,72 @@
       letter-spacing: -0.3px;
     }
 
-    button.calc-btn:active {
-      transform: scale(0.92) translateY(2px);
-      filter: brightness(0.85);
+    /* Ripple keyframe */
+    @keyframes btn-ripple {
+      0%   { transform: scale(0); opacity: 0.5; }
+      100% { transform: scale(2.5); opacity: 0; }
     }
-
-    /* Dark function buttons */
-    .btn-func {
-      background: rgba(80,85,110,0.7);
-      color: #e8eaf0;
-      box-shadow:
-        0 6px 14px rgba(0,0,0,0.4),
-        0 1px 0 rgba(255,255,255,0.08) inset;
-      font-size: 15px;
-      font-weight: 600;
-      border: 1px solid rgba(255,255,255,0.06);
-      backdrop-filter: blur(4px);
-    }
-    .btn-func:hover { background: rgba(95,100,130,0.8); }
-
-    /* Operator buttons – vivid red with glow */
-    .btn-op {
-      background: linear-gradient(160deg, #e83333 0%, #b81515 100%);
-      color: #ffffff;
-      font-size: 24px;
-      font-weight: 700;
-      box-shadow:
-        0 6px 18px rgba(220,30,30,0.45),
-        0 1px 0 rgba(255,180,180,0.3) inset;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,100,100,0.2);
-    }
-    .btn-op:hover { background: linear-gradient(160deg, #f04444, #cc1a1a); }
-
-    /* Number buttons – dark glass */
     .btn-num {
-      background: rgba(44,48,68,0.9);
-      color: #ffffff;
-      font-size: 24px;
-      font-weight: 400;
-      box-shadow:
-        0 6px 14px rgba(0,0,0,0.4),
-        0 1px 0 rgba(255,255,255,0.06) inset;
-      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.07);
+      color: #e8e0ff;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top: 1px solid rgba(255,255,255,0.17);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.35), 0 0 0 0.5px rgba(255,255,255,0.05) inset;
     }
-    .btn-num:hover { background: rgba(56,62,86,0.95); }
-
-    .btn-zero { grid-column: span 2; }
-
-    /* Equals – gold glow */
-    .btn-equals {
-      background: linear-gradient(160deg, #ffe033 0%, #e89800 100%);
-      color: #1a1a1a;
-      font-size: 26px;
-      font-weight: 600;
-      box-shadow:
-        0 6px 20px rgba(245,168,0,0.55),
-        0 1px 0 rgba(255,255,200,0.4) inset;
-      border: 1px solid rgba(255,200,0,0.3);
+    .btn-func {
+      background: rgba(255,255,255,0.09);
+      color: rgba(200,190,255,0.88);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-top: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
     }
-    .btn-equals:hover { background: linear-gradient(160deg, #ffec55, #f5a800); }
-
-    /* Clear button – vivid red */
-    .btn-clear {
-      background: linear-gradient(160deg, #e83333, #a81515);
+    .btn-op {
+      background: rgba(200,30,30,0.55);
       color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      box-shadow:
-        0 6px 16px rgba(200,20,20,0.4),
-        0 1px 0 rgba(255,150,150,0.2) inset;
-      border: 1px solid rgba(255,100,100,0.2);
+      border: 1px solid rgba(255,80,80,0.25);
+      border-top: 1px solid rgba(255,120,120,0.35);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 18px rgba(200,20,20,0.4), 0 0 15px rgba(220,30,30,0.2);
     }
-    .btn-clear:hover { background: linear-gradient(160deg, #f04444, #ba1818); }
+    .btn-eq {
+      background: rgba(220,170,0,0.75);
+      color: #1a1000;
+      font-weight: 700;
+      border: 1px solid rgba(255,210,50,0.35);
+      border-top: 1px solid rgba(255,230,80,0.5);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(240,185,0,0.45), 0 0 20px rgba(255,200,0,0.2);
+    }
+    .btn-clear {
+      background: rgba(200,30,30,0.58);
+      color: #fff;
+      font-weight: 700;
+      border: 1px solid rgba(255,80,80,0.25);
+      border-top: 1px solid rgba(255,120,120,0.35);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 18px rgba(200,20,20,0.4), 0 0 15px rgba(220,30,30,0.2);
+    }
+    .btn-zero { grid-column: span 2; }
+    .calc-btn:active {
+      filter: brightness(1.3) saturate(1.2);
+      box-shadow: 0 0 25px rgba(180,140,255,0.4), 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .calc-btn::after {
+      content: '';
+      position: absolute;
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      transform: scale(0); opacity: 0;
+      pointer-events: none;
+      top: 50%; left: 50%;
+      margin: -30px 0 0 -30px;
+    }
+    .calc-btn:active::after {
+      animation: btn-ripple 0.5s ease-out forwards;
+    }
 
     /* ── PAGE 2: MATHE KLASSEN ───────────────────────────── */
     .klassen-header {
@@ -892,21 +913,54 @@
       0%   { transform: translate(0,0)   rotate(0deg)  scale(1);    }
       100% { transform: translate(4%,3%) rotate(4deg)  scale(1.06); }
     }
-    /* Planet elements */
+    /* Planet elements — slow 3D drift */
     .galaxy-planet {
       position: absolute;
       border-radius: 50%;
       pointer-events: none;
       opacity: 0;
-      animation: planet-drift var(--pdur, 25s) ease-in-out infinite;
+      animation:
+        planet-drift var(--pdur, 60s) ease-in-out infinite,
+        planet-spin  var(--pspin, 45s) linear infinite;
       animation-delay: var(--pdelay, 0s);
+      overflow: hidden;
+    }
+    .galaxy-planet::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg,
+        rgba(255,255,255,0.15) 0%,
+        rgba(255,255,255,0.04) 30%,
+        transparent 60%,
+        rgba(0,0,0,0.4) 100%);
+      z-index: 2;
+    }
+    .galaxy-planet::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: repeating-linear-gradient(
+        170deg,
+        transparent 0%, transparent 12%,
+        rgba(255,255,255,0.03) 12%, rgba(255,255,255,0.03) 13%,
+        transparent 13%
+      );
+      animation: planet-spin var(--pspin, 45s) linear infinite;
+      z-index: 1;
     }
     @keyframes planet-drift {
-      0%   { opacity: 0;              transform: translate(0,       0)       scale(0.7); }
-      10%  { opacity: var(--pop,0.2); }
-      50%  { opacity: var(--pop,0.2); transform: translate(var(--px,20px), var(--py,-15px)) scale(1); }
-      90%  { opacity: var(--pop,0.2); }
-      100% { opacity: 0;              transform: translate(var(--px2,40px), var(--py2,-30px)) scale(0.7); }
+      0%   { opacity: 0;              transform: translate(0,0)    scale(0.6); }
+      12%  { opacity: var(--pop,0.22); }
+      50%  { opacity: var(--pop,0.22); transform: translate(var(--px,15px), var(--py,-10px)) scale(1); }
+      88%  { opacity: var(--pop,0.22); }
+      100% { opacity: 0;              transform: translate(var(--px2,30px), var(--py2,-20px)) scale(0.6); }
+    }
+    @keyframes planet-spin {
+      from { transform: rotateZ(0deg); }
+      to   { transform: rotateZ(360deg); }
     }
     /* Grid view scrolls, sits above bg */
     #klassen-grid-view {
@@ -1062,7 +1116,7 @@
     /* ── AI CHAT UI ───────────────────────────────────── */
     /* ── AI CHAT (Page 3) redesign ── */
     #page3 { position: relative; overflow: hidden; }
-    #page3.visible { display: flex !important; flex-direction: column; height: 100%; padding: 10px 10px 6px; }
+    #page3.visible { display: flex !important; flex-direction: column; height: 100%; padding: 10px 10px 6px; animation: page-fadein 0.25s ease-out forwards; }
 
     /* Header */
     .ai-new-header {
@@ -1435,6 +1489,8 @@
             <option value="en">🇬🇧 English</option>
             <option value="ru">🇷🇺 Русский</option>
             <option value="hi">🇮🇳 हिन्दी</option>
+            <option value="ja">🇯🇵 日本語</option>
+            <option value="zh">🇨🇳 中文</option>
           </select>
         </div>
       </div>
@@ -1460,6 +1516,16 @@
             <input type="checkbox" id="anim-toggle" checked onchange="setAnimToggle(this.checked)">
             <div class="toggle-track"></div>
           </label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-icon" style="background:linear-gradient(135deg,rgba(99,200,255,0.3),rgba(30,120,255,0.2));">🔄</div>
+            <div>Bildwiederholrate<div class="settings-row-sublabel">Animationsflüssigkeit</div></div>
+          </div>
+          <div class="chip-group">
+            <div class="chip active" id="hz-60" onclick="setHz(60)">60 Hz</div>
+            <div class="chip" id="hz-120" onclick="setHz(120)">120 Hz</div>
+          </div>
         </div>
       </div>
 
@@ -1509,8 +1575,7 @@
       </button>
     </div>
     <div class="header-right">
-      <span class="model-label">Pro Calc</span>
-      <span class="power-dot"></span>
+
     </div>
   </div>
 
@@ -1790,7 +1855,9 @@ const LANG = {
   de: { home: 'Home', pro: 'Pro Rechner', ai: 'AI', settings: 'Einstellung', calcTitle: 'Pro Calc', acBtn: 'AC' },
   en: { home: 'Home', pro: 'Pro Tools',   ai: 'AI', settings: 'Settings',    calcTitle: 'Pro Calc', acBtn: 'AC' },
   ru: { home: 'Главная', pro: 'Про',      ai: 'ИИ', settings: 'Настройки',   calcTitle: 'Кальк',    acBtn: 'AC' },
-  hi: { home: 'होम',    pro: 'प्रो',      ai: 'AI', settings: 'सेटिंग',      calcTitle: 'कैल्क',    acBtn: 'AC' }
+  hi: { home: 'होम',    pro: 'प्रो',      ai: 'AI', settings: 'सेटिंग',      calcTitle: 'कैल्क',    acBtn: 'AC' },
+  ja: { home: 'ホーム',  pro: 'プロ',      ai: 'AI', settings: '設定',         calcTitle: '計算機',    acBtn: 'AC' },
+  zh: { home: '主页',   pro: '专业',       ai: 'AI', settings: '设置',         calcTitle: '计算器',    acBtn: 'AC' }
 };
 let currentLang = 'de';
 
@@ -1801,7 +1868,6 @@ function applyLanguage(lang) {
   document.getElementById('nav2-label').textContent = t.pro;
   document.getElementById('nav3-label').textContent = t.ai;
   document.querySelector('.gear-label').textContent = t.settings;
-  document.querySelector('.model-label').textContent = t.calcTitle;
   document.querySelector('.btn-clear').textContent = t.acBtn;
 }
 
@@ -1829,6 +1895,23 @@ function setAnimToggle(on) {
 
 // keep old setAnim for compatibility
 function setAnim(on) { setAnimToggle(on); }
+
+function setHz(hz) {
+  document.getElementById('hz-60').classList.toggle('active', hz === 60);
+  document.getElementById('hz-120').classList.toggle('active', hz === 120);
+  var root = document.documentElement;
+  if (hz === 120) {
+    root.style.setProperty('--anim-scale', '0.5'); /* halve durations for 120Hz feel */
+    document.querySelectorAll('.kl-cloud, .kl-star, .galaxy-planet').forEach(function(el) {
+      el.style.animationTimingFunction = 'linear';
+    });
+  } else {
+    root.style.setProperty('--anim-scale', '1');
+    document.querySelectorAll('.kl-cloud, .kl-star, .galaxy-planet').forEach(function(el) {
+      el.style.animationTimingFunction = '';
+    });
+  }
+}
 
 /* ═══════════════════════════════════════════════════
    PAGE SWITCHING
@@ -2206,10 +2289,10 @@ function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
 
   // Inject planets
   var planetDefs = [
-    { size: 80,  col1: '#3a1a7a', col2: '#1a0840', ring: false, pop: 0.18, dur: 28, delay: -5, px: '30px', py: '-20px', px2: '60px', py2: '-40px', l: '15%', t: '20%' },
-    { size: 120, col1: '#0d2060', col2: '#05100a', ring: true,  pop: 0.14, dur: 35, delay: -12, px: '-25px', py: '15px', px2: '-50px', py2: '30px', l: '60%', t: '55%' },
-    { size: 60,  col1: '#4a0a30', col2: '#1a0514', ring: false, pop: 0.22, dur: 22, delay: -18, px: '20px', py: '-30px', px2: '40px', py2: '-60px', l: '75%', t: '15%' },
-    { size: 90,  col1: '#0a3050', col2: '#020c18', ring: false, pop: 0.12, dur: 40, delay: -8,  px: '-15px', py: '20px', px2: '-30px', py2: '40px', l: '30%', t: '70%' }
+    { size: 110, col1: '#3a1a7a', col2: '#1a0840', ring: false, pop: 0.2,  dur: 80, spin: 55, delay: -15, px: '25px', py: '-15px', px2: '50px', py2: '-30px', l: '12%', t: '18%' },
+    { size: 150, col1: '#0d2060', col2: '#05100a', ring: true,  pop: 0.16, dur: 95, spin: 70, delay: -30, px: '-20px', py: '12px', px2: '-40px', py2: '24px', l: '58%', t: '52%' },
+    { size: 80,  col1: '#4a0a30', col2: '#1a0514', ring: false, pop: 0.24, dur: 65, spin: 40, delay: -45, px: '18px', py: '-25px', px2: '35px', py2: '-50px', l: '72%', t: '12%' },
+    { size: 100, col1: '#0a3050', col2: '#020c18', ring: false, pop: 0.14, dur: 110,spin: 80, delay: -20, px: '-12px', py: '18px', px2: '-24px', py2: '36px', l: '28%', t: '68%' }
   ];
   planetDefs.forEach(function(p) {
     var pl = document.createElement('div');
@@ -2219,7 +2302,7 @@ function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
       'left:' + p.l + ';top:' + p.t + ';' +
       'background:radial-gradient(ellipse at 35% 30%,' + p.col1 + ' 0%,' + p.col2 + ' 70%);' +
       'box-shadow:0 0 ' + Math.round(p.size*0.5) + 'px ' + p.col1 + '55;' +
-      '--pdur:' + p.dur + 's;--pdelay:' + p.delay + 's;' +
+      '--pdur:' + p.dur + 's;--pspin:' + p.spin + 's;--pdelay:' + p.delay + 's;' +
       '--pop:' + p.pop + ';' +
       '--px:' + p.px + ';--py:' + p.py + ';' +
       '--px2:' + p.px2 + ';--py2:' + p.py2;
