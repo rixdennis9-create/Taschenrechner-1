@@ -1116,15 +1116,21 @@
       justify-content: center;
       gap: 20px;
       overflow: hidden;
-      transition: opacity 0.9s ease, transform 0.9s ease;
-      /* Basisfarbe – wird vom blauen Puls überlagert */
       background: #050a1a;
+      /* CSS-only auto-dismiss — works even if JS fails */
+      animation: splashAutoDismiss 0.85s ease 2.5s forwards;
+    }
+
+    @keyframes splashAutoDismiss {
+      0%   { opacity: 1; transform: scale(1);    pointer-events: auto; }
+      100% { opacity: 0; transform: scale(1.05); pointer-events: none; visibility: hidden; }
     }
 
     #splash.hide {
       opacity: 0;
       transform: scale(1.05);
       pointer-events: none;
+      animation: none;
     }
 
     /* ── Blauer Puls-Hintergrund ── */
@@ -2040,18 +2046,31 @@ updateUnitSelects();
 /* ═══════════════════════════════════════════════════
    SPLASH SCREEN
 ═══════════════════════════════════════════════════ */
-// Runs immediately — script is at bottom of body, DOM is already ready
-(function init() {
-  // Default language: Deutsch
-  document.getElementById('lang-select').value = 'de';
-  applyLanguage('de');
+// ── Splash: dismiss via JS (CSS animation is the fallback) ──
+(function dismissSplash() {
+  try {
+    const splash = document.getElementById('splash');
+    if (!splash) return;
+    setTimeout(() => {
+      try {
+        splash.style.animation = 'none';
+        splash.style.transition = 'opacity 0.85s ease, transform 0.85s ease';
+        splash.style.opacity = '0';
+        splash.style.transform = 'scale(1.05)';
+        splash.style.pointerEvents = 'none';
+        setTimeout(() => { try { splash.remove(); } catch(e){} }, 900);
+      } catch(e) {}
+    }, 2400);
+  } catch(e) {}
+})();
 
-  // Splash screen — dismiss after 2.4 s
-  const splash = document.getElementById('splash');
-  setTimeout(() => {
-    splash.classList.add('hide');
-    setTimeout(() => { if (splash.parentNode) splash.remove(); }, 900);
-  }, 2400);
+// ── Init (language etc.) — isolated so errors don't affect splash ──
+(function init() {
+  try {
+    const sel = document.getElementById('lang-select');
+    if (sel) sel.value = 'de';
+    applyLanguage('de');
+  } catch(e) {}
 })();
 </script>
 
