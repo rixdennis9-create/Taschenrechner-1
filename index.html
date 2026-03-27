@@ -1280,100 +1280,88 @@
   <div class="splash-bar"><div class="splash-bar-fill"></div></div>
 </div>
 
+<!-- SETTINGS OVERLAY — outside .calculator so overflow:hidden doesn't clip it -->
+<div id="settings-overlay">
+  <div class="settings-backdrop"></div>
+  <div class="settings-inner">
+    <div class="settings-header">
+      <div class="settings-title">
+        <span class="settings-title-icon">⚙️</span>Einstellungen
+      </div>
+      <button class="settings-close" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="settings-body">
+
+      <div class="settings-group-label">🌐 Sprache</div>
+      <div class="settings-section">
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-icon" style="background:linear-gradient(135deg,rgba(99,102,241,0.3),rgba(139,92,246,0.2));">🗣️</div>
+            <div>App-Sprache<div class="settings-row-sublabel">Wähle deine Sprache</div></div>
+          </div>
+          <select class="settings-select" id="lang-select" onchange="applyLanguage(this.value)">
+            <option value="de" selected>🇩🇪 Deutsch</option>
+            <option value="en">🇬🇧 English</option>
+            <option value="ru">🇷🇺 Русский</option>
+            <option value="hi">🇮🇳 हिन्दी</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-group-label">🖥️ Grafik &amp; Darstellung</div>
+      <div class="settings-section">
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.3),rgba(5,150,105,0.2));">📺</div>
+            <div>Auflösung<div class="settings-row-sublabel">Display-Qualität</div></div>
+          </div>
+          <div class="chip-group">
+            <div class="chip" id="gfx-low" onclick="setGfx('low')">720p</div>
+            <div class="chip active" id="gfx-high" onclick="setGfx('high')">1080p</div>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-icon" style="background:linear-gradient(135deg,rgba(245,168,0,0.3),rgba(234,88,12,0.2));">✨</div>
+            <div>Animationen<div class="settings-row-sublabel">Übergänge &amp; Effekte</div></div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="anim-toggle" checked onchange="setAnimToggle(this.checked)">
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-group-label">ℹ️ Info</div>
+      <div class="settings-info-box">
+        <div class="info-dev-row">
+          <div class="info-dev-avatar">D</div>
+          <div>
+            <div class="info-dev-name">Dennis Rix</div>
+            <div class="info-dev-role">Entwickler · Developer</div>
+          </div>
+        </div>
+        <div class="info-app-row">
+          <span class="info-app-name">Dennis Pro Rechner · AI-Taschenrechner</span>
+          <span class="info-app-version">v2.1</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SPEECH BUBBLE — outside .calculator -->
+<div class="speech-bubble" id="speech-bubble">
+  <div class="bubble-body">
+    <div class="bubble-tag">🔔 Neuigkeit</div>
+    <div class="bubble-ticker-wrap">
+      <span class="bubble-ticker">Update 2.1 · Powered by Rix Studios &nbsp;&nbsp;&nbsp; Update 2.1 · Powered by Rix Studios</span>
+    </div>
+  </div>
+</div>
+
 <div class="calculator">
-
-  <!-- SETTINGS OVERLAY -->
-  <div id="settings-overlay">
-    <div class="settings-backdrop"></div>
-    <div class="settings-inner">
-      <div class="settings-header">
-        <div class="settings-title">
-          <span class="settings-title-icon">⚙️</span>Einstellungen
-        </div>
-        <button class="settings-close" onclick="closeSettings()">✕</button>
-      </div>
-      <div class="settings-body">
-
-        <!-- Sprache -->
-        <div class="settings-group-label">🌐 Sprache</div>
-        <div class="settings-section">
-          <div class="settings-row">
-            <div class="settings-row-label">
-              <div class="settings-row-icon" style="background:linear-gradient(135deg,rgba(99,102,241,0.3),rgba(139,92,246,0.2));">🗣️</div>
-              <div>
-                App-Sprache
-                <div class="settings-row-sublabel">Wähle deine Sprache</div>
-              </div>
-            </div>
-            <select class="settings-select" id="lang-select" onchange="applyLanguage(this.value)">
-              <option value="de" selected>🇩🇪 Deutsch</option>
-              <option value="en">🇬🇧 English</option>
-              <option value="ru">🇷🇺 Русский</option>
-              <option value="hi">🇮🇳 हिन्दी</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Grafik -->
-        <div class="settings-group-label">🖥️ Grafik &amp; Darstellung</div>
-        <div class="settings-section">
-          <div class="settings-row">
-            <div class="settings-row-label">
-              <div class="settings-row-icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.3),rgba(5,150,105,0.2));">📺</div>
-              <div>
-                Auflösung
-                <div class="settings-row-sublabel">Display-Qualität</div>
-              </div>
-            </div>
-            <div class="chip-group">
-              <div class="chip" id="gfx-low" onclick="setGfx('low')">720p</div>
-              <div class="chip active" id="gfx-high" onclick="setGfx('high')">1080p</div>
-            </div>
-          </div>
-          <div class="settings-row">
-            <div class="settings-row-label">
-              <div class="settings-row-icon" style="background:linear-gradient(135deg,rgba(245,168,0,0.3),rgba(234,88,12,0.2));">✨</div>
-              <div>
-                Animationen
-                <div class="settings-row-sublabel">Übergänge &amp; Effekte</div>
-              </div>
-            </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="anim-toggle" checked onchange="setAnimToggle(this.checked)">
-              <div class="toggle-track"></div>
-            </label>
-          </div>
-        </div>
-
-        <!-- Info -->
-        <div class="settings-group-label">ℹ️ Info</div>
-        <div class="settings-info-box">
-          <div class="info-dev-row">
-            <div class="info-dev-avatar">D</div>
-            <div>
-              <div class="info-dev-name">Dennis Rix</div>
-              <div class="info-dev-role">Entwickler · Developer</div>
-            </div>
-          </div>
-          <div class="info-app-row">
-            <span class="info-app-name">Dennis Pro Rechner · AI-Taschenrechner</span>
-            <span class="info-app-version">v2.1</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- SPEECH BUBBLE (notification) -->
-  <div class="speech-bubble" id="speech-bubble">
-    <div class="bubble-body">
-      <div class="bubble-tag">🔔 Neuigkeit</div>
-      <div class="bubble-ticker-wrap">
-        <span class="bubble-ticker">Update 2.1 · Powered by Rix Studios &nbsp;&nbsp;&nbsp; Update 2.1 · Powered by Rix Studios</span>
-      </div>
-    </div>
-  </div>
 
   <!-- HEADER -->
   <div class="header">
