@@ -75,7 +75,7 @@ app.post('/api/chat', async (req, res) => {
       },
       body: JSON.stringify({
         model:      selectedModel,
-        max_tokens: 1024,
+        max_tokens: Math.min(parseInt(req.body.max_tokens) || 1024, 2000),
         system:     typeof system === 'string' ? system.slice(0, 4000) : undefined,
         messages:   safeMessages
       })
