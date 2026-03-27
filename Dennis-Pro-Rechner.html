@@ -1972,25 +1972,18 @@ function calcPyth() {
   el.textContent = 'c = ' + parseFloat(c.toPrecision(8));
 }
 
-/* Init unit selects */
-updateUnitSelects();
-
-/* ═══════════════════════════════════════════════════
-   SPLASH SCREEN
-═══════════════════════════════════════════════════ */
-// ── Splash: hide and remove after 2.5s ──
+/* ── Splash: FIRST thing — hide after 2.5s no matter what ── */
 (function dismissSplash() {
-  try {
-    const splash = document.getElementById('splash');
-    if (!splash) return;
-    setTimeout(() => {
-      try {
-        splash.style.display = 'none';
-        splash.remove();
-      } catch(e) {}
-    }, 2500);
-  } catch(e) {}
+  var splash = document.getElementById('splash');
+  if (!splash) return;
+  setTimeout(function() {
+    splash.style.display = 'none';
+    if (splash.parentNode) splash.parentNode.removeChild(splash);
+  }, 2500);
 })();
+
+/* Init unit selects */
+try { updateUnitSelects(); } catch(e) {}
 
 // ── Init (language etc.) — isolated so errors don't affect splash ──
 (function init() {
