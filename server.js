@@ -19,7 +19,7 @@ if (!API_KEY || !API_KEY.startsWith('sk-ant-')) {
 }
 
 /* ── Middleware ─────────────────────────────────────── */
-app.use(express.json({ limit: '256kb' }));
+app.use(express.json({ limit: '8mb' })); // increased for base64 image uploads
 
 // Statische Dateien (index.html) aus dem gleichen Verzeichnis
 app.use(express.static(path.join(__dirname)));
@@ -40,11 +40,27 @@ app.post('/api/chat', async (req, res) => {
   ];
   const selectedModel = ALLOWED_MODELS.includes(model) ? model : 'claude-haiku-4-5';
 
-  // Nachrichten bereinigen – nur role + content (string) zulassen
-  const safeMessages = messages.map(m => ({
-    role:    m.role === 'assistant' ? 'assistant' : 'user',
-    content: String(m.content).slice(0, 8000)          // max 8000 Zeichen pro Nachricht
-  }));
+  // Nachrichten bereinigen — unterstützt Text und Bild-Arrays (vision)
+  const safeMessages = messages.map(m => {
+    const role = m.role === 'assistant' ? 'assistant' : 'user';
+    // Vision: content is an array with image + text parts
+    if (Array.isArray(m.content)) {
+      const safeParts = m.content.map(part => {
+        if (part.type === 'text') {
+          return { type: 'text', text: String(part.text || '').slice(0, 8000) };
+        }
+        if (part.type === 'image' && part.source && part.source.type === 'base64') {
+          // Validate media type
+          const allowed = ['image/jpeg','image/png','image/gif','image/webp'];
+          const mt = allowed.includes(part.source.media_type) ? part.source.media_type : 'image/jpeg';
+          return { type: 'image', source: { type: 'base64', media_type: mt, data: part.source.data } };
+        }
+        return null;
+      }).filter(Boolean);
+      return { role, content: safeParts };
+    }
+    return { role, content: String(m.content).slice(0, 8000) };
+  });
 
   try {
     // Dynamischer import für node-fetch (ESM-Modul)
