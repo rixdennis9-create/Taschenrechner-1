@@ -57,7 +57,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 18px;
+      margin-bottom: 10px;
     }
 
     /* Gear / Settings Button */
@@ -148,11 +148,9 @@
     /* ── SPEECH BUBBLE ────────────────────────────────────── */
     .speech-bubble {
       display: none;
-      position: absolute;
-      left: 46px;
-      top: 30px;
-      z-index: 600;
-      transform-origin: left center;
+      position: fixed;
+      z-index: 9000;
+      transform-origin: left top;
     }
     .speech-bubble.open {
       display: block;
@@ -238,11 +236,10 @@
     /* ── SETTINGS OVERLAY — modernized ───────────────────── */
     #settings-overlay {
       display: none;
-      position: absolute;
+      position: fixed;
       inset: 0;
-      z-index: 500;
+      z-index: 8000;
       flex-direction: column;
-      border-radius: 30px;
       overflow: hidden;
     }
     #settings-overlay.open {
@@ -267,9 +264,8 @@
     .settings-backdrop {
       position: absolute;
       inset: 0;
-      background: rgba(6, 8, 18, 0.88);
+      background: rgba(6, 8, 18, 0.95);
       backdrop-filter: blur(20px) saturate(1.4);
-      border-radius: 30px;
     }
 
     .settings-inner {
@@ -532,9 +528,9 @@
     .display {
       background: rgba(0,0,0,0.35);
       border-radius: 20px;
-      padding: 18px 22px 16px;
-      margin-bottom: 18px;
-      min-height: 108px;
+      padding: 14px 18px 12px;
+      margin-bottom: 10px;
+      min-height: 90px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -670,14 +666,14 @@
     .buttons {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      padding-bottom: 4px;
-      gap: 9px;
+      padding-bottom: 2px;
+      gap: 6px;
     }
 
     button.calc-btn {
-      height: 68px;
+      height: 58px;
       border: none;
-      border-radius: 18px;
+      border-radius: 16px;
       font-size: 20px;
       font-weight: 600;
       cursor: pointer;
@@ -1598,9 +1594,7 @@ function openSettings() {
 function closeSettings() {
   const el = document.getElementById('settings-overlay');
   el.classList.add('closing');
-  el.addEventListener('animationend', () => {
-    el.classList.remove('open', 'closing');
-  }, { once: true });
+  setTimeout(() => { el.classList.remove('open', 'closing'); }, 280);
 }
 
 // ── Notification / speech bubble ──
@@ -1614,6 +1608,11 @@ function toggleNotif(e) {
     bubble.addEventListener('animationend', () => bubble.classList.remove('closing'), { once: true });
     notifOpen = false;
   } else {
+    // Position bubble relative to the button using fixed coords
+    const btn = e.currentTarget;
+    const rect = btn.getBoundingClientRect();
+    bubble.style.left = (rect.right + 8) + 'px';
+    bubble.style.top  = (rect.top) + 'px';
     bubble.classList.remove('closing');
     bubble.classList.add('open');
     notifOpen = true;
