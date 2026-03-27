@@ -629,6 +629,14 @@
     .page { display: none; }
     .page.visible { display: block; }
 
+    /* Page 2 fills calc-content as a flex column */
+    #page2 { position: relative; overflow: hidden; }
+    #page2.visible {
+      display: flex !important;
+      flex-direction: column;
+      height: 100%;
+    }
+
     /* ── BUTTON GRID (Page 1) ─────────────────────────────── */
     .buttons {
       display: grid;
@@ -797,17 +805,24 @@
       text-align: center;
       line-height: 1.4;
     }
+    /* Chat view fills page2, sits above bg */
     .klasse-chat-view {
       display: none;
       flex-direction: column;
-      height: 420px;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+      padding: 8px 10px 10px;
     }
     .klasse-chat-header {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 4px 0 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: rgba(8,5,28,0.65);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       margin-bottom: 8px;
       flex-shrink: 0;
     }
@@ -835,20 +850,25 @@
     }
 
     /* ── BUBBLE WORLD (Page 2) ────────────────────────── */
-    #klassen-grid-view {
-      position: relative;
-      overflow: hidden;
-      border-radius: 20px;
-      min-height: 530px;
-      margin: -4px -4px 0;
-    }
+    /* Full-page starry bg — covers entire page2 */
     .kl-bg {
       position: absolute;
       inset: 0;
       background: radial-gradient(ellipse at 25% 15%, #1e0d50 0%, #0c0828 40%, #04030f 100%);
       overflow: hidden;
       z-index: 0;
+      pointer-events: none;
     }
+    /* Grid view scrolls, sits above bg */
+    #klassen-grid-view {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+    }
+    #klassen-grid-view::-webkit-scrollbar { display: none; }
     .kl-star {
       position: absolute;
       border-radius: 50%;
@@ -1058,8 +1078,13 @@
       display: flex;
       gap: 6px;
       margin-top: 6px;
-      padding-top: 6px;
+      padding: 8px 8px 4px;
       border-top: 1px solid rgba(99,102,241,0.2);
+      background: rgba(5,3,20,0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 14px;
+      flex-shrink: 0;
     }
 
     .ai-input-bar textarea {
@@ -1450,10 +1475,11 @@
   <!-- PAGE 2: PRO RECHNER / EXTRA TOOLS -->
   <div class="page" id="page2">
 
+    <!-- Animated background covers all of page2 (grid + chat) -->
+    <div class="kl-bg" id="kl-bg"></div>
+
     <!-- CLASS SELECTION — BUBBLE WORLD -->
     <div id="klassen-grid-view">
-      <!-- Animated background (stars + clouds injected by JS) -->
-      <div class="kl-bg" id="kl-bg"></div>
 
       <div class="kl-content">
         <div class="kl-title-text">✦ Wähle deine Klasse ✦</div>
@@ -1698,12 +1724,40 @@ function setAnim(on) { setAnimToggle(on); }
 /* ═══════════════════════════════════════════════════
    PAGE SWITCHING
 ═══════════════════════════════════════════════════ */
-function switchPage(n) {
-  [1,2,3].forEach(i => {
+var _currentPage = 1;
+var _histNav = false;
+
+function _renderPage(n) {
+  _currentPage = n;
+  [1,2,3].forEach(function(i) {
     document.getElementById('page'+i).classList.toggle('visible', i === n);
-    const nb = document.getElementById('nav'+i);
+    var nb = document.getElementById('nav'+i);
     if (nb) nb.classList.toggle('active', i === n);
   });
+}
+
+function switchPage(n) {
+  if (!_histNav) history.pushState({pg: n, kl: 0}, '');
+  _renderPage(n);
+}
+
+/* ── Android / Browser hardware back button ─────── */
+history.replaceState({pg: 1, kl: 0}, '');
+window.addEventListener('popstate', function(e) {
+  var s = e.state || {pg: 1, kl: 0};
+  if (activeKlasse > 0) {
+    _backToKlassenDOM();
+  } else {
+    _histNav = true;
+    _renderPage(s.pg || 1);
+    _histNav = false;
+  }
+});
+
+function _backToKlassenDOM() {
+  document.getElementById('klasse-chat-view').style.display = 'none';
+  document.getElementById('klassen-grid-view').style.display = 'block';
+  activeKlasse = 0;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -2058,6 +2112,7 @@ var klasseNames = ['','Klasse 1','Klasse 2','Klasse 3','Klasse 4','Klasse 5','Kl
 var klasseColors = ['','#f87171','#fb923c','#fbbf24','#a3e635','#34d399','#22d3ee','#60a5fa','#818cf8','#a78bfa','#e879f9'];
 
 function openKlasse(n) {
+  history.pushState({pg: 2, kl: n}, '');
   activeKlasse = n;
   if (!klasseHistories[n]) klasseHistories[n] = [];
   document.getElementById('klassen-grid-view').style.display = 'none';
@@ -2073,9 +2128,7 @@ function openKlasse(n) {
 }
 
 function backToKlassen() {
-  document.getElementById('klasse-chat-view').style.display = 'none';
-  document.getElementById('klassen-grid-view').style.display = 'block';
-  activeKlasse = 0;
+  history.back(); /* triggers popstate → _backToKlassenDOM() */
 }
 
 function renderKlasseChat() {
