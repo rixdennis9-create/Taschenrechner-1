@@ -2,12 +2,16 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <title>Dennis Pro Rechner</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
+      height: 100vh; /* fallback for older iOS */
       height: 100dvh;
       display: flex;
       align-items: stretch;
@@ -16,6 +20,30 @@
       font-family: 'Segoe UI', system-ui, sans-serif;
       overflow: hidden;
     }
+    /* No-animation / minimal mode */
+    body.no-anim .kl-bg,
+    body.no-anim #kl-fullbg { display: none !important; }
+    body.no-anim .kl-bubble,
+    body.no-anim .calc-btn,
+    body.no-anim .nav-btn,
+    body.no-anim .header,
+    body.no-anim .display {
+      animation: none !important;
+      transition: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    body.no-anim .calculator {
+      background: #0a0a12 !important;
+    }
+    body.no-anim .btn-num   { background: rgba(60,60,90,0.95) !important; }
+    body.no-anim .btn-func  { background: rgba(70,70,100,0.95) !important; }
+    body.no-anim .btn-op    { background: rgba(180,30,30,0.95) !important; }
+    body.no-anim .btn-clear { background: rgba(180,30,30,0.95) !important; }
+    body.no-anim .btn-eq    { background: rgba(200,160,0,0.95) !important; }
+    body.no-anim .calc-btn:active { filter: brightness(0.8) !important; }
+    body.no-anim .page.visible { animation: none !important; opacity: 1 !important; }
+
     /* iOS/Android safe area support */
     @supports (padding-top: env(safe-area-inset-top)) {
       .calculator {
@@ -25,6 +53,30 @@
         padding-bottom: max(0px, env(safe-area-inset-bottom));
       }
     }
+    /* No-animation / minimal mode */
+    body.no-anim .kl-bg,
+    body.no-anim #kl-fullbg { display: none !important; }
+    body.no-anim .kl-bubble,
+    body.no-anim .calc-btn,
+    body.no-anim .nav-btn,
+    body.no-anim .header,
+    body.no-anim .display {
+      animation: none !important;
+      transition: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    body.no-anim .calculator {
+      background: #0a0a12 !important;
+    }
+    body.no-anim .btn-num   { background: rgba(60,60,90,0.95) !important; }
+    body.no-anim .btn-func  { background: rgba(70,70,100,0.95) !important; }
+    body.no-anim .btn-op    { background: rgba(180,30,30,0.95) !important; }
+    body.no-anim .btn-clear { background: rgba(180,30,30,0.95) !important; }
+    body.no-anim .btn-eq    { background: rgba(200,160,0,0.95) !important; }
+    body.no-anim .calc-btn:active { filter: brightness(0.8) !important; }
+    body.no-anim .page.visible { animation: none !important; opacity: 1 !important; }
+
     /* iOS/Android safe area support */
     @supports (padding-top: env(safe-area-inset-top)) {
       .calculator {
@@ -39,6 +91,7 @@
     .calculator {
       width: 100%;
       max-width: 520px;
+      height: 100vh; /* Safari fallback */
       height: 100dvh;
       max-height: 100dvh;
       background: linear-gradient(160deg, #14122a 0%, #0e0c1f 50%, #07050f 100%);
@@ -1376,6 +1429,29 @@
       backdrop-filter: blur(8px); white-space: nowrap;
     }
     .ai-chip:active { background: rgba(100,90,200,.38); }
+    /* Image upload button */
+    .img-upload-btn {
+      width: 44px; height: 44px; border: none; border-radius: 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(200,190,255,0.75); font-size: 20px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .img-upload-btn:active { background: rgba(255,255,255,0.16); }
+    .img-preview-wrap {
+      display: none; position: relative; margin-bottom: 4px; flex-shrink: 0;
+    }
+    .img-preview-wrap img {
+      height: 56px; border-radius: 8px; border: 1px solid rgba(130,120,220,0.35);
+      object-fit: cover; max-width: 120px;
+    }
+    .img-preview-remove {
+      position: absolute; top: -4px; right: -4px; width: 18px; height: 18px;
+      background: rgba(200,30,30,0.85); border: none; border-radius: 50%;
+      color: #fff; font-size: 10px; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; line-height: 1;
+    }
+
     /* Input bar (shared with klasse chat) */
     .ai-input-bar {
       display: flex; gap: 6px; margin-top: 6px;
@@ -1662,6 +1738,60 @@
         </div>
       </div>
 
+      <div class="settings-group-label">🔧 Taschenrechner</div>
+      <div class="settings-section">
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-icon" style="background:linear-gradient(135deg,rgba(99,102,241,0.3),rgba(139,92,246,0.2));">📳</div>
+            <div>Vibration<div class="settings-row-sublabel">Haptisches Feedback bei Tasten</div></div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="vibro-toggle" checked onchange="setVibration(this.checked)">
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.3),rgba(5,150,105,0.2));">🔊</div>
+            <div>Ton-Effekte<div class="settings-row-sublabel">Klick-Sound bei Tasten</div></div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="sound-toggle" onchange="setSoundFx(this.checked)">
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.3),rgba(234,88,12,0.2));">📋</div>
+            <div>Ergebnis kopieren<div class="settings-row-sublabel">Tippe auf Display zum Kopieren</div></div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="copy-toggle" checked onchange="setCopyOnTap(this.checked)">
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-icon" style="background:linear-gradient(135deg,rgba(236,72,153,0.3),rgba(168,85,247,0.2));">📜</div>
+            <div>Verlauf<div class="settings-row-sublabel">Letzte Berechnungen speichern</div></div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="hist-toggle" checked onchange="setHistory(this.checked)">
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-icon" style="background:linear-gradient(135deg,rgba(99,200,100,0.3),rgba(30,180,60,0.2));">🎨</div>
+            <div>Design-Modus<div class="settings-row-sublabel">Galaxie / Minimal</div></div>
+          </div>
+          <div class="chip-group">
+            <div class="chip active" id="theme-galaxy" onclick="setTheme('galaxy')">Galaxie</div>
+            <div class="chip" id="theme-minimal" onclick="setTheme('minimal')">Minimal</div>
+          </div>
+        </div>
+      </div>
+
       <div class="settings-group-label">ℹ️ Info</div>
       <div class="settings-info-box">
         <div class="info-dev-row">
@@ -1857,7 +1987,13 @@
       </div>
       <div class="ai-chat-window" id="klasse-chat-window"></div>
       <div class="ai-status" id="klasse-status"></div>
+      <div class="img-preview-wrap" id="klasse-img-preview">
+        <img id="klasse-img-thumb" src="" alt="Bild" />
+        <button class="img-preview-remove" onclick="removeKlasseImg()" title="Entfernen">✕</button>
+      </div>
       <div class="ai-input-bar">
+        <input type="file" id="klasse-img-input" accept="image/*" style="display:none" onchange="klasseImgSelected(this)">
+        <button class="img-upload-btn" onclick="document.getElementById('klasse-img-input').click()" title="Bild hochladen">📷</button>
         <textarea id="klasse-input" placeholder="Frage stellen…" onkeydown="klasseKeyDown(event)"></textarea>
         <button class="ai-send-btn" id="klasse-send-btn" onclick="klasseSend()">➤</button>
       </div>
@@ -2015,19 +2151,92 @@ function setGfx(q) {
   }
 }
 
-// Animations toggle (now uses checkbox)
+// Animations toggle — proper minimal mode
 function setAnimToggle(on) {
-  const s = document.getElementById('no-anim-style') || (() => {
-    const el = document.createElement('style');
-    el.id = 'no-anim-style';
-    document.head.appendChild(el);
-    return el;
-  })();
-  s.textContent = on ? '' : '* { animation-duration: 0.001s !important; transition-duration: 0.001s !important; }';
+  var fullbg = document.getElementById('kl-fullbg');
+  if (on) {
+    // Galaxy mode: show live background
+    if (fullbg) fullbg.style.display = 'block';
+    document.body.classList.remove('no-anim');
+    document.documentElement.style.removeProperty('--anim-off');
+  } else {
+    // Minimal mode: hide galaxy bg, use static dark
+    if (fullbg) fullbg.style.display = 'none';
+    document.body.classList.add('no-anim');
+    document.documentElement.style.setProperty('--anim-off', '1');
+  }
 }
 
 // keep old setAnim for compatibility
 function setAnim(on) { setAnimToggle(on); }
+
+/* ── Extra settings ─────────────────────────────── */
+var _vibroOn = true;
+var _soundOn = false;
+var _copyOnTap = true;
+var _historyOn = true;
+
+function setVibration(on) { _vibroOn = on; }
+
+function setSoundFx(on) { _soundOn = on; }
+
+function setCopyOnTap(on) {
+  _copyOnTap = on;
+  var disp = document.querySelector('.display');
+  if (disp) disp.style.cursor = on ? 'pointer' : '';
+}
+
+function setHistory(on) { _historyOn = on; }
+
+function setTheme(t) {
+  document.getElementById('theme-galaxy').classList.toggle('active', t === 'galaxy');
+  document.getElementById('theme-minimal').classList.toggle('active', t === 'minimal');
+  // minimal = animations off, galaxy = animations on
+  var animChk = document.getElementById('anim-toggle');
+  if (t === 'minimal') {
+    setAnimToggle(false);
+    if (animChk) animChk.checked = false;
+  } else {
+    setAnimToggle(true);
+    if (animChk) animChk.checked = true;
+  }
+}
+
+/* Haptic + sound on calc button press */
+function _calcBtnFeedback() {
+  if (_vibroOn && navigator.vibrate) navigator.vibrate(12);
+  if (_soundOn) {
+    try {
+      var ctx = new (window.AudioContext || window.webkitAudioContext)();
+      var osc = ctx.createOscillator();
+      var g = ctx.createGain();
+      osc.connect(g); g.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = 420;
+      g.gain.setValueAtTime(0.12, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+      osc.start(); osc.stop(ctx.currentTime + 0.07);
+    } catch(e) {}
+  }
+}
+
+/* Copy result on display tap */
+document.addEventListener('DOMContentLoaded', function() {
+  var disp = document.querySelector('.display');
+  if (disp) {
+    disp.style.cursor = 'pointer';
+    disp.addEventListener('click', function() {
+      if (!_copyOnTap) return;
+      var res = document.getElementById('result');
+      if (!res || !res.textContent) return;
+      navigator.clipboard && navigator.clipboard.writeText(res.textContent).then(function() {
+        var orig = res.style.color;
+        res.style.color = '#22c55e';
+        setTimeout(function() { res.style.color = orig; }, 600);
+      }).catch(function() {});
+    });
+  }
+});
 
 function setHz(hz) {
   document.getElementById('hz-60').classList.toggle('active', hz === 60);
@@ -2286,6 +2495,7 @@ function updateDisplay() {
 }
 
 function inputNum(n) {
+  _calcBtnFeedback();
   if (justCalculated) { current = n; expression = ''; justCalculated = false; }
   else if (current === '0') current = n;
   else if (current.length < 16) current += n;
@@ -2293,12 +2503,14 @@ function inputNum(n) {
 }
 
 function inputDot() {
+  _calcBtnFeedback();
   if (justCalculated) { current = '0.'; justCalculated = false; }
   else if (!current.includes('.')) current += '.';
   updateDisplay();
 }
 
 function inputOp(op) {
+  _calcBtnFeedback();
   const sym = { '+': '+', '-': '−', '*': '×', '/': '÷' };
   if (operator && !justCalculated) {
     const val = compute(parseFloat(operand), parseFloat(current), operator);
@@ -2322,6 +2534,7 @@ function compute(a, b, op) {
 }
 
 function calculate() {
+  _calcBtnFeedback();
   if (!operator || operand === null) return;
   const sym = { '+': '+', '-': '−', '*': '×', '/': '÷' };
   expression = operand + ' ' + sym[operator] + ' ' + current + ' =';
@@ -2337,6 +2550,7 @@ function fmt(n) {
 }
 
 function clearAll() {
+  _calcBtnFeedback();
   current = '0'; expression = ''; operator = null; operand = null; justCalculated = false;
   updateDisplay();
 }
@@ -2564,7 +2778,18 @@ function renderKlasseChat() {
     var escaped = klasseEscape(m.content);
     if (isUser) {
       var d = new Date(); var ts = d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
-      html += '<div class="ai-msg-user"><div class="ai-msg-bubble"><div class="ai-msg-text">' + escaped + '</div><div class="ai-msg-ts">' + ts + ' ✓</div></div></div>';
+      var msgContent = m.content;
+      var imgHtml = '';
+      var textHtml = escaped;
+      if (Array.isArray(msgContent)) {
+        var imgPart = msgContent.find(function(p){ return p.type === 'image'; });
+        var txtPart = msgContent.find(function(p){ return p.type === 'text'; });
+        if (imgPart && imgPart.source && imgPart.source.base64) {
+          imgHtml = '<img src="data:' + imgPart.source.media_type + ';base64,' + imgPart.source.base64 + '" style="max-width:100%;border-radius:8px;margin-bottom:4px;display:block;" />';
+        }
+        textHtml = txtPart ? klasseEscape(txtPart.text) : '';
+      }
+      html += '<div class="ai-msg-user"><div class="ai-msg-bubble">' + imgHtml + (textHtml ? '<div class="ai-msg-text">' + textHtml + '</div>' : '') + '<div class="ai-msg-ts">' + ts + ' ✓</div></div></div>';
     } else {
       html += '<div class="ai-msg-bot"><div class="ai-msg-avatar">🤖</div><div class="ai-msg-bubble"><div class="ai-msg-author">Mathe KI</div><div class="ai-msg-text">' + escaped + '</div></div></div>';
     }
@@ -2581,15 +2806,58 @@ function klasseKeyDown(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); klasseSend(); }
 }
 
+var _klasseImgData = null; // current pending image {base64, mediaType}
+
+function klasseImgSelected(inp) {
+  var file = inp.files && inp.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var dataUrl = e.target.result;
+    var match = dataUrl.match(/^data:(image\/[^;]+);base64,(.+)$/);
+    if (!match) return;
+    _klasseImgData = { mediaType: match[1], base64: match[2] };
+    var wrap = document.getElementById('klasse-img-preview');
+    var thumb = document.getElementById('klasse-img-thumb');
+    thumb.src = dataUrl;
+    wrap.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+  inp.value = '';
+}
+
+function removeKlasseImg() {
+  _klasseImgData = null;
+  document.getElementById('klasse-img-preview').style.display = 'none';
+  document.getElementById('klasse-img-thumb').src = '';
+}
+
 async function klasseSend() {
   if (!activeKlasse) return;
   var input = document.getElementById('klasse-input');
   var text = input.value.trim();
-  if (!text) return;
+  var hasImg = !!_klasseImgData;
+  if (!text && !hasImg) return;
+
+  // Build user message content (text + optional image)
+  var userContent;
+  if (hasImg) {
+    userContent = [
+      { type: 'image', source: { type: 'base64', media_type: _klasseImgData.mediaType, data: _klasseImgData.base64 } },
+      { type: 'text', text: text || 'Was steht auf diesem Bild? Löse die Aufgabe Schritt für Schritt.' }
+    ];
+  } else {
+    userContent = text;
+  }
+
+  // Clear input + image
   input.value = '';
+  if (hasImg) removeKlasseImg();
+
   var hist = klasseHistories[activeKlasse];
-  hist.push({ role: 'user', content: text });
+  hist.push({ role: 'user', content: userContent });
   renderKlasseChat();
+
   var statusEl = document.getElementById('klasse-status');
   var sendBtn = document.getElementById('klasse-send-btn');
   statusEl.textContent = '⏳ Denkt nach…';
@@ -2602,7 +2870,7 @@ async function klasseSend() {
         model: 'claude-haiku-4-5',
         system: klasseSystemPrompts[activeKlasse],
         messages: hist,
-        max_tokens: 800
+        max_tokens: 1200
       })
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -2637,6 +2905,7 @@ try { updateUnitSelects(); } catch(e) {}
     const sel = document.getElementById('lang-select');
     if (sel) sel.value = 'de';
     applyLanguage('de');
+    _renderPage(1); // show galaxy background immediately on first load
   } catch(e) {}
 })();
 </script>
