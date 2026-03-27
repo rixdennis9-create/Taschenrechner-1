@@ -1071,7 +1071,7 @@
     /* ── SPLASH SCREEN ────────────────────────────────── */
     #splash {
       position: fixed;
-      inset: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       z-index: 9999;
       display: flex;
       flex-direction: column;
@@ -1080,11 +1080,16 @@
       gap: 20px;
       overflow: hidden;
       background: #050a1a;
+      /* CSS-only dismiss — works even if JS has syntax errors */
+      animation: splashDismiss 0.8s ease 2.5s both forwards;
     }
 
-    #splash.hide {
-      display: none;
+    @keyframes splashDismiss {
+      0%   { opacity: 1; visibility: visible; }
+      100% { opacity: 0; visibility: hidden;  }
     }
+
+    #splash.hide { visibility: hidden; opacity: 0; }
 
     /* ── Blauer Puls-Hintergrund ── */
     .splash-bg-pulse {
@@ -1604,7 +1609,6 @@ function setAnimToggle(on) {
 
 // keep old setAnim for compatibility
 function setAnim(on) { setAnimToggle(on); }
-}
 
 /* ═══════════════════════════════════════════════════
    PAGE SWITCHING
