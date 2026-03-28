@@ -1347,6 +1347,19 @@
       font-size: 11px; font-weight: 600; cursor: pointer;
     }
     .ai-clear-btn:active { background: rgba(220,40,40,.5); }
+    /* Online / Offline Toggle */
+    .ai-mode-row { display:flex; gap:6px; margin-bottom:8px; }
+    .ai-mode-btn {
+      flex:1; padding:6px 10px; border-radius:20px;
+      border:1.5px solid rgba(140,100,255,0.3);
+      background:rgba(255,255,255,0.04); color:rgba(200,180,255,0.7);
+      font-size:12px; cursor:pointer; transition:all .2s;
+    }
+    .ai-mode-btn.active {
+      background:linear-gradient(135deg,rgba(99,62,237,0.4),rgba(79,70,229,0.4));
+      border-color:rgba(140,100,255,0.7); color:#e0e7ff; font-weight:600;
+    }
+    .ai-mode-btn:hover:not(.active) { background:rgba(255,255,255,0.08); }
     /* Chat window */
     .ai-chat-window {
       flex: 1; overflow-y: auto;
@@ -3164,11 +3177,19 @@
 
     <!-- Model Panel (hidden by default) -->
     <div class="ai-model-panel" id="ai-model-panel">
-      <select id="ai-model">
-        <option value="gpt-4o-mini">⚡ GPT-4o Mini — schnell</option>
-        <option value="gpt-4o">⚖ GPT-4o — ausgewogen</option>
-        <option value="gpt-4-turbo">🏆 GPT-4 Turbo — stärkst</option>
-      </select>
+      <!-- Online / Offline Umschalter -->
+      <div class="ai-mode-row" id="ai-mode-row">
+        <button class="ai-mode-btn active" id="mode-btn-online" onclick="setAiMode('online')">🌐 Online</button>
+        <button class="ai-mode-btn" id="mode-btn-offline" onclick="setAiMode('offline')">🔌 Offline</button>
+      </div>
+      <!-- GPT-Modell-Auswahl (nur im Online-Modus sichtbar) -->
+      <div id="ai-model-select-wrap">
+        <select id="ai-model">
+          <option value="gpt-4o-mini">⚡ GPT-4o Mini — schnell</option>
+          <option value="gpt-4o">⚖ GPT-4o — ausgewogen</option>
+          <option value="gpt-4-turbo">🏆 GPT-4 Turbo — stärkst</option>
+        </select>
+      </div>
       <button class="ai-clear-btn" onclick="clearChat()">✕ Chat löschen</button>
     </div>
 
@@ -3557,6 +3578,23 @@ function toggleAiModel() {
   panel.style.display = (panel.style.display === 'flex') ? 'none' : 'flex';
 }
 
+// ── Online / Offline Modus ────────────────────────────
+var _aiMode = 'online';
+
+function setAiMode(mode) {
+  _aiMode = mode;
+  var btnOnline  = document.getElementById('mode-btn-online');
+  var btnOffline = document.getElementById('mode-btn-offline');
+  var modelWrap  = document.getElementById('ai-model-select-wrap');
+  if (btnOnline)  btnOnline.classList.toggle('active',  mode === 'online');
+  if (btnOffline) btnOffline.classList.toggle('active', mode === 'offline');
+  // GPT-Modell-Auswahl nur im Online-Modus zeigen
+  if (modelWrap) modelWrap.style.display = (mode === 'online') ? '' : 'none';
+  setAiStatus(mode === 'offline'
+    ? '🔌 Offline-Modus — kein API-Key nötig'
+    : '🌐 Online-Modus — OpenAI aktiv');
+}
+
 function aiQuickAction(type) {
   const input = document.getElementById('ai-user-input');
   if (!input) return;
@@ -3594,6 +3632,38 @@ async function aiSend() {
   if (typingWrap) { typingWrap.style.display = ''; document.getElementById('ai-chat-window').scrollTop = 99999; }
   const model = document.getElementById('ai-model').value;
 
+  // ── Offline-Modus ─────────────────────────────────────
+  if (_aiMode === 'offline') {
+    try {
+      const response = await fetch('/api/offline-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text })
+      });
+      if (typingWrap) typingWrap.style.display = 'none';
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        appendMsg('bot', `❌ ${err.error || 'Server-Fehler'}`, 'error');
+        aiHistory.pop(); setAiStatus(''); sendBtn.disabled = false; return;
+      }
+      const data = await response.json();
+      const replyText = data.reply || '(Keine Antwort)';
+      aiHistory.push({ role: 'assistant', content: replyText });
+      appendMsg('bot', replyText);
+      setAiStatus('🔌 Offline-KI · lokal · kein API-Key');
+    } catch (e) {
+      if (typingWrap) typingWrap.style.display = 'none';
+      appendMsg('bot',
+        '❌ Server nicht erreichbar.\n\nStarte den Server mit:\n  node server.js\noder:\n  ./start.sh',
+        'error'
+      );
+      aiHistory.pop(); setAiStatus('');
+    }
+    sendBtn.disabled = false;
+    return;
+  }
+
+  // ── Online-Modus (OpenAI) ─────────────────────────────
   try {
     // Anfrage geht nur an das eigene Backend — kein API-Key im Frontend
     const response = await fetch('/api/chat', {
