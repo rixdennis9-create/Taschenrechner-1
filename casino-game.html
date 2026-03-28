@@ -861,21 +861,259 @@
     }
 
     .btn-back {
-      margin-top: 0;
-      margin-bottom: 30px;
-      padding: 10px 28px;
-      font-size: 13px;
+      padding: 9px 20px;
+      font-size: 11px;
       font-family: 'Georgia', serif;
       letter-spacing: 3px;
       text-transform: uppercase;
-      background: transparent;
-      border: 1px solid #004466;
+      background: linear-gradient(135deg, #0a0005, #1a0015);
+      border: 1px solid #aa7700;
       border-radius: 6px;
-      color: #0088aa;
+      color: #ffd700;
       cursor: pointer;
       transition: all 0.2s;
+      box-shadow: 0 0 8px #ffd70018, inset 0 0 6px #00000055;
+      position: relative;
+      overflow: hidden;
     }
-    .btn-back:hover { border-color: #00aadd; color: #00ccff; background: #001a2a; }
+    .btn-back::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 55%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,215,0,0.14), transparent);
+      transition: left 0.35s;
+    }
+    .btn-back:hover::before { left: 140%; }
+    .btn-back:hover { border-color: #ffd700; color: #fff8b0; box-shadow: 0 0 14px #ffd70044; background: linear-gradient(135deg, #180010, #280020); }
+    .btn-back:active { transform: scale(0.97); }
+
+    /* ─ Game Loader ─ */
+    #game-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #18003a 0%, #3a0060 50%, #5e0078 100%);
+    }
+    .gl-inner { text-align: center; width: min(460px, 88vw); }
+    .gl-symbols-big {
+      font-size: clamp(40px, 8vw, 68px);
+      letter-spacing: 14px;
+      animation: gl-pulse 0.85s ease-in-out infinite alternate;
+      margin-bottom: 18px;
+      filter: drop-shadow(0 0 16px #ff00ffaa);
+    }
+    @keyframes gl-pulse {
+      from { opacity: 0.7; transform: scale(0.95); filter: drop-shadow(0 0 10px #ff00ff66); }
+      to   { opacity: 1.0; transform: scale(1.06); filter: drop-shadow(0 0 24px #ff00ffcc); }
+    }
+    .gl-title {
+      font-size: clamp(30px, 6vw, 58px);
+      font-weight: 900;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #ffffff 0%, #ff88ff 55%, #cc00ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 18px #ff00ffaa);
+      margin-bottom: 6px;
+    }
+    .gl-sub { font-size: 12px; color: #bb66ff; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 34px; }
+    .gl-bar-wrap {
+      width: 100%; height: 6px;
+      background: #2a005a; border-radius: 4px; overflow: hidden;
+      box-shadow: 0 0 10px #ff00ff22;
+    }
+    .gl-bar-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, #9900cc, #ff44ff, #ff00cc);
+      border-radius: 4px;
+      box-shadow: 0 0 10px #ff00ff99;
+      transition: width 0.08s linear;
+    }
+    .gl-hint { font-size: 10px; color: #6622aa; letter-spacing: 3px; margin-top: 12px; text-transform: uppercase; }
+
+    /* ─ Wild Spins Game ─ */
+    #wildspins-game {
+      position: fixed; inset: 0;
+      display: none; flex-direction: column;
+      background: radial-gradient(ellipse at 50% 0%, #2a0055 0%, #130025 50%, #070010 100%);
+      z-index: 910;
+      overflow: hidden;
+      user-select: none;
+    }
+    #wildspins-game.active { display: flex; }
+
+    .ws-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 16px 7px;
+      background: rgba(0,0,0,0.5);
+      border-bottom: 1px solid #44006a;
+      flex-shrink: 0;
+    }
+    .ws-title-text {
+      font-size: clamp(14px, 2.8vw, 24px);
+      font-weight: 900; letter-spacing: 5px;
+      background: linear-gradient(90deg, #ff88ff, #fff, #ff88ff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 8px #ff00ffaa);
+    }
+    .ws-bal-top { display: flex; flex-direction: column; align-items: flex-end; }
+    .ws-bal-label { font-size: 8px; color: #774499; letter-spacing: 2px; text-transform: uppercase; }
+    #ws-bal-top { font-size: 15px; color: #ffd700; font-weight: 700; text-shadow: 0 0 8px #ffd70055; }
+
+    .ws-main {
+      display: flex; flex: 1;
+      align-items: center; justify-content: center;
+      gap: clamp(8px, 2vw, 20px);
+      padding: 8px 10px;
+      overflow: hidden;
+    }
+
+    .ws-reel-frame {
+      position: relative;
+      background: linear-gradient(145deg, #0a0018, #150030, #0a0018);
+      border: 3px solid #7700bb;
+      border-radius: 14px;
+      padding: clamp(7px,1.5vw,12px) clamp(5px,1vw,10px);
+      box-shadow: 0 0 35px #6600aa33, 0 0 70px #33005508, inset 0 0 22px #000000aa;
+    }
+    .ws-reel-frame::before {
+      content: '✦ WILD SPINS ✦';
+      position: absolute;
+      top: -20px; left: 50%; transform: translateX(-50%);
+      font-size: clamp(9px, 1.4vw, 12px); font-weight: 900;
+      letter-spacing: 5px; color: #ff44ff; white-space: nowrap;
+      text-shadow: 0 0 8px #ff00ff, 0 0 18px #cc00cc;
+    }
+    .ws-reels { display: flex; gap: clamp(3px, 0.6vw, 6px); }
+    .ws-reel  { display: flex; flex-direction: column; gap: clamp(3px, 0.6vw, 5px); width: clamp(54px, 9vw, 84px); }
+    .ws-cell {
+      width: 100%; aspect-ratio: 1;
+      background: linear-gradient(145deg, #0e0020, #1a0038);
+      border: 1px solid #2e0050;
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: clamp(22px, 3.6vw, 36px);
+      position: relative; overflow: hidden;
+      box-shadow: inset 0 0 8px #000;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .ws-cell::after {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 38%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.06), transparent);
+      pointer-events: none;
+    }
+    .ws-cell.spinning { filter: blur(1.8px) brightness(0.85); transition: none; }
+    .ws-cell.landing  { transform: scaleY(1.08); border-color: #aa44ff; }
+    .ws-cell.win {
+      border-color: #ffd700;
+      box-shadow: 0 0 16px #ffd70099, inset 0 0 8px #ffd70022;
+      animation: cell-win 0.5s ease-in-out infinite alternate;
+    }
+    .ws-cell.scatter-win {
+      border-color: #ff44ff;
+      box-shadow: 0 0 16px #ff44ff99, inset 0 0 8px #ff44ff22;
+      animation: cell-scatter 0.5s ease-in-out infinite alternate;
+    }
+    @keyframes cell-win     { to { box-shadow: 0 0 24px #ffd700cc, inset 0 0 12px #ffd70044; } }
+    @keyframes cell-scatter { to { box-shadow: 0 0 24px #ff44ffcc, inset 0 0 12px #ff44ff44; } }
+
+    /* Right control panel */
+    .ws-panel { display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: clamp(88px, 14vw, 120px); }
+    .ws-spin-btn {
+      width: clamp(72px, 11vw, 106px);
+      height: clamp(72px, 11vw, 106px);
+      border-radius: 50%;
+      border: 3px solid #ffd700;
+      background: radial-gradient(circle at 38% 32%, #ff3300, #990000);
+      color: #fff;
+      font-family: 'Georgia', serif;
+      font-size: clamp(10px, 1.6vw, 15px);
+      font-weight: 900; letter-spacing: 3px;
+      cursor: pointer;
+      box-shadow: 0 0 22px #ff000055, 0 0 44px #aa000022, inset 0 2px 6px rgba(255,255,255,0.18);
+      transition: transform 0.12s, box-shadow 0.15s;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+      text-transform: uppercase;
+    }
+    .ws-spin-icon { font-size: clamp(16px, 2.8vw, 24px); }
+    .ws-spin-btn:hover:not(.spinning) { transform: scale(1.08); box-shadow: 0 0 32px #ff0000aa, 0 0 64px #aa000044; }
+    .ws-spin-btn:active:not(.spinning) { transform: scale(0.96); }
+    .ws-spin-btn.spinning { background: radial-gradient(circle at 38% 32%,#441100,#220000); border-color: #664400; cursor: not-allowed; opacity: 0.65; }
+
+    .ws-bet-section {
+      background: rgba(0,0,0,0.45); border: 1px solid #440066;
+      border-radius: 10px; padding: 9px 10px; text-align: center; width: 100%;
+    }
+    .ws-bet-lbl { font-size: 8px; color: #7733aa; letter-spacing: 2px; margin-bottom: 7px; text-transform: uppercase; }
+    .ws-bet-row { display: flex; align-items: center; gap: 5px; justify-content: center; }
+    .ws-bet-btn {
+      width: 26px; height: 26px; border-radius: 50%;
+      border: 1px solid #773399; background: #150025;
+      color: #ff88ff; font-size: 15px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.14s;
+    }
+    .ws-bet-btn:hover { border-color: #ffd700; color: #ffd700; }
+    .ws-bet-val { font-size: 13px; color: #ffd700; font-weight: 700; min-width: 48px; text-align: center; }
+    .ws-max-btn {
+      font-size: 8px; letter-spacing: 2px; padding: 5px 10px;
+      border: 1px solid #552277; border-radius: 5px;
+      background: #0e0020; color: #bb77ff; cursor: pointer; text-transform: uppercase;
+      transition: all 0.15s; width: 100%;
+    }
+    .ws-max-btn:hover { border-color: #ffd700; color: #ffd700; }
+
+    /* Lines counter */
+    .ws-lines-info {
+      font-size: 8px; color: #552277; letter-spacing: 1px; text-align: center; text-transform: uppercase;
+    }
+
+    /* Bottom info bar */
+    .ws-info-bar {
+      display: flex; justify-content: space-around; align-items: center;
+      background: rgba(0,0,0,0.58); border-top: 1px solid #300050;
+      padding: 9px 16px; flex-shrink: 0;
+    }
+    .ws-info-item { text-align: center; }
+    .ws-info-lbl { font-size: 8px; color: #553366; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 3px; }
+    .ws-info-val { font-size: clamp(13px, 2.2vw, 18px); color: #ffd700; font-weight: 700; }
+    .ws-info-val.win-glow { text-shadow: 0 0 14px #ffd700, 0 0 28px #ff8800; animation: win-pop 0.35s ease-out; }
+    @keyframes win-pop { from { transform: scale(1.4); } to { transform: scale(1); } }
+
+    /* Big win overlay */
+    .ws-bigwin-overlay {
+      position: absolute; inset: 0; z-index: 50;
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.78); pointer-events: none;
+    }
+    .ws-bigwin-txt {
+      font-size: clamp(30px, 7vw, 68px); font-weight: 900; letter-spacing: 6px;
+      background: linear-gradient(180deg, #fff8b0 0%, #ffd700 50%, #ff8800 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 24px #ffd700aa);
+      animation: bw-pop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .ws-bigwin-amt {
+      font-size: clamp(22px, 5vw, 48px); color: #ff88ff; font-weight: 700;
+      text-shadow: 0 0 20px #ff00ff; margin-top: 8px;
+      animation: bw-pop 0.5s 0.1s cubic-bezier(0.34,1.56,0.64,1) backwards;
+    }
+    @keyframes bw-pop { from { opacity:0; transform:scale(0.4); } to { opacity:1; transform:scale(1); } }
+
+    /* Paytable panel (left of reels) */
+    .ws-paytable-mini {
+      display: flex; flex-direction: column; gap: 4px;
+      font-size: clamp(8px, 1.3vw, 11px);
+    }
+    .ws-pt-row { display: flex; align-items: center; gap: 5px; color: #aa77cc; }
+    .ws-pt-sym { font-size: clamp(12px, 2vw, 18px); }
+    .ws-pt-val { color: #ffd700; font-weight: 700; min-width: 32px; }
   </style>
 </head>
 <body>
@@ -1185,11 +1423,11 @@
 
   <div class="lobby-grid">
 
-    <!-- Card 1: Wild Spins -->
-    <div class="lobby-card card-wildspins">
+    <!-- Card 1: Wild Spins — PLAYABLE -->
+    <div class="lobby-card card-wildspins" style="cursor:pointer;" onclick="openWildSpins()">
       <div class="lc-bg"></div>
       <div class="lc-content">
-        <span class="lc-badge">Freispiele & Multiplikator</span>
+        <span class="lc-badge" style="border-color:#ff44cc;color:#ff88ff;box-shadow:0 0 8px #ff00ff44;animation:badge-blink 1.5s ease-in-out infinite alternate;">▶ JETZT SPIELEN</span>
         <div class="lc-symbols">⭐ 🔥 💫</div>
         <div class="lc-name">Wild Spins</div>
         <ul class="lc-features">
@@ -1198,9 +1436,8 @@
           <li>Multiplikatoren bis zu 50×</li>
           <li>Sticky Wilds in Freispielen</li>
         </ul>
-        <button class="lc-play-btn">🔒 Demnächst</button>
+        <button class="lc-play-btn" style="opacity:1;cursor:pointer;background:linear-gradient(90deg,#7700cc,#aa00ff);border:1px solid #ff44ff;box-shadow:0 0 12px #ff00ff44;">🎰 Spielen</button>
       </div>
-      <div class="lc-soon"><span>Demnächst</span></div>
     </div>
 
     <!-- Card 2: Lucky 7 -->
@@ -1257,6 +1494,103 @@
       <div class="lc-soon"><span>Demnächst</span></div>
     </div>
 
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!--  GAME LOADER (2s Wild Spins cover)                          -->
+<!-- ============================================================ -->
+<div id="game-loader">
+  <div class="gl-inner">
+    <div class="gl-symbols-big">⭐ 💫 🔥</div>
+    <div class="gl-title">Wild Spins</div>
+    <div class="gl-sub">Freispiele &amp; Multiplikatoren</div>
+    <div class="gl-bar-wrap">
+      <div class="gl-bar-fill" id="gl-bar"></div>
+    </div>
+    <div class="gl-hint">Lade Spiel&hellip;</div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!--  WILD SPINS SLOT GAME                                       -->
+<!-- ============================================================ -->
+<div id="wildspins-game">
+  <!-- Header -->
+  <div class="ws-header">
+    <button class="btn-back" onclick="closeWildSpins()">&#8592; Lobby</button>
+    <div class="ws-title-text">🎰 Wild Spins</div>
+    <div class="ws-bal-top">
+      <span class="ws-bal-label">Guthaben</span>
+      <span id="ws-bal-top">100.00 €</span>
+    </div>
+  </div>
+
+  <!-- Main area -->
+  <div class="ws-main">
+
+    <!-- Paytable mini (left) -->
+    <div class="ws-paytable-mini">
+      <div class="ws-pt-row"><span class="ws-pt-sym">⭐</span><span class="ws-pt-val">×10</span><span>Wild</span></div>
+      <div class="ws-pt-row"><span class="ws-pt-sym">7️⃣</span><span class="ws-pt-val">×8</span></div>
+      <div class="ws-pt-row"><span class="ws-pt-sym">💎</span><span class="ws-pt-val">×6</span></div>
+      <div class="ws-pt-row"><span class="ws-pt-sym">🔥</span><span class="ws-pt-val">×4</span></div>
+      <div class="ws-pt-row"><span class="ws-pt-sym">💫</span><span class="ws-pt-val">×FS</span><span>Scatter</span></div>
+      <div class="ws-pt-row"><span class="ws-pt-sym">🔮</span><span class="ws-pt-val">×2.5</span></div>
+      <div class="ws-pt-row"><span class="ws-pt-sym">🌸</span><span class="ws-pt-val">×2</span></div>
+      <div class="ws-pt-row"><span class="ws-pt-sym">🍀</span><span class="ws-pt-val">×1.5</span></div>
+    </div>
+
+    <!-- Reel frame -->
+    <div class="ws-reel-frame">
+      <div class="ws-reels" id="ws-reels">
+        <!-- built by wsInit() -->
+      </div>
+    </div>
+
+    <!-- Right control panel -->
+    <div class="ws-panel">
+      <button class="ws-spin-btn" id="ws-spin-btn" onclick="wsDoSpin()">
+        <span class="ws-spin-icon">▶</span>
+        <span>SPIN</span>
+      </button>
+
+      <div class="ws-bet-section">
+        <div class="ws-bet-lbl">Einsatz/Linie</div>
+        <div class="ws-bet-row">
+          <button class="ws-bet-btn" onclick="wsBetDown()">−</button>
+          <div class="ws-bet-val" id="ws-bet-display">1.00 €</div>
+          <button class="ws-bet-btn" onclick="wsBetUp()">+</button>
+        </div>
+      </div>
+
+      <button class="ws-max-btn" onclick="wsBetMax()">MAX BET</button>
+      <div class="ws-lines-info">10 Linien</div>
+    </div>
+  </div>
+
+  <!-- Bottom info bar -->
+  <div class="ws-info-bar">
+    <div class="ws-info-item">
+      <div class="ws-info-lbl">Guthaben</div>
+      <div class="ws-info-val" id="ws-balance">100.00 €</div>
+    </div>
+    <div class="ws-info-item">
+      <div class="ws-info-lbl">Gewinn</div>
+      <div class="ws-info-val" id="ws-win-display">0.00 €</div>
+    </div>
+    <div class="ws-info-item">
+      <div class="ws-info-lbl">Gesamt-Einsatz</div>
+      <div class="ws-info-val" id="ws-total-bet">10.00 €</div>
+    </div>
+  </div>
+
+  <!-- Big Win overlay -->
+  <div class="ws-bigwin-overlay" id="ws-bigwin">
+    <div class="ws-bigwin-txt" id="ws-bigwin-txt">BIG WIN!</div>
+    <div class="ws-bigwin-amt" id="ws-bigwin-amt">€ 0</div>
   </div>
 </div>
 
@@ -1645,6 +1979,399 @@ function openSlotsLobby() {
 function closeSlotsLobby() {
   document.getElementById('slots-lobby').classList.remove('active');
   document.getElementById('games-menu').classList.add('active');
+}
+
+function openWildSpins() {
+  document.getElementById('slots-lobby').classList.remove('active');
+  const loader = document.getElementById('game-loader');
+  loader.style.display = 'flex';
+  let p = 0;
+  const bar = document.getElementById('gl-bar');
+  wsPlayLoadMusic(); // start game music during loading
+  const iv = setInterval(() => {
+    p += 100 / 32;
+    if (bar) bar.style.width = Math.min(p, 100) + '%';
+    if (p >= 100) {
+      clearInterval(iv);
+      setTimeout(() => {
+        loader.style.display = 'none';
+        const game = document.getElementById('wildspins-game');
+        game.classList.add('active');
+        wsInit();
+      }, 280);
+    }
+  }, 62);
+}
+
+function closeWildSpins() {
+  document.getElementById('wildspins-game').classList.remove('active');
+  wsStopGameMusic();
+  document.getElementById('slots-lobby').classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  WILD SPINS SLOT ENGINE
+// ══════════════════════════════════════════════════════════════
+
+// ── State ──
+let wsBalance   = 100.00;
+let wsBetIdx    = 2;      // index into WS_BETS
+let wsSpinning  = false;
+let wsGameMusicId = null;
+let wsGameMusicPlaying = false;
+let wsGMNext = 0, wsGMChord = 0;
+
+const WS_BETS  = [0.20, 0.50, 1.00, 2.00, 5.00, 10.00];
+const WS_LINES = 10;
+
+// ── Symbols ──
+const WS_EMOJI = {
+  wild:'⭐', seven:'7️⃣', diamond:'💎', fire:'🔥',
+  scatter:'💫', crystal:'🔮', flower:'🌸', clover:'🍀'
+};
+// pay multipliers [3-match, 4-match, 5-match] × bet-per-line
+const WS_PAY = {
+  wild:    [200, 500, 1000],
+  seven:   [150, 300,  800],
+  diamond: [100, 250,  600],
+  fire:    [ 75, 150,  400],
+  scatter: [  0,   0,    0], // special
+  crystal: [ 50, 100,  250],
+  flower:  [ 25,  75,  200],
+  clover:  [ 20,  50,  150],
+};
+
+// ── Reel strips (each 22 symbols, weighted) ──
+const WS_STRIPS = [
+  ['clover','flower','crystal','fire','diamond','flower','seven','clover','flower','wild',
+   'crystal','fire','flower','clover','diamond','fire','crystal','flower','seven','clover','scatter','flower'],
+  ['flower','crystal','clover','fire','flower','diamond','crystal','flower','clover','fire',
+   'wild','flower','seven','crystal','flower','clover','fire','diamond','flower','crystal','scatter','clover'],
+  ['fire','flower','crystal','clover','diamond','flower','crystal','fire','wild','flower',
+   'crystal','seven','flower','clover','fire','crystal','flower','diamond','clover','wild','scatter','flower'],
+  ['crystal','clover','flower','fire','crystal','diamond','flower','crystal','clover','fire',
+   'flower','crystal','wild','flower','clover','seven','fire','flower','crystal','clover','flower','scatter'],
+  ['clover','fire','flower','crystal','clover','fire','diamond','flower','crystal','clover',
+   'fire','flower','seven','crystal','wild','flower','clover','fire','diamond','crystal','scatter','flower'],
+];
+
+// ── 10 Paylines (row index per reel: 0=top, 1=mid, 2=bot) ──
+const WS_PAYLINES = [
+  [1,1,1,1,1], [0,0,0,0,0], [2,2,2,2,2],
+  [0,1,2,1,0], [2,1,0,1,2],
+  [0,0,1,2,2], [2,2,1,0,0],
+  [1,0,0,0,1], [1,2,2,2,1],
+  [0,1,2,2,2],
+];
+
+// ── Current reel stop positions ──
+let wsPos = [0, 5, 10, 3, 7];
+
+// ── Build grid from current positions ──
+function wsGetGrid() {
+  return wsPos.map((p, r) =>
+    [0,1,2].map(row => WS_STRIPS[r][(p + row) % WS_STRIPS[r].length])
+  );
+}
+
+// ── Initialize / render reels ──
+function wsInit() {
+  const container = document.getElementById('ws-reels');
+  if (!container) return;
+  container.innerHTML = '';
+  for (let r = 0; r < 5; r++) {
+    const col = document.createElement('div');
+    col.className = 'ws-reel';
+    col.id = `ws-reel-${r}`;
+    for (let row = 0; row < 3; row++) {
+      const cell = document.createElement('div');
+      cell.className = 'ws-cell';
+      cell.id = `ws-c-${r}-${row}`;
+      cell.textContent = WS_EMOJI[WS_STRIPS[r][(wsPos[r]+row) % WS_STRIPS[r].length]];
+      col.appendChild(cell);
+    }
+    container.appendChild(col);
+  }
+  wsUpdateUI();
+}
+
+function wsUpdateUI() {
+  const bal = document.getElementById('ws-balance');
+  const top = document.getElementById('ws-bal-top');
+  const bet = document.getElementById('ws-bet-display');
+  const tot = document.getElementById('ws-total-bet');
+  const fmt = v => v.toFixed(2) + ' €';
+  if (bal) bal.textContent = fmt(wsBalance);
+  if (top) top.textContent = fmt(wsBalance);
+  if (bet) bet.textContent = fmt(WS_BETS[wsBetIdx]);
+  if (tot) tot.textContent = fmt(WS_BETS[wsBetIdx] * WS_LINES);
+}
+
+// ── Bet controls ──
+function wsBetDown() { if (!wsSpinning && wsBetIdx > 0) { wsBetIdx--; wsUpdateUI(); } }
+function wsBetUp()   { if (!wsSpinning && wsBetIdx < WS_BETS.length-1) { wsBetIdx++; wsUpdateUI(); } }
+function wsBetMax()  { if (!wsSpinning) { wsBetIdx = WS_BETS.length-1; wsUpdateUI(); } }
+
+// ── Main spin ──
+function wsDoSpin() {
+  if (wsSpinning) return;
+  const totalBet = WS_BETS[wsBetIdx] * WS_LINES;
+  if (wsBalance < totalBet) { wsBalance = 100.00; wsUpdateUI(); return; }
+
+  wsBalance -= totalBet;
+  wsSpinning = true;
+
+  // Reset displays
+  const winEl = document.getElementById('ws-win-display');
+  if (winEl) { winEl.textContent = '0.00 €'; winEl.className = 'ws-info-val'; }
+  for (let r = 0; r < 5; r++)
+    for (let row = 0; row < 3; row++) {
+      const c = document.getElementById(`ws-c-${r}-${row}`);
+      if (c) c.className = 'ws-cell';
+    }
+
+  const spinBtn = document.getElementById('ws-spin-btn');
+  if (spinBtn) spinBtn.classList.add('spinning');
+
+  wsPlaySpin();
+
+  // Target positions
+  const targets = wsPos.map((_, r) => Math.floor(Math.random() * WS_STRIPS[r].length));
+  const stopDelays = [900, 1150, 1400, 1650, 1900];
+
+  for (let r = 0; r < 5; r++) {
+    // Rapid spin animation
+    let tick = 0;
+    const maxTick = Math.floor(stopDelays[r] / 55);
+    const iv = setInterval(() => {
+      tick++;
+      const rndPos = Math.floor(Math.random() * WS_STRIPS[r].length);
+      for (let row = 0; row < 3; row++) {
+        const c = document.getElementById(`ws-c-${r}-${row}`);
+        if (c) {
+          c.className = 'ws-cell spinning';
+          c.textContent = WS_EMOJI[WS_STRIPS[r][(rndPos+row) % WS_STRIPS[r].length]];
+        }
+      }
+      if (tick >= maxTick) {
+        clearInterval(iv);
+        // Land
+        wsPos[r] = targets[r];
+        for (let row = 0; row < 3; row++) {
+          const c = document.getElementById(`ws-c-${r}-${row}`);
+          if (c) {
+            c.className = 'ws-cell landing';
+            c.textContent = WS_EMOJI[WS_STRIPS[r][(targets[r]+row) % WS_STRIPS[r].length]];
+            setTimeout(() => { if(c) c.className = 'ws-cell'; }, 280);
+          }
+        }
+        wsPlayReelStop(r);
+        if (r === 4) {
+          setTimeout(() => {
+            wsCheckWins();
+            wsSpinning = false;
+            if (spinBtn) spinBtn.classList.remove('spinning');
+            wsUpdateUI();
+          }, 320);
+        }
+      }
+    }, 55);
+  }
+  wsUpdateUI();
+}
+
+// ── Win detection ──
+function wsCheckWins() {
+  const grid    = wsGetGrid();
+  const bet     = WS_BETS[wsBetIdx];
+  let totalWin  = 0;
+  const winCells = new Set();
+
+  WS_PAYLINES.forEach(line => {
+    const lineSyms = line.map((row, r) => grid[r][row]);
+    // Find first non-wild symbol
+    let base = lineSyms.find(s => s !== 'wild') || 'wild';
+    let count = 0;
+    for (let i = 0; i < lineSyms.length; i++) {
+      if (lineSyms[i] === base || lineSyms[i] === 'wild') count++;
+      else break;
+    }
+    if (count >= 3 && WS_PAY[base]) {
+      const mult = WS_PAY[base][count - 3];
+      if (mult > 0) {
+        totalWin += bet * mult / 100;
+        for (let i = 0; i < count; i++) winCells.add(`${i}-${line[i]}`);
+      }
+    }
+  });
+
+  // Scatter bonus
+  let scatCount = 0;
+  grid.forEach((col, r) => col.forEach((sym, row) => {
+    if (sym === 'scatter') { scatCount++; winCells.add(`${r}-${row}`); }
+  }));
+  if (scatCount >= 3) {
+    totalWin += bet * WS_LINES * (scatCount === 3 ? 5 : scatCount === 4 ? 20 : 100);
+  }
+
+  // Highlight cells
+  winCells.forEach(key => {
+    const [r, row] = key.split('-');
+    const c = document.getElementById(`ws-c-${r}-${row}`);
+    if (c) c.className = grid[+r][+row] === 'scatter' ? 'ws-cell scatter-win' : 'ws-cell win';
+  });
+
+  // Update win display
+  wsBalance += totalWin;
+  const winEl = document.getElementById('ws-win-display');
+  if (winEl) {
+    winEl.textContent = totalWin.toFixed(2) + ' €';
+    if (totalWin > 0) winEl.className = 'ws-info-val win-glow';
+  }
+  if (totalWin > 0) wsPlayWinSound(totalWin, bet * WS_LINES);
+
+  // Big win check
+  const bigThresh = bet * WS_LINES * 5;
+  if (totalWin >= bigThresh) wsShowBigWin(totalWin, bet);
+}
+
+function wsShowBigWin(amount, bet) {
+  const ov  = document.getElementById('ws-bigwin');
+  const txt = document.getElementById('ws-bigwin-txt');
+  const amt = document.getElementById('ws-bigwin-amt');
+  if (!ov) return;
+  let label = 'BIG WIN!';
+  if (amount >= bet * WS_LINES * 20) label = '★ MEGA WIN! ★';
+  if (amount >= bet * WS_LINES * 50) label = '🏆 JACKPOT! 🏆';
+  if (txt) txt.textContent = label;
+  if (amt) amt.textContent = '€ ' + amount.toFixed(2);
+  ov.style.display = 'flex';
+  setTimeout(() => { if(ov) ov.style.display = 'none'; }, 3200);
+}
+
+// ── Wild Spins sounds ──
+function wsPlaySpin() {
+  if (!audioCtx) return;
+  // Quick mechanical whoosh
+  const bufSize = Math.ceil(audioCtx.sampleRate * 0.14);
+  const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < bufSize; i++) d[i] = (Math.random()*2-1)*(1-i/bufSize);
+  const src = audioCtx.createBufferSource();
+  src.buffer = buf;
+  const hpf = audioCtx.createBiquadFilter();
+  hpf.type = 'highpass'; hpf.frequency.value = 300;
+  const g = audioCtx.createGain(); g.gain.value = 0.28;
+  src.connect(hpf); hpf.connect(g); g.connect(audioCtx.destination);
+  src.start(); src.stop(audioCtx.currentTime + 0.15);
+}
+
+function wsPlayReelStop(ri) {
+  if (!audioCtx) return;
+  const freq = 180 + ri * 38;
+  const osc = audioCtx.createOscillator();
+  const g   = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.connect(g); g.connect(audioCtx.destination);
+  osc.frequency.value = freq;
+  g.gain.setValueAtTime(0.28, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.14);
+  osc.start(); osc.stop(audioCtx.currentTime + 0.16);
+}
+
+function wsPlayWinSound(win, bet) {
+  if (!audioCtx) return;
+  const ratio = win / bet;
+  if (ratio >= 8) {
+    [523,659,784,1047,1319,1568].forEach((f,i) => {
+      const t = audioCtx.currentTime + i*0.1;
+      const osc = audioCtx.createOscillator();
+      const g   = audioCtx.createGain();
+      osc.type = 'triangle'; osc.connect(g); g.connect(audioCtx.destination);
+      osc.frequency.value = f;
+      g.gain.setValueAtTime(0.2,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.38);
+      osc.start(t); osc.stop(t+0.4);
+    });
+  } else {
+    for (let i = 0; i < 5; i++) {
+      const t = audioCtx.currentTime + i*0.065;
+      const osc = audioCtx.createOscillator();
+      const g   = audioCtx.createGain();
+      osc.type = 'triangle'; osc.connect(g); g.connect(audioCtx.destination);
+      osc.frequency.value = 1000 + Math.random()*700;
+      g.gain.setValueAtTime(0.16,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.12);
+      osc.start(t); osc.stop(t+0.14);
+    }
+  }
+}
+
+// ── Wild Spins game music (energetic Em-C-G-D, 92 BPM) ──
+const WS_GM_BPM  = 92;
+const WS_GM_BEAT = 60 / WS_GM_BPM;
+const WS_GM_CHORDS = [
+  [164.8, 196.0, 246.9],  // Em: E3 G3 B3
+  [261.6, 329.6, 392.0],  // C:  C4 E4 G4
+  [196.0, 246.9, 293.7],  // G:  G3 B3 D4
+  [146.8, 184.9, 220.0],  // D:  D3 F#3 A3
+];
+
+function wsPlayLoadMusic() {
+  if (!audioCtx || wsGameMusicPlaying) return;
+  wsGameMusicPlaying = true;
+  wsGMChord = 0;
+  wsGMNext  = audioCtx.currentTime + 0.05;
+  wsGMScheduler();
+}
+function wsStopGameMusic() {
+  wsGameMusicPlaying = false;
+  if (wsGameMusicId) clearTimeout(wsGameMusicId);
+}
+function wsGMScheduler() {
+  if (!wsGameMusicPlaying || !audioCtx) return;
+  const chordDur = WS_GM_BEAT * 2;
+  while (wsGMNext < audioCtx.currentTime + 0.5) {
+    const ch = WS_GM_CHORDS[wsGMChord % 4];
+    const t  = wsGMNext;
+    // Bright, slightly faster pads
+    ch.forEach(f => {
+      const osc = audioCtx.createOscillator();
+      const g   = audioCtx.createGain();
+      osc.type  = 'triangle';
+      osc.connect(g); g.connect(audioCtx.destination);
+      osc.frequency.value = f * 2; // octave up = brighter
+      const atk = 0.25, rel = 0.55;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.045, t + atk);
+      g.gain.setValueAtTime(0.045, t + chordDur - rel);
+      g.gain.linearRampToValueAtTime(0, t + chordDur);
+      osc.start(t); osc.stop(t + chordDur + 0.05);
+    });
+    // Staccato arpeggio (shorter, more energetic)
+    ch.forEach((f, i) => {
+      const at = t + i * (WS_GM_BEAT * 0.28);
+      const osc = audioCtx.createOscillator();
+      const g   = audioCtx.createGain();
+      osc.type  = 'square'; osc.connect(g); g.connect(audioCtx.destination);
+      osc.frequency.value = f * 4;
+      g.gain.setValueAtTime(0.028, at);
+      g.gain.exponentialRampToValueAtTime(0.001, at + 0.22);
+      osc.start(at); osc.stop(at + 0.24);
+    });
+    // Kick-like bass pulse on beat 1
+    if (wsGMChord % 4 === 0) {
+      const osc = audioCtx.createOscillator();
+      const g   = audioCtx.createGain();
+      osc.connect(g); g.connect(audioCtx.destination);
+      osc.frequency.setValueAtTime(120, t);
+      osc.frequency.exponentialRampToValueAtTime(40, t + 0.18);
+      g.gain.setValueAtTime(0.5, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.32);
+      osc.start(t); osc.stop(t + 0.34);
+    }
+    wsGMNext += chordDur;
+    wsGMChord++;
+  }
+  wsGameMusicId = setTimeout(wsGMScheduler, 100);
 }
 
 // ─── Boot sequence (called after splash click) ────────────────
