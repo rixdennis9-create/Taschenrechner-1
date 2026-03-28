@@ -2391,6 +2391,378 @@
     .levelup-overlay[data-lstyle="gold"]    .levelup-banner { border-color: rgba(255,200,0,0.6); box-shadow: 0 0 40px rgba(255,200,0,0.25); }
     .levelup-overlay[data-lstyle="cosmic"]  .levelup-banner { border-color: rgba(100,80,255,0.5); }
 
+
+    /* ═══════════════════════ UPDATE 5.0 CSS ═══════════════════════ */
+
+    /* ── Display copy-flash (subtle border pulse, no green) ── */
+    .display.copy-flash {
+      border-color: rgba(100,255,180,0.5) !important;
+      transition: border-color 0.15s ease;
+    }
+
+    /* ── Collapsible header menu ── */
+    .hdr-menu-btn {
+      position: relative;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      color: rgba(200,185,255,0.9);
+      font-size: 18px;
+      width: 38px; height: 38px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background .15s;
+    }
+    .hdr-menu-btn:active { background: rgba(255,255,255,0.18); }
+    .hdr-notif-dot {
+      display: none;
+      position: absolute;
+      top: 5px; right: 5px;
+      width: 8px; height: 8px;
+      background: #f97316;
+      border-radius: 50%;
+      border: 1.5px solid #02010a;
+    }
+    .hdr-notif-dot.visible { display: block; }
+
+    .hdr-menu-items {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      overflow: hidden;
+      max-width: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: max-width 0.32s cubic-bezier(0.4,0,0.2,1),
+                  opacity 0.22s ease;
+      white-space: nowrap;
+    }
+    .header.menu-open .hdr-menu-items {
+      max-width: 320px;
+      opacity: 1;
+      pointer-events: all;
+    }
+    /* compact chip style for menu items */
+    .hdr-chip {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: rgba(200,185,255,0.85);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 9px;
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex; align-items: center; gap: 4px;
+      transition: background .15s;
+      flex-shrink: 0;
+    }
+    .hdr-chip:active { background: rgba(255,255,255,0.17); }
+
+    /* ── Modern input bar ── */
+    .ai-input-bar {
+      display: flex !important;
+      gap: 8px !important;
+      padding: 10px 12px 10px !important;
+      background: rgba(8,5,22,0.85) !important;
+      backdrop-filter: blur(18px) !important;
+      -webkit-backdrop-filter: blur(18px) !important;
+      border-top: 1px solid rgba(100,70,220,0.18) !important;
+      border-radius: 0 !important;
+      align-items: flex-end !important;
+      flex-shrink: 0;
+    }
+    .ai-input-bar textarea {
+      flex: 1 !important;
+      min-height: 44px !important;
+      max-height: 110px !important;
+      border: 1.5px solid rgba(100,70,200,0.3) !important;
+      border-radius: 16px !important;
+      padding: 10px 14px !important;
+      font-size: 13px !important;
+      background: rgba(18,12,38,0.95) !important;
+      color: #e0e7ff !important;
+      resize: none !important;
+      outline: none !important;
+      transition: border-color .2s !important;
+      line-height: 1.4 !important;
+      font-family: inherit !important;
+    }
+    .ai-input-bar textarea:focus {
+      border-color: rgba(140,100,255,0.65) !important;
+    }
+    .ai-send-btn {
+      width: 44px !important; height: 44px !important;
+      border-radius: 50% !important;
+      background: linear-gradient(135deg,#7c3aed,#4f46e5) !important;
+      box-shadow: 0 4px 18px rgba(99,62,237,0.5) !important;
+      border: none !important;
+      color: #fff !important;
+      font-size: 18px !important;
+      cursor: pointer !important;
+      flex-shrink: 0 !important;
+      transition: transform .1s, box-shadow .1s, opacity .15s !important;
+      display: flex !important; align-items: center !important; justify-content: center !important;
+    }
+    .ai-send-btn:active {
+      transform: scale(0.92) !important;
+      box-shadow: 0 2px 8px rgba(99,62,237,0.35) !important;
+    }
+    .ai-send-btn:disabled {
+      opacity: 0.4 !important;
+      cursor: not-allowed !important;
+    }
+    .img-upload-btn {
+      width: 40px !important; height: 40px !important;
+      border-radius: 50% !important;
+      background: rgba(255,255,255,0.07) !important;
+      border: 1.5px solid rgba(255,255,255,0.12) !important;
+      color: rgba(200,180,255,0.75) !important;
+      font-size: 18px !important;
+      cursor: pointer !important;
+      flex-shrink: 0 !important;
+      transition: background .15s !important;
+      display: flex !important; align-items: center !important; justify-content: center !important;
+    }
+    .img-upload-btn:active {
+      background: rgba(255,255,255,0.16) !important;
+    }
+    .pdf-gen-btn {
+      width: 40px !important; height: 40px !important;
+      border-radius: 50% !important;
+      background: rgba(120,80,255,0.12) !important;
+      border: 1.5px solid rgba(120,80,255,0.25) !important;
+      color: rgba(180,150,255,0.8) !important;
+      font-size: 17px !important;
+      cursor: pointer !important;
+      flex-shrink: 0 !important;
+      transition: background .15s !important;
+      display: flex !important; align-items: center !important; justify-content: center !important;
+    }
+    .pdf-gen-btn:active { background: rgba(120,80,255,0.28) !important; }
+    .action-btn-group {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 5px !important;
+    }
+
+    /* ── Cosmetic Demo Modal ── */
+    .cosm-demo-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9500;
+      background: rgba(0,0,0,0.82);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .cosm-demo-modal.open { display: flex; }
+    .cosm-demo-box {
+      background: rgba(10,6,24,0.98);
+      border: 1px solid rgba(130,90,255,0.25);
+      border-radius: 22px;
+      padding: 18px 16px;
+      width: min(360px, 95vw);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .cosm-demo-box::-webkit-scrollbar { display: none; }
+    .cosm-demo-hdr {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cosm-demo-icon { font-size: 32px; flex-shrink: 0; }
+    .cosm-demo-info { flex: 1; }
+    .cosm-demo-name { font-size: 15px; font-weight: 800; color: #e0d8ff; }
+    .cosm-demo-cat  { font-size: 10px; color: rgba(165,180,252,0.5); margin-top: 2px; text-transform: uppercase; letter-spacing: .1em; }
+    .cosm-demo-close {
+      background: rgba(255,255,255,0.07);
+      border: none; border-radius: 50%;
+      width: 30px; height: 30px;
+      color: rgba(200,185,255,0.65);
+      font-size: 13px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .cosm-demo-stage {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      min-height: 120px;
+      padding: 14px;
+      overflow: hidden;
+      position: relative;
+    }
+    .cosm-demo-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .cdm-equip-btn {
+      flex: 1;
+      padding: 11px;
+      background: rgba(120,80,255,0.35);
+      border: 1px solid rgba(120,80,255,0.5);
+      border-radius: 14px;
+      color: #e0d8ff;
+      font-size: 13px; font-weight: 700;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .cdm-equip-btn:active { background: rgba(120,80,255,0.55); }
+    .cdm-equip-btn.active-eq {
+      background: rgba(80,200,120,0.3);
+      border-color: rgba(80,200,120,0.5);
+    }
+    .cdm-close-btn {
+      padding: 11px 18px;
+      background: rgba(255,255,255,0.07);
+      border: none; border-radius: 14px;
+      color: rgba(200,185,255,0.65);
+      font-size: 13px; cursor: pointer;
+    }
+
+    /* Demo stage sub-elements */
+    .demo-btns { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    .demo-btn {
+      padding: 10px 18px; border-radius: 12px;
+      font-size: 16px; font-weight: 600; border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08); color: #e0d8ff; cursor: default;
+      transition: filter .15s;
+    }
+    .demo-display {
+      background: rgba(5,3,18,0.8);
+      border: 1px solid rgba(120,90,255,0.2);
+      border-radius: 14px;
+      padding: 14px 18px;
+      text-align: right;
+      color: #fff; font-size: 36px; font-weight: 200;
+      letter-spacing: -1px;
+    }
+    .demo-nav {
+      display: flex; justify-content: space-around;
+      background: rgba(10,8,24,0.9);
+      border-radius: 12px; padding: 8px 0;
+    }
+    .demo-nav-item { font-size: 20px; }
+    .demo-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      margin: 0 auto;
+      background: radial-gradient(circle at 35% 35%, rgba(130,80,255,0.5), rgba(40,10,80,0.8));
+      border: 3px solid rgba(130,80,255,0.6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+    }
+    .demo-bg {
+      width: 100%; height: 100px; border-radius: 12px;
+    }
+    .demo-fx-zone {
+      min-height: 80px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; gap: 8px;
+    }
+    @keyframes demo-sparkle {
+      0%,100% { opacity:1; transform: scale(1); }
+      50% { opacity:0.4; transform: scale(1.3); }
+    }
+    @keyframes demo-rainbow {
+      0%   { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+    @keyframes demo-pulse-ring {
+      0%,100% { box-shadow: 0 0 0 0 rgba(180,140,255,0.6); }
+      50%      { box-shadow: 0 0 0 10px rgba(180,140,255,0); }
+    }
+    @keyframes demo-snow {
+      0%   { transform: translateY(-10px) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(80px)  rotate(180deg); opacity: 0; }
+    }
+
+    /* ── Improved fx effects ── */
+    /* fx-sparkle: bright yellow burst on tap */
+    body.c-fx-sparkle .calc-btn:active {
+      filter: brightness(1.7) saturate(1.5) !important;
+    }
+    body.c-fx-sparkle .calc-btn::after {
+      background: radial-gradient(circle, rgba(255,240,80,0.7) 0%, rgba(255,180,0,0.3) 40%, transparent 70%) !important;
+    }
+
+    /* fx-rainbow: continuous border color cycle */
+    @keyframes rainbow-border-5 {
+      0%   { border-color: hsl(0,85%,60%);   }
+      20%  { border-color: hsl(72,85%,60%);  }
+      40%  { border-color: hsl(144,85%,60%); }
+      60%  { border-color: hsl(216,85%,60%); }
+      80%  { border-color: hsl(288,85%,60%); }
+      100% { border-color: hsl(360,85%,60%); }
+    }
+    body.c-fx-rainbow .calc-btn {
+      animation: rainbow-border-5 2s linear infinite !important;
+    }
+    body.c-fx-rainbow .calc-btn:active {
+      filter: hue-rotate(180deg) brightness(1.4) !important;
+      animation: none !important;
+    }
+
+    /* fx-snow: animated snowflakes over calculator */
+    @keyframes snow-fall-5 {
+      0%   { transform: translateY(-20px) translateX(0) rotate(0deg);   opacity: 0.9; }
+      100% { transform: translateY(105vh) translateX(30px) rotate(360deg); opacity: 0; }
+    }
+    body.c-fx-snow .calculator::before {
+      content: '❄❄❄❄❄❄❄❄❄❄';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      font-size: 14px;
+      letter-spacing: 18px;
+      color: rgba(200,230,255,0.55);
+      animation: snow-fall-5 6s linear infinite;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    /* fx-pulse: ring expanding from each button */
+    @keyframes btn-pulse-ring-5 {
+      0%,100% { box-shadow: 0 0 0 0 rgba(180,140,255,0.45),
+                             0 4px 16px rgba(0,0,0,0.35); }
+      50%     { box-shadow: 0 0 0 7px rgba(180,140,255,0),
+                             0 4px 16px rgba(0,0,0,0.35); }
+    }
+    body.c-fx-pulse .calc-btn {
+      animation: btn-pulse-ring-5 1.8s ease-in-out infinite !important;
+    }
+
+    /* fx-matrix: scrolling green code on display */
+    @keyframes matrix-scroll-5 {
+      0%   { background-position: 0 0; }
+      100% { background-position: 0 60px; }
+    }
+    body.c-fx-matrix .display {
+      background-image: repeating-linear-gradient(
+        180deg,
+        transparent 0px, transparent 10px,
+        rgba(0,255,65,0.04) 10px, rgba(0,255,65,0.04) 11px
+      ) !important;
+      animation: matrix-scroll-5 1.5s linear infinite !important;
+    }
+    body.c-fx-matrix .result { color: #00ff41 !important; text-shadow: 0 0 12px #00ff4188 !important; }
+
+    /* fx-aurora: vivid hue shift across whole app */
+    @keyframes aurora-shift-5 {
+      0%   { filter: hue-rotate(0deg)   brightness(1)    saturate(1.3); }
+      33%  { filter: hue-rotate(60deg)  brightness(1.05) saturate(1.5); }
+      66%  { filter: hue-rotate(120deg) brightness(1.08) saturate(1.4); }
+      100% { filter: hue-rotate(0deg)   brightness(1)    saturate(1.3); }
+    }
+    body.c-fx-aurora .calculator {
+      animation: aurora-shift-5 4s ease infinite !important;
+    }
+
   </style>
 </head>
 <body>
@@ -2538,13 +2910,13 @@
         <div class="info-dev-row">
           <div class="info-dev-avatar">D</div>
           <div>
-            <div class="info-dev-name">Dennis Rix</div>
+            <div class="info-dev-name">DRX Studios</div>
             <div class="info-dev-role">Entwickler · Developer</div>
           </div>
         </div>
         <div class="info-app-row">
           <span class="info-app-name">Dennis Pro Rechner · AI-Taschenrechner</span>
-          <span class="info-app-version">v2.1</span>
+          <span class="info-app-version">v5.0</span>
         </div>
       </div>
 
@@ -2557,17 +2929,20 @@
   <div class="bubble-body">
     <div class="bubble-tag">🔔 Neuigkeit</div>
     <div class="bubble-ticker-wrap">
-      <span class="bubble-ticker">Update 3.0 · Profil · Kosmetik · XP-System · Powered by Rix Studios &nbsp;&nbsp;&nbsp; Update 3.0 · Profil · Kosmetik · XP-System · Powered by Rix Studios</span>
+      <span class="bubble-ticker">Update 5.0 · Demo-Overlays · Kollaps-Menü · PDF-Fix · Modernes UI · DRX Studios &nbsp;&nbsp;&nbsp; Update 5.0 · Demo-Overlays · Kollaps-Menü · PDF-Fix · Modernes UI · DRX Studios</span>
     </div>
     <div class="bubble-notes" id="bubble-notes">
-      <div class="bubble-notes-title">Update 3.0 — Was ist neu?</div>
+      <div class="bubble-notes-title">Update 5.0 — Was ist neu?</div>
       <ul class="bubble-notes-list">
-        <li>👤 Profil-System mit Level 1–50 und XP</li>
-        <li>🎒 Freischalt-Pass: 50 kosmetische Extras</li>
-        <li>🎊 Level-Up Konfetti-Animation</li>
-        <li>✏️ Eigener Nutzername & Avatar-Farbe</li>
-        <li>🌈 Tasche: Designs einfach ausrüsten</li>
-        <li>🔧 Weitere Fehlerbehebungen & Performance</li>
+        <li>🎭 Kosmetik-Demo-Overlay mit Live-Vorschau</li>
+        <li>☰ Kollaps-Menü im Header (sauberer Look)</li>
+        <li>📄 PDF-Generator Fehler behoben</li>
+        <li>💬 Modernes Chat-Eingabefeld</li>
+        <li>⚡ Verbesserte Kosmetik-Effekte</li>
+        <li>🎨 Profilfoto-Upload & Farbauswahl</li>
+        <li>📋 Berechnungsverlauf</li>
+        <li>🚀 start.sh: Server per Doppelklick starten</li>
+        <li>🏢 DRX Studios — v5.0</li>
       </ul>
     </div>
     <button class="bubble-expand-btn" id="bubble-expand-btn" onclick="toggleBubbleNotes(event)">▼ Mehr</button>
@@ -2588,19 +2963,22 @@
   </div>
 
   <!-- HEADER -->
-  <div class="header">
+  <div class="header" id="main-header">
     <div class="header-left">
-      <button class="gear-btn" onclick="openSettings()">
-        <span class="gear-icon">⚙️</span>
-        <span class="gear-label">Einstellung</span>
+      <button class="hdr-menu-btn" id="hdr-menu-btn" onclick="toggleHeaderMenu(event)" title="Menü">
+        <span>☰</span>
+        <div class="hdr-notif-dot" id="hdr-notif-dot"></div>
       </button>
-      <button class="notif-btn" onclick="toggleNotif(event)">
-        <div class="notif-box">!</div>
-        <span class="notif-label">Neu</span>
-      </button>
+      <div class="hdr-menu-items" id="hdr-menu-items">
+        <button class="hdr-chip" onclick="openSettings();closeHeaderMenu()">⚙️ Einstellung</button>
+        <button class="hdr-chip" onclick="toggleHistory(event);closeHeaderMenu()">📋 Verlauf</button>
+        <button class="hdr-chip notif-btn" id="notif-chip" onclick="toggleNotif(event);closeHeaderMenu()">
+          <div class="notif-box">!</div>
+          <span>Neu</span>
+        </button>
+      </div>
     </div>
     <div class="header-right">
-      <button class="history-btn" onclick="toggleHistory(event)" title="Verlauf">📋</button>
       <button class="tasche-btn" onclick="openTasche()" title="Tasche">🎒</button>
       <button class="profile-btn" onclick="openProfile()">
         <div class="profile-avatar" id="hdr-avatar">👤</div>
@@ -2787,9 +3165,9 @@
     <!-- Model Panel (hidden by default) -->
     <div class="ai-model-panel" id="ai-model-panel">
       <select id="ai-model">
-        <option value="claude-haiku-4-5">⚡ Claude Haiku 4.5 — schnell</option>
-        <option value="claude-sonnet-4-6">⚖ Claude Sonnet 4.6 — ausgewogen</option>
-        <option value="claude-opus-4-6">🏆 Claude Opus 4.6 — stärkst</option>
+        <option value="gpt-4o-mini">⚡ GPT-4o Mini — schnell</option>
+        <option value="gpt-4o">⚖ GPT-4o — ausgewogen</option>
+        <option value="gpt-4-turbo">🏆 GPT-4 Turbo — stärkst</option>
       </select>
       <button class="ai-clear-btn" onclick="clearChat()">✕ Chat löschen</button>
     </div>
@@ -2877,8 +3255,10 @@ function toggleNotif(e) {
   } else {
     const btn = e.currentTarget;
     const rect = btn.getBoundingClientRect();
-    bubble.style.left = (rect.right + 10) + 'px';
-    bubble.style.top  = rect.top + 'px';
+    const calcEl = document.querySelector('.calculator');
+    const calcRect = calcEl ? calcEl.getBoundingClientRect() : { left: 0, top: 60 };
+    bubble.style.left = (calcRect.left + 10) + 'px';
+    bubble.style.top  = (rect.bottom + 6) + 'px';
     bubble.style.display = 'block';
     notifOpen = true;
   }
@@ -3000,9 +3380,9 @@ document.addEventListener('DOMContentLoaded', function() {
       var res = document.getElementById('result');
       if (!res || !res.textContent) return;
       navigator.clipboard && navigator.clipboard.writeText(res.textContent).then(function() {
-        var orig = res.style.color;
-        res.style.color = '#22c55e';
-        setTimeout(function() { res.style.color = orig; }, 600);
+        /* silent copy — no color flash */
+        disp.classList.add('copy-flash');
+        setTimeout(function() { disp.classList.remove('copy-flash'); }, 350);
       }).catch(function() {});
     });
   }
@@ -3085,7 +3465,7 @@ function _backToKlassenDOM() {
 ═══════════════════════════════════════════════════ */
 
 // Der API-Key befindet sich ausschließlich im Backend (server.js / .env).
-// Das Frontend sendet Anfragen nur an /api/chat – niemals direkt an Anthropic.
+// Das Frontend sendet Anfragen nur an /api/chat – niemals direkt an OpenAI.
 
 const AI_SYSTEM_PROMPT = `Du bist ein intelligenter Assistent, der in den Dennis Pro Rechner integriert ist.
 
@@ -3649,7 +4029,7 @@ async function klasseSend() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5',
+        model: 'gpt-4o-mini',
         system: klasseSystemPrompts[activeKlasse],
         messages: hist,
         max_tokens: 1200
@@ -3963,7 +4343,7 @@ function renderTasche() {
       '<div class="cosm-icon">' + c.icon + '</div>' +
       '<div class="cosm-name">' + c.name + '</div>' +
       '<div class="cosm-req">' + (unlocked ? (equippedInCat ? '✓ Aktiv' : 'Ausrüsten') : 'Lvl ' + c.lvl) + '</div>' +
-      (unlocked ? '<button class="cosm-preview-btn" onclick="event.stopPropagation();previewCosmetic(\'' + c.id + '\')">👁 Vorschau</button>' : '');
+      (unlocked ? '<button class="cosm-preview-btn" onclick="event.stopPropagation();openCosmeticDemo(\'' + c.id + '\')">👁 Demo</button>' : '');
     if (unlocked) div.onclick = function() { equipCosmetic(c.id); };
     frag.appendChild(div);
   });
@@ -4355,7 +4735,7 @@ function openPdfGenerator() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'claude-haiku-4-5',
+      model: 'gpt-4o-mini',
       system: systemCtx,
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 1800
@@ -4413,6 +4793,181 @@ loadProfile = function() {
   _origLoadProfile();
   updateProfilePhotoHeader();
 };
+
+
+
+/* ═══════════════════════════════════════════════════
+   UPDATE 5.0 — NEW FUNCTIONS
+═══════════════════════════════════════════════════ */
+
+// ── Collapsible header menu ───────────────────────
+var _headerMenuOpen = false;
+
+function toggleHeaderMenu(e) {
+  if (e) e.stopPropagation();
+  _headerMenuOpen = !_headerMenuOpen;
+  var hdr = document.getElementById('main-header');
+  if (hdr) hdr.classList.toggle('menu-open', _headerMenuOpen);
+}
+
+function closeHeaderMenu() {
+  _headerMenuOpen = false;
+  var hdr = document.getElementById('main-header');
+  if (hdr) hdr.classList.remove('menu-open');
+}
+
+// Close on outside click
+document.addEventListener('click', function(e) {
+  if (!_headerMenuOpen) return;
+  var menuBtn = document.getElementById('hdr-menu-btn');
+  var menuItems = document.getElementById('hdr-menu-items');
+  if (menuBtn && menuBtn.contains(e.target)) return;
+  if (menuItems && menuItems.contains(e.target)) return;
+  closeHeaderMenu();
+});
+
+// ── Cosmetic Demo Modal ───────────────────────────
+var _demoId = null;
+
+function openCosmeticDemo(id) {
+  var c = null;
+  for (var i = 0; i < COSMETICS.length; i++) { if (COSMETICS[i].id === id) { c = COSMETICS[i]; break; } }
+  if (!c) return;
+  _demoId = id;
+
+  // Apply live body class so user sees the real effect
+  if (_previewTimer) { clearTimeout(_previewTimer); _previewTimer = null; }
+  if (_previewId && _previewId !== id) {
+    var c2 = null;
+    for (var j = 0; j < COSMETICS.length; j++) { if (COSMETICS[j].id === _previewId) { c2 = COSMETICS[j]; break; } }
+    if (c2 && profile.equipped[c2.cat] !== _previewId) document.body.classList.remove('c-' + _previewId);
+  }
+  document.body.classList.add('c-' + id);
+  _previewId = id;
+
+  // Fill modal info
+  var iconEl = document.getElementById('cdm-icon');
+  var nameEl = document.getElementById('cdm-name');
+  var catEl  = document.getElementById('cdm-cat');
+  var descEl = document.getElementById('cdm-desc');
+  if (iconEl) iconEl.textContent = c.icon;
+  if (nameEl) nameEl.textContent = c.name;
+  if (catEl)  catEl.textContent  = c.cat + ' · Level ' + c.lvl + ' erforderlich';
+  if (descEl) descEl.textContent = c.desc || '';
+
+  // Equip button state
+  var eqBtn = document.getElementById('cdm-equip-btn');
+  var isEquipped = profile.equipped[c.cat] === id;
+  if (eqBtn) {
+    eqBtn.textContent = isEquipped ? '✓ Ausgerüstet' : 'Ausrüsten';
+    eqBtn.classList.toggle('active-eq', isEquipped);
+  }
+
+  // Render demo stage
+  renderDemoStage(c);
+
+  // Show modal
+  var modal = document.getElementById('cosm-demo-modal');
+  if (modal) modal.classList.add('open');
+}
+
+function closeCosmeticDemo() {
+  var modal = document.getElementById('cosm-demo-modal');
+  if (modal) modal.classList.remove('open');
+  // Remove live preview if not equipped
+  if (_previewId) {
+    var c = null;
+    for (var i = 0; i < COSMETICS.length; i++) { if (COSMETICS[i].id === _previewId) { c = COSMETICS[i]; break; } }
+    if (c && profile.equipped[c.cat] !== _previewId) {
+      document.body.classList.remove('c-' + _previewId);
+    }
+    _previewId = null;
+  }
+  _demoId = null;
+}
+
+function equipFromDemo() {
+  if (!_demoId) return;
+  equipCosmetic(_demoId);
+  // Update equip button
+  var c = null;
+  for (var i = 0; i < COSMETICS.length; i++) { if (COSMETICS[i].id === _demoId) { c = COSMETICS[i]; break; } }
+  var eqBtn = document.getElementById('cdm-equip-btn');
+  if (eqBtn && c) {
+    var isEquipped = profile.equipped[c.cat] === _demoId;
+    eqBtn.textContent = isEquipped ? '✓ Ausgerüstet' : 'Ausrüsten';
+    eqBtn.classList.toggle('active-eq', isEquipped);
+  }
+}
+
+function renderDemoStage(c) {
+  var stage = document.getElementById('cdm-stage');
+  if (!stage) return;
+  var html = '';
+  var cat = c.cat;
+
+  if (cat === 'Tasten') {
+    html = '<div class="demo-btns">' +
+      '<div class="demo-btn btn-num">7</div>' +
+      '<div class="demo-btn btn-num">8</div>' +
+      '<div class="demo-btn btn-op">+</div>' +
+      '<div class="demo-btn btn-eq">=</div>' +
+      '</div>' +
+      '<div style="font-size:9px;color:rgba(165,180,252,0.45);text-align:center;margin-top:10px;">Live-Vorschau der Tasten aktiv</div>';
+  } else if (cat === 'Display') {
+    html = '<div class="demo-display">1.337</div>' +
+      '<div style="font-size:9px;color:rgba(165,180,252,0.45);text-align:center;margin-top:10px;">Live-Vorschau des Displays aktiv</div>';
+  } else if (cat === 'Hintergrund') {
+    var bgMap = {
+      'bg-nebula':    'radial-gradient(ellipse at 40% 40%,#6b21a8 0%,#1e1b4b 45%,#02010a 100%)',
+      'bg-solar':     'radial-gradient(ellipse at 50% 50%,#f97316 0%,#7c2d12 40%,#02010a 100%)',
+      'bg-teal':      'radial-gradient(ellipse at 30% 60%,#0d9488 0%,#042f2e 50%,#02010a 100%)',
+      'bg-darkspace': 'radial-gradient(ellipse at 50% 50%,#0f0a1a 0%,#02010a 100%)',
+      'bg-aurora':    'linear-gradient(135deg,#064e3b,#1e3a5f,#4c1d95,#02010a)',
+      'bg-cosmic':    'radial-gradient(ellipse at 20% 80%,#7c3aed 0%,#1e1b4b 40%,#02010a 100%)',
+      'bg-redgiant':  'radial-gradient(ellipse at 50% 30%,#dc2626 0%,#7f1d1d 40%,#02010a 100%)',
+      'bg-rainbow':   'linear-gradient(135deg,#dc2626,#d97706,#16a34a,#2563eb,#7c3aed)',
+      'bg-lava':      'radial-gradient(ellipse at 30% 70%,#ea580c 0%,#7f1d1d 40%,#02010a 100%)',
+      'bg-ocean':     'radial-gradient(ellipse at 50% 40%,#0369a1 0%,#0c1a2e 50%,#02010a 100%)'
+    };
+    var grad = bgMap[c.id] || 'radial-gradient(ellipse,#333,#111)';
+    html = '<div class="demo-bg" style="background:' + grad + '"></div>';
+  } else if (cat === 'Navigation') {
+    html = '<div class="demo-nav">' +
+      '<span class="demo-nav-item">⊞</span>' +
+      '<span class="demo-nav-item">⌂</span>' +
+      '<span class="demo-nav-item">✦</span>' +
+      '</div>' +
+      '<div style="font-size:9px;color:rgba(165,180,252,0.45);text-align:center;margin-top:10px;">Live-Vorschau der Navigation aktiv</div>';
+  } else if (cat === 'Rahmen') {
+    html = '<div class="demo-avatar" id="cdm-avatar">😎</div>' +
+      '<div style="font-size:9px;color:rgba(165,180,252,0.45);text-align:center;margin-top:10px;">Avatar-Rahmen Vorschau</div>';
+    // Apply frame CSS var
+    var frameColors = { 'fr-star':'#fbbf24','fr-diamond':'#67e8f9','fr-crown':'#fde68a','fr-hex':'#818cf8','fr-glow':'#f0abfc','fr-fire':'#f97316' };
+    var fc = frameColors[c.id] || '#a78bfa';
+    stage.innerHTML = html;
+    var av = document.getElementById('cdm-avatar');
+    if (av) {
+      av.style.border = '4px solid ' + fc;
+      av.style.boxShadow = '0 0 20px ' + fc + '88';
+    }
+    return;
+  } else if (cat === 'Effekte') {
+    var fxHtml = {
+      'fx-sparkle': '<div class="demo-fx-zone" style="animation:demo-sparkle 0.8s ease-in-out infinite">✨✨✨</div>',
+      'fx-rainbow': '<div class="demo-fx-zone" style="animation:demo-rainbow 2s linear infinite">🌈 Rainbow 🌈</div>',
+      'fx-snow':    '<div class="demo-fx-zone">❄️ ❄️ ❄️ ❄️ ❄️</div>',
+      'fx-pulse':   '<div class="demo-fx-zone"><div style="width:60px;height:60px;border-radius:50%;background:rgba(140,80,255,0.3);animation:demo-pulse-ring 1.5s ease-in-out infinite;display:flex;align-items:center;justify-content:center;font-size:20px;">💫</div></div>',
+      'fx-matrix':  '<div class="demo-fx-zone" style="color:#00ff41;font-family:monospace;font-size:11px;letter-spacing:2px;text-shadow:0 0 8px #00ff41;">01101001 11001010<br>10110100 01011001</div>',
+      'fx-aurora':  '<div class="demo-fx-zone" style="animation:demo-rainbow 3s linear infinite;font-size:32px;">🌌</div>'
+    };
+    html = (fxHtml[c.id] || '<div class="demo-fx-zone">✨</div>') +
+      '<div style="font-size:9px;color:rgba(165,180,252,0.45);text-align:center;margin-top:8px;">Live-Effekt auf die App angewendet</div>';
+  } else {
+    html = '<div class="demo-fx-zone" style="font-size:32px;">' + c.icon + '</div>';
+  }
+  stage.innerHTML = html;
+}
 
 
 // ── Load profile on startup ──
@@ -4518,6 +5073,28 @@ loadProfile();
     <div class="pdf-modal-actions">
       <button class="pdf-dl-btn" id="pdf-dl-btn" onclick="printPdf()" style="display:none">🖨️ Als PDF speichern</button>
       <button class="pdf-close-btn" onclick="closePdfModal()">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     COSMETIC DEMO MODAL
+════════════════════════════════════════════ -->
+<div class="cosm-demo-modal" id="cosm-demo-modal">
+  <div class="cosm-demo-box">
+    <div class="cosm-demo-hdr">
+      <div class="cosm-demo-icon" id="cdm-icon">✨</div>
+      <div class="cosm-demo-info">
+        <div class="cosm-demo-name" id="cdm-name">Kosmetik</div>
+        <div class="cosm-demo-cat" id="cdm-cat">Kategorie</div>
+      </div>
+      <button class="cosm-demo-close" onclick="closeCosmeticDemo()">✕</button>
+    </div>
+    <div class="cosm-demo-stage" id="cdm-stage"></div>
+    <div style="font-size:9.5px;color:rgba(165,180,252,0.45);text-align:center;" id="cdm-desc"></div>
+    <div class="cosm-demo-actions">
+      <button class="cdm-equip-btn" id="cdm-equip-btn" onclick="equipFromDemo()">Ausrüsten</button>
+      <button class="cdm-close-btn" onclick="closeCosmeticDemo()">Schließen</button>
     </div>
   </div>
 </div>

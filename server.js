@@ -6,20 +6,21 @@ const path    = require('path');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
-const API_KEY = process.env.ANTHROPIC_API_KEY;
+const API_KEY = process.env.OPENAI_API_KEY;
 
 /* ── Startup check ──────────────────────────────────── */
-if (!API_KEY || !API_KEY.startsWith('sk-ant-')) {
+if (!API_KEY || !API_KEY.startsWith('sk-')) {
   console.error('');
-  console.error('❌  ANTHROPIC_API_KEY fehlt oder ist ungültig.');
+  console.error('❌  OPENAI_API_KEY fehlt oder ist ungültig.');
   console.error('    1. Kopiere .env.example → .env');
-  console.error('    2. Trage deinen Schlüssel in .env ein.');
+  console.error('    2. Trage deinen OpenAI-Schlüssel in .env ein.');
+  console.error('       https://platform.openai.com/api-keys');
   console.error('');
   process.exit(1);
 }
 
 /* ── Middleware ─────────────────────────────────────── */
-app.use(express.json({ limit: '8mb' })); // increased for base64 image uploads
+app.use(express.json({ limit: '8mb' }));
 
 // Statische Dateien (index.html) aus dem gleichen Verzeichnis
 app.use(express.static(path.join(__dirname)));
@@ -34,66 +35,74 @@ app.post('/api/chat', async (req, res) => {
   }
 
   const ALLOWED_MODELS = [
-    'claude-haiku-4-5',
-    'claude-sonnet-4-6',
-    'claude-opus-4-6'
+    'gpt-4o-mini',
+    'gpt-4o',
+    'gpt-4-turbo'
   ];
-  const selectedModel = ALLOWED_MODELS.includes(model) ? model : 'claude-haiku-4-5';
+  const selectedModel = ALLOWED_MODELS.includes(model) ? model : 'gpt-4o-mini';
 
-  // Nachrichten bereinigen — unterstützt Text und Bild-Arrays (vision)
-  const safeMessages = messages.map(m => {
+  // Nachrichten für OpenAI aufbereiten
+  const openaiMessages = [];
+
+  // System-Nachricht als erste Nachricht einfügen
+  if (typeof system === 'string' && system.trim()) {
+    openaiMessages.push({ role: 'system', content: system.slice(0, 4000) });
+  }
+
+  // Benutzer/Assistent-Nachrichten konvertieren
+  for (const m of messages) {
     const role = m.role === 'assistant' ? 'assistant' : 'user';
-    // Vision: content is an array with image + text parts
+    // Vision: content ist ein Array mit Bild- und Text-Teilen
     if (Array.isArray(m.content)) {
-      const safeParts = m.content.map(part => {
+      const parts = m.content.map(part => {
         if (part.type === 'text') {
           return { type: 'text', text: String(part.text || '').slice(0, 8000) };
         }
+        // Bild: Anthropic-Format → OpenAI-Format konvertieren
         if (part.type === 'image' && part.source && part.source.type === 'base64') {
-          // Validate media type
-          const allowed = ['image/jpeg','image/png','image/gif','image/webp'];
-          const mt = allowed.includes(part.source.media_type) ? part.source.media_type : 'image/jpeg';
-          return { type: 'image', source: { type: 'base64', media_type: mt, data: part.source.data } };
+          const mt = part.source.media_type || 'image/jpeg';
+          return {
+            type: 'image_url',
+            image_url: { url: `data:${mt};base64,${part.source.data}` }
+          };
         }
         return null;
       }).filter(Boolean);
-      return { role, content: safeParts };
+      openaiMessages.push({ role, content: parts });
+    } else {
+      openaiMessages.push({ role, content: String(m.content).slice(0, 8000) });
     }
-    return { role, content: String(m.content).slice(0, 8000) };
-  });
+  }
 
   try {
-    // Dynamischer import für node-fetch (ESM-Modul)
     const { default: fetch } = await import('node-fetch');
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method:  'POST',
       headers: {
-        'Content-Type':      'application/json',
-        'x-api-key':         API_KEY,        // Key bleibt ausschließlich im Backend
-        'anthropic-version': '2023-06-01'
+        'Content-Type':  'application/json',
+        'Authorization': `Bearer ${API_KEY}`
       },
       body: JSON.stringify({
         model:      selectedModel,
-        max_tokens: 1024,
-        system:     typeof system === 'string' ? system.slice(0, 4000) : undefined,
-        messages:   safeMessages
+        max_tokens: Math.min(parseInt(req.body.max_tokens) || 1024, 2000),
+        messages:   openaiMessages
       })
     });
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
-      const msg = err?.error?.message || `Anthropic API Fehler ${response.status}`;
-      // Statuscode weiterleiten, aber den API-Key nie in Fehlermeldungen
+      const msg = err?.error?.message || `OpenAI API Fehler ${response.status}`;
       return res.status(response.status).json({ error: msg });
     }
 
     const data = await response.json();
+    const replyText = data.choices?.[0]?.message?.content || '';
 
-    // Nur relevante Felder ans Frontend senden – nie den raw Request inkl. Key
+    // Antwort im Frontend-kompatiblen Format zurückgeben
     res.json({
-      content: data.content,
-      usage:   data.usage,
+      content: [{ type: 'text', text: replyText }],
+      usage:   { output_tokens: data.usage?.completion_tokens },
       model:   data.model
     });
 
@@ -114,6 +123,6 @@ app.listen(PORT, () => {
   console.log('✅  Dennis Pro Rechner läuft!');
   console.log(`    → http://localhost:${PORT}`);
   console.log('');
-  console.log('🔒  API-Key ist sicher im Backend – niemals im Frontend sichtbar.');
+  console.log('🔒  OpenAI API-Key ist sicher im Backend – niemals im Frontend sichtbar.');
   console.log('');
 });
