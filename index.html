@@ -4774,54 +4774,215 @@ function showLevelUpAnim(newLevel) {
   setTimeout(closeLevelUp, 6000);
 }
 
-// ── PDF Generator ─────────────────────────────────
+// ── PDF Generator (100% lokal, kein API-Key nötig) ──
+
 var _pdfContent = '';
+
+/* Zufallszahl zwischen min und max (inklusiv) */
+function _rnd(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+/* Zufälliges Element aus Array */
+function _pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+/* Bruch als String */
+function _frac(n, d) { return n + '/' + d; }
+
+/**
+ * Generiert 13 Matheaufgaben lokal – passend zur Klassenstufe.
+ * Keine API, kein Internet, keine Rate-Limits.
+ */
+function generateLocalMathTest(klasse) {
+  var tasks = [];
+  var r = _rnd;
+
+  switch (parseInt(klasse)) {
+
+    case 1: // Addition & Subtraktion bis 20
+      for (var i = 0; i < 13; i++) {
+        if (Math.random() < 0.55) {
+          var a = r(1,9), b = r(1, 20-a);
+          tasks.push(a + ' + ' + b + ' = ___');
+        } else {
+          var a = r(5,20), b = r(1,a);
+          tasks.push(a + ' − ' + b + ' = ___');
+        }
+      }
+      break;
+
+    case 2: // Addition/Subtraktion bis 100, einfache Multiplikation
+      for (var i = 0; i < 13; i++) {
+        var t = r(1,3);
+        if (t===1) { var a=r(10,80),b=r(5,100-a); tasks.push(a+' + '+b+' = ___'); }
+        else if (t===2) { var a=r(20,99),b=r(5,a); tasks.push(a+' − '+b+' = ___'); }
+        else { var a=_pick([2,5,10]),b=r(1,10); tasks.push(a+' × '+b+' = ___'); }
+      }
+      break;
+
+    case 3: // Kleines 1×1, Division, Zahlen bis 1000
+      for (var i = 0; i < 13; i++) {
+        var t = r(1,4);
+        if (t===1) { var a=r(2,10),b=r(2,10); tasks.push(a+' × '+b+' = ___'); }
+        else if (t===2) { var b=r(2,9),q=r(2,10); tasks.push((b*q)+' ÷ '+b+' = ___'); }
+        else if (t===3) { var a=r(100,900),b=r(10,100); tasks.push(a+' + '+b+' = ___'); }
+        else { var a=r(200,999),b=r(10,a-10); tasks.push(a+' − '+b+' = ___'); }
+      }
+      break;
+
+    case 4: // Große Zahlen, alle Grundrechenarten, einfache Brüche
+      for (var i = 0; i < 13; i++) {
+        var t = r(1,5);
+        if (t===1) { var a=r(1000,9000),b=r(100,1000); tasks.push(a+' + '+b+' = ___'); }
+        else if (t===2) { var a=r(2000,9999),b=r(100,a-100); tasks.push(a+' − '+b+' = ___'); }
+        else if (t===3) { var a=r(12,99),b=r(2,9); tasks.push(a+' × '+b+' = ___'); }
+        else if (t===4) { var b=r(2,9),q=r(10,99); tasks.push((b*q)+' ÷ '+b+' = ___'); }
+        else { var d=_pick([2,4,8,10]),n=r(1,d-1); tasks.push('Kürze den Bruch: '+_frac(n*2,d*2)+' = ___'); }
+      }
+      break;
+
+    case 5: // Brüche, Dezimalzahlen, Prozent-Einführung
+      for (var i = 0; i < 13; i++) {
+        var t = r(1,5);
+        if (t===1) { var d=_pick([4,6,8,10]),n1=r(1,d-1),n2=r(1,d-n1); tasks.push(_frac(n1,d)+' + '+_frac(n2,d)+' = ___'); }
+        else if (t===2) { var d=_pick([4,8,10]),n1=r(2,d),n2=r(1,n1); tasks.push(_frac(n1,d)+' − '+_frac(n2,d)+' = ___'); }
+        else if (t===3) { var a=r(1,9)+'.'+ r(1,9), b=r(1,5)+'.'+ r(1,9); tasks.push(a+' + '+b+' = ___'); }
+        else if (t===4) { var a=r(10,50), p=_pick([10,20,25,50]); tasks.push(p+'% von '+a+' = ___'); }
+        else { var a=r(1,9),b=r(1,9); tasks.push(a+','+(r(1,9))+' × '+b+' = ___'); }
+      }
+      break;
+
+    case 6: // Negative Zahlen, Prozent, Terme vereinfachen
+      for (var i = 0; i < 13; i++) {
+        var t = r(1,5);
+        if (t===1) { var a=-r(1,10),b=r(1,10); tasks.push('('+a+') + '+b+' = ___'); }
+        else if (t===2) { var a=r(5,20),b=r(a+1,30); tasks.push(a+' − '+b+' = ___'); }
+        else if (t===3) { var g=r(50,300),p=_pick([5,10,15,20,25]); tasks.push(p+'% von '+g+' = ___'); }
+        else if (t===4) { var a=r(2,6),b=r(1,9),c=r(1,5); tasks.push(a+'x + '+b+' = '+( a*c+b )+',  x = ___'); }
+        else { var a=-r(1,8),b=-r(1,8); tasks.push('('+a+') × ('+b+') = ___'); }
+      }
+      break;
+
+    case 7: // Lineare Gleichungen, Geometrie (Fläche/Umfang)
+      for (var i = 0; i < 13; i++) {
+        var t = r(1,5);
+        if (t===1) { var a=r(2,9),b=r(1,20),c=r(10,50); tasks.push(a+'x + '+b+' = '+c+'
+x = ___'); }
+        else if (t===2) { var a=r(2,8),b=r(1,15),c=r(1,a-1); tasks.push(a+'x − '+b+' = '+(a*c-b)+'
+x = ___'); }
+        else if (t===3) { var l=r(3,20),w=r(2,l); tasks.push('Rechteck: l = '+l+' cm, b = '+w+' cm
+Fläche = ___ cm²,  Umfang = ___ cm'); }
+        else if (t===4) { var r2=r(2,10); tasks.push('Kreis mit r = '+r2+' cm
+Umfang = ___ cm  (π ≈ 3,14)'); }
+        else { var a=r(3,12),b=r(2,9),c=r(1,20); tasks.push(a+'x + '+b+'y = '+c+'
+Für x = '+r(1,3)+':  y = ___'); }
+      }
+      break;
+
+    case 8: // Lineare Gleichungssysteme, Pythagoras, Potenzen
+      for (var i = 0; i < 13; i++) {
+        var t = r(1,5);
+        if (t===1) { var x=r(1,8),y=r(1,8); tasks.push('Löse das LGS:
+'+r(1,4)+'x + '+r(1,3)+'y = '+(r(1,4)*x+r(1,3)*y)+'
+'+r(1,3)+'x − '+r(1,2)+'y = '+(r(1,3)*x-r(1,2)*y)+'
+x = ___, y = ___'); }
+        else if (t===2) { var a=_pick([3,4,5,6,8]),b=_pick([4,5,6,8,10]); tasks.push('Rechtwinkliges Dreieck: a = '+a+', b = '+b+'
+c = ___ (Pythagoras: a²+b²=c²)'); }
+        else if (t===3) { var b=r(2,6),e=r(2,5); tasks.push(b+'^'+e+' = ___'); }
+        else if (t===4) { var b=r(2,5),e=r(2,4); tasks.push('Vereinfache: '+b+'^'+e+' × '+b+'^'+r(1,3)+' = '+b+'^___'); }
+        else { var p=r(2,9),q=r(1,4); tasks.push('√'+( p*p )+' = ___  und  √'+( q*q*4 )+' = ___'); }
+      }
+      break;
+
+    case 9: // Quadratische Gleichungen, Funktionen, Statistik
+      for (var i = 0; i < 13; i++) {
+        var t = r(1,5);
+        if (t===1) { var p=_pick([-6,-4,-2,0,2,4,6]),q=_pick([-8,-5,-3,0,3,5,8]); tasks.push('Löse: x² + ('+p+')x + ('+q+') = 0
+x₁ = ___, x₂ = ___'); }
+        else if (t===2) { var a=r(1,4),b=r(-5,5),c=r(-6,6); tasks.push('f(x) = '+a+'x² + ('+b+')x + ('+c+')
+Scheitel: S(___, ___)'); }
+        else if (t===3) { var m=r(-4,4),b2=r(-5,5); tasks.push('g(x) = '+m+'x + ('+b2+')
+Nullstelle: x = ___, y-Achsenabschnitt: ___'); }
+        else if (t===4) { var vals=[r(2,8),r(3,9),r(4,10),r(5,11),r(6,12)]; tasks.push('Datensatz: '+vals.join(', ')+'
+Mittelwert = ___, Median = ___'); }
+        else { var k=r(2,6); tasks.push('Forme um: y = '+k+'x² → x = ___'); }
+      }
+      break;
+
+    case 10: // Ableitungen, Trigonometrie, Wahrscheinlichkeit
+      for (var i = 0; i < 13; i++) {
+        var t = r(1,5);
+        if (t===1) { var a=r(2,6),n=r(2,5),b=r(1,4); tasks.push('Leite ab: f(x) = '+a+'x^'+n+' + '+b+'x
+f'(x) = ___'); }
+        else if (t===2) { var a2=r(2,5),n2=r(1,4); tasks.push('Leite ab: g(x) = '+a2+'x^'+n2+' − sin(x)
+g'(x) = ___'); }
+        else if (t===3) { var deg=_pick([30,45,60,90,120,180]); tasks.push('sin('+deg+'°) = ___
+cos('+deg+'°) = ___'); }
+        else if (t===4) { var n3=r(3,8),k=r(1,n3-1); tasks.push('Binomialkoeffizient:
+('+n3+' über '+k+') = ___'); }
+        else { var p1=r(1,5),p2=r(1,5); tasks.push('P(A) = '+p1+'/10,  P(B) = '+p2+'/10  (unabhängig)
+P(A ∩ B) = ___'); }
+      }
+      break;
+
+    default: // Fallback: Klasse 5
+      for (var i = 0; i < 13; i++) {
+        var a=r(10,100),b=r(10,100);
+        tasks.push(_pick([a+' + '+b,a+' − '+b,a+' × '+r(2,9),a+' ÷ '+r(2,9)])+' = ___');
+      }
+  }
+
+  // Text zusammenbauen
+  var date = new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
+  var lines = [];
+  lines.push('Mathearbeit — Klasse ' + klasse);
+  lines.push('Datum: ' + date + '        Name: _______________________________');
+  lines.push('');
+  lines.push('Aufgaben (13 Punkte — je 1 Punkt pro Aufgabe):');
+  lines.push('');
+  tasks.forEach(function(task, idx) {
+    lines.push((idx+1) + '.  ' + task);
+    lines.push('');
+  });
+  lines.push('');
+  lines.push('━━━ Notenskala ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  lines.push('13 – 12 Punkte  →  Note 1  (sehr gut)');
+  lines.push('11 – 10 Punkte  →  Note 2  (gut)');
+  lines.push(' 9 –  8 Punkte  →  Note 3  (befriedigend)');
+  lines.push(' 7 –  6 Punkte  →  Note 4  (ausreichend)');
+  lines.push(' 5 –  3 Punkte  →  Note 5  (mangelhaft)');
+  lines.push(' 2 –  0 Punkte  →  Note 6  (ungenügend)');
+  return lines.join('\n');
+}
 
 function openPdfGenerator() {
   var modal = document.getElementById('pdf-modal');
   if (!modal) return;
   modal.style.display = 'flex';
   var statusEl = document.getElementById('pdf-modal-status');
-  var dlBtn = document.getElementById('pdf-dl-btn');
-  var preview = document.getElementById('pdf-preview');
+  var dlBtn    = document.getElementById('pdf-dl-btn');
+  var preview  = document.getElementById('pdf-preview');
+
   if (statusEl) statusEl.textContent = '⏳ Generiere Mathearbeit…';
-  if (dlBtn) dlBtn.style.display = 'none';
-  if (preview) preview.style.display = 'none';
+  if (dlBtn)    dlBtn.style.display  = 'none';
+  if (preview)  preview.style.display = 'none';
   _pdfContent = '';
 
   var klasse = activeKlasse || 1;
-  var systemPrompts = typeof klasseSystemPrompts !== 'undefined' ? klasseSystemPrompts : {};
-  var klasseName = 'Klasse ' + klasse;
-  var systemCtx = systemPrompts[klasse] || ('Du bist ein Mathe-Lehrer für ' + klasseName);
 
-  var prompt = 'Erstelle eine zufällige Mathearbeit für ' + klasseName + '. ' +
-    'Generiere genau 12 Aufgaben (zufällig zwischen 10-15). ' +
-    'Format: Jede Aufgabe mit Nummer, Aufgabenstellung und einer Leerzeile für die Lösung. ' +
-    'Passe den Schwierigkeitsgrad an die Klasse an. ' +
-    'Beginne mit: "Mathearbeit — ' + klasseName + '" und dem Datum. ' +
-    'Füge am Ende eine Notenskala hinzu.';
-
-  fetch('/api/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'gpt-4o-mini',
-      system: systemCtx,
-      messages: [{ role: 'user', content: prompt }],
-      max_tokens: 1800
-    })
-  }).then(function(res) {
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    return res.json();
-  }).then(function(data) {
-    var text = data.content && data.content[0] ? data.content[0].text : '';
-    _pdfContent = text;
-    if (statusEl) statusEl.textContent = '✅ Mathearbeit bereit!';
-    if (preview) { preview.textContent = text.slice(0, 600) + (text.length > 600 ? '…' : ''); preview.style.display = 'block'; }
-    if (dlBtn) dlBtn.style.display = '';
-  }).catch(function(err) {
-    if (statusEl) statusEl.textContent = '⚠️ Fehler: ' + err.message;
-  });
+  // Kurze Animation, dann sofort generieren (kein API-Call nötig)
+  setTimeout(function() {
+    try {
+      var text = generateLocalMathTest(klasse);
+      _pdfContent = text;
+      if (statusEl) statusEl.textContent = '✅ Mathearbeit bereit! (Klasse ' + klasse + ' · 13 Aufgaben)';
+      if (preview) {
+        preview.textContent = text.slice(0, 500) + (text.length > 500 ? '\n…' : '');
+        preview.style.display = 'block';
+      }
+      if (dlBtn) dlBtn.style.display = '';
+    } catch(e) {
+      if (statusEl) statusEl.textContent = '⚠️ Fehler beim Generieren: ' + e.message;
+    }
+  }, 300);
 }
 
 function printPdf() {
