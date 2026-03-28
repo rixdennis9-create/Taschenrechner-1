@@ -355,6 +355,134 @@
       50%  { transform: translateY(-30px) rotate(180deg); opacity: 0.35; }
       100% { transform: translateY(0px) rotate(360deg); opacity: 0.15; }
     }
+
+    /* ========== GAMES MENU ========== */
+    #games-menu {
+      position: fixed;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 40px;
+      background: radial-gradient(ellipse at 50% 0%, #001a30 0%, #000d18 50%, #000008 100%);
+      z-index: 600;
+      overflow-y: auto;
+    }
+    #games-menu.active { display: flex; }
+
+    .games-header {
+      text-align: center;
+      margin-bottom: 36px;
+      width: 100%;
+    }
+    .games-header .title {
+      font-size: clamp(24px, 5vw, 52px);
+      font-weight: 900;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #ffffff 0%, #00ddff 50%, #0088cc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 18px #00ccff88);
+    }
+    .games-header .sub {
+      font-size: 12px;
+      color: #0088aa;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      width: min(860px, 92vw);
+      padding-bottom: 40px;
+    }
+
+    .game-card {
+      background: linear-gradient(135deg, #050e18, #0a1a28);
+      border: 1px solid #003355;
+      border-radius: 12px;
+      padding: 28px 16px 22px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+      position: relative;
+      overflow: hidden;
+    }
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -80%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,200,255,0.06), transparent);
+      transition: left 0.5s;
+    }
+    .game-card:hover::before { left: 130%; }
+    .game-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 22px #00aaff33, 0 8px 24px #000;
+      border-color: #0088cc;
+    }
+    .game-card.soon {
+      opacity: 0.55;
+      cursor: default;
+    }
+    .game-card.soon:hover { transform: none; box-shadow: none; border-color: #003355; }
+    .game-card.soon::before { display: none; }
+
+    .game-card .icon { font-size: 44px; margin-bottom: 12px; display: block; }
+    .game-card .name {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #aaddff;
+      margin-bottom: 6px;
+    }
+    .game-card .desc {
+      font-size: 11px;
+      color: #446688;
+      letter-spacing: 1px;
+    }
+    .game-card .badge {
+      position: absolute;
+      top: 10px; right: 10px;
+      font-size: 9px;
+      padding: 3px 7px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .badge-soon { background: #1a1a00; color: #886600; border: 1px solid #443300; }
+    .badge-new  { background: #001a00; color: #00cc44; border: 1px solid #004400;
+                  box-shadow: 0 0 8px #00cc4444; animation: badge-blink 1.5s ease-in-out infinite alternate; }
+    @keyframes badge-blink {
+      from { box-shadow: 0 0 4px #00cc4444; }
+      to   { box-shadow: 0 0 14px #00cc44aa; }
+    }
+
+    .btn-back {
+      margin-top: 0;
+      margin-bottom: 30px;
+      padding: 10px 28px;
+      font-size: 13px;
+      font-family: 'Georgia', serif;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: transparent;
+      border: 1px solid #004466;
+      border-radius: 6px;
+      color: #0088aa;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-back:hover { border-color: #00aadd; color: #00ccff; background: #001a2a; }
   </style>
 </head>
 <body>
@@ -556,7 +684,7 @@
 
   <!-- Buttons -->
   <div class="menu-buttons">
-    <button class="menu-btn btn-play" onclick="alert('Spiele werden bald hinzugefügt!')">
+    <button class="menu-btn btn-play" onclick="openGamesMenu()">
       🎰 &nbsp;Spielen
     </button>
     <button class="menu-btn btn-secondary" onclick="alert('High Scores kommen bald!')">
@@ -571,6 +699,58 @@
   </div>
 
   <div class="menu-version">Vegas Casino v1.0</div>
+</div>
+
+
+<!-- ============================================================ -->
+<!--  GAMES MENU                                                  -->
+<!-- ============================================================ -->
+<div id="games-menu">
+  <button class="btn-back" onclick="closeGamesMenu()">&#8592; Zurück</button>
+
+  <div class="games-header">
+    <div class="title">Spielauswahl</div>
+    <div class="sub">Wähle dein Spiel</div>
+  </div>
+
+  <div class="games-grid">
+    <div class="game-card soon">
+      <span class="badge badge-soon">Bald</span>
+      <span class="icon">🎰</span>
+      <div class="name">Slot Machine</div>
+      <div class="desc">Klassischer Einarmiger Bandit</div>
+    </div>
+    <div class="game-card soon">
+      <span class="badge badge-soon">Bald</span>
+      <span class="icon">🃏</span>
+      <div class="name">Blackjack</div>
+      <div class="desc">Schlag den Dealer auf 21</div>
+    </div>
+    <div class="game-card soon">
+      <span class="badge badge-soon">Bald</span>
+      <span class="icon">🎡</span>
+      <div class="name">Roulette</div>
+      <div class="desc">Das Rad des Glücks</div>
+    </div>
+    <div class="game-card soon">
+      <span class="badge badge-soon">Bald</span>
+      <span class="icon">🎲</span>
+      <div class="name">Craps</div>
+      <div class="desc">Würfel um dein Glück</div>
+    </div>
+    <div class="game-card soon">
+      <span class="badge badge-soon">Bald</span>
+      <span class="icon">♠️</span>
+      <div class="name">Poker</div>
+      <div class="desc">Texas Hold'em</div>
+    </div>
+    <div class="game-card soon">
+      <span class="badge badge-soon">Bald</span>
+      <span class="icon">💰</span>
+      <div class="name">Jackpot</div>
+      <div class="desc">Progressiver Mega Jackpot</div>
+    </div>
+  </div>
 </div>
 
 
@@ -596,49 +776,250 @@ function makeStars(containerId, count) {
 makeStars('stars-container', 140);
 makeStars('menu-stars', 160);
 
-// ─── Casino sound (Web Audio API) ──────────────────────────────
-const AudioCtx = window.AudioContext || window.webkitAudioContext;
-let audioCtx;
+// ─── Audio Engine ─────────────────────────────────────────────
+let audioCtx = null;
+let electroPlaying = false;
+let electroScheduleId = null;
+let casinoFXId = null;
+let nextNoteTime = 0;
+let currentStep = 0;
+const BPM = 128;
+const beatLen = 60.0 / BPM;       // ~0.469s
+const STEPS = 16;
+const LOOKAHEAD = 0.3;             // schedule this many seconds ahead
+const SCHED_INTERVAL = 100;        // ms between scheduler runs
 
 function initAudio() {
-  try { audioCtx = new AudioCtx(); } catch(e) { return; }
+  try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+  catch(e) {}
 }
 
-function playNote(freq, start, dur, vol = 0.12, type = 'sine') {
+// ── Primitive sound builders ──
+
+function makeNoise(dur) {
+  const bufSize = Math.ceil(audioCtx.sampleRate * dur);
+  const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < bufSize; i++) d[i] = Math.random() * 2 - 1;
+  const src = audioCtx.createBufferSource();
+  src.buffer = buf;
+  return src;
+}
+
+function playKick(t) {
   if (!audioCtx) return;
-  const osc  = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-  osc.type = type;
-  osc.frequency.setValueAtTime(freq, audioCtx.currentTime + start);
-  gain.gain.setValueAtTime(0, audioCtx.currentTime + start);
-  gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + start + 0.05);
-  gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + start + dur);
-  osc.start(audioCtx.currentTime + start);
-  osc.stop(audioCtx.currentTime + start + dur + 0.05);
+  const osc = audioCtx.createOscillator();
+  const g   = audioCtx.createGain();
+  osc.connect(g); g.connect(audioCtx.destination);
+  osc.frequency.setValueAtTime(155, t);
+  osc.frequency.exponentialRampToValueAtTime(42, t + 0.18);
+  g.gain.setValueAtTime(1.0, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.38);
+  osc.start(t); osc.stop(t + 0.4);
 }
 
-function playChime(freq, t) {
-  playNote(freq,   t,      0.4,  0.18, 'triangle');
-  playNote(freq*2, t+0.02, 0.25, 0.08, 'sine');
+function playSnare(t) {
+  if (!audioCtx) return;
+  // Noise layer
+  const noise = makeNoise(0.22);
+  const hpf   = audioCtx.createBiquadFilter();
+  hpf.type = 'highpass'; hpf.frequency.value = 1600;
+  const gn = audioCtx.createGain();
+  noise.connect(hpf); hpf.connect(gn); gn.connect(audioCtx.destination);
+  gn.gain.setValueAtTime(0.35, t);
+  gn.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+  noise.start(t); noise.stop(t + 0.22);
+  // Tone layer
+  const osc = audioCtx.createOscillator();
+  const go  = audioCtx.createGain();
+  osc.connect(go); go.connect(audioCtx.destination);
+  osc.frequency.value = 210;
+  go.gain.setValueAtTime(0.2, t);
+  go.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+  osc.start(t); osc.stop(t + 0.12);
 }
 
-function playCasinoJingle() {
-  // Ascending sparkle arpeggio - casino feel
-  const notes = [523, 659, 784, 1047, 880, 784, 1047, 1175, 1319, 1047, 1319, 1568];
-  notes.forEach((f, i) => playChime(f, i * 0.22));
+function playHihat(t, vol, open) {
+  if (!audioCtx) return;
+  const dur = open ? 0.28 : 0.05;
+  const noise = makeNoise(dur + 0.02);
+  const hpf   = audioCtx.createBiquadFilter();
+  hpf.type = 'highpass'; hpf.frequency.value = 9000;
+  const g = audioCtx.createGain();
+  noise.connect(hpf); hpf.connect(g); g.connect(audioCtx.destination);
+  g.gain.setValueAtTime(vol, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  noise.start(t); noise.stop(t + dur + 0.02);
+}
 
-  // Low rumble shimmer
-  for (let i = 0; i < 18; i++) {
-    const t = i * 0.25;
-    playNote(60 + Math.random()*20, t, 0.3, 0.04, 'sawtooth');
+function playBass(t, freq) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const lp  = audioCtx.createBiquadFilter();
+  const g   = audioCtx.createGain();
+  osc.type = 'sawtooth';
+  lp.type = 'lowpass'; lp.frequency.value = 320;
+  osc.connect(lp); lp.connect(g); g.connect(audioCtx.destination);
+  osc.frequency.value = freq;
+  const hold = beatLen * 0.72;
+  g.gain.setValueAtTime(0.42, t);
+  g.gain.setValueAtTime(0.42, t + hold);
+  g.gain.linearRampToValueAtTime(0, t + hold + 0.06);
+  osc.start(t); osc.stop(t + hold + 0.08);
+}
+
+function playLead(t, freq, dur) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const g   = audioCtx.createGain();
+  osc.type = 'square';
+  osc.connect(g); g.connect(audioCtx.destination);
+  osc.frequency.value = freq;
+  g.gain.setValueAtTime(0.08, t);
+  g.gain.linearRampToValueAtTime(0, t + dur);
+  osc.start(t); osc.stop(t + dur + 0.01);
+}
+
+// ── Electro beat sequencer (128 BPM, 16 steps) ──
+
+// Steps are 8th notes (each = beatLen / 2)
+const stepLen = beatLen / 2;
+
+const KICK  = [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,1,0];
+const SNARE = [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0];
+const HIHAT = [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,1];
+const OPENH = [0,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,1,0];
+// Bass frequencies (Hz) — 0 = rest
+const BASS  = [110,0,0,0, 0,110,0,0, 82,0,0,0, 73,0,82,0];
+// Lead melody — 0 = rest
+const LEAD  = [0,0,0,0, 220,0,0,0, 0,0,0,0, 165,0,196,0];
+
+function scheduleStep(step, t) {
+  if (KICK[step])  playKick(t);
+  if (SNARE[step]) playSnare(t);
+  if (HIHAT[step]) playHihat(t, 0.07, false);
+  if (OPENH[step]) playHihat(t, 0.10, true);
+  if (BASS[step])  playBass(t, BASS[step]);
+  if (LEAD[step])  playLead(t, LEAD[step], stepLen * 0.85);
+}
+
+function electroScheduler() {
+  if (!electroPlaying || !audioCtx) return;
+  while (nextNoteTime < audioCtx.currentTime + LOOKAHEAD) {
+    scheduleStep(currentStep, nextNoteTime);
+    nextNoteTime += stepLen;
+    currentStep = (currentStep + 1) % STEPS;
   }
+  electroScheduleId = setTimeout(electroScheduler, SCHED_INTERVAL);
+}
 
-  // Final fanfare chord
-  [523, 659, 784, 1047].forEach(f =>
-    playNote(f, 4.0, 1.2, 0.08, 'triangle')
-  );
+function startElectroLoop() {
+  if (!audioCtx || electroPlaying) return;
+  electroPlaying = true;
+  currentStep    = 0;
+  nextNoteTime   = audioCtx.currentTime + 0.05;
+  electroScheduler();
+  scheduleCasinoFX();
+}
+
+function stopElectroLoop() {
+  electroPlaying = false;
+  if (electroScheduleId) clearTimeout(electroScheduleId);
+  if (casinoFXId)        clearTimeout(casinoFXId);
+}
+
+// ── Casino FX (coins & slot ding) ──
+
+function playCoinSound() {
+  if (!audioCtx) return;
+  for (let i = 0; i < 6; i++) {
+    const t    = audioCtx.currentTime + i * 0.075;
+    const freq = 1100 + Math.random() * 900;
+    const osc  = audioCtx.createOscillator();
+    const g    = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.connect(g); g.connect(audioCtx.destination);
+    osc.frequency.value = freq;
+    g.gain.setValueAtTime(0.18, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+    osc.start(t); osc.stop(t + 0.18);
+  }
+}
+
+function playSlotDing() {
+  if (!audioCtx) return;
+  [1047, 1319, 1568, 2093].forEach((f, i) => {
+    const t   = audioCtx.currentTime + i * 0.13;
+    const osc = audioCtx.createOscillator();
+    const g   = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.connect(g); g.connect(audioCtx.destination);
+    osc.frequency.value = f;
+    g.gain.setValueAtTime(0.22, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.32);
+    osc.start(t); osc.stop(t + 0.34);
+  });
+}
+
+function scheduleCasinoFX() {
+  if (!electroPlaying) return;
+  const delay = 3500 + Math.random() * 5000;
+  casinoFXId = setTimeout(() => {
+    Math.random() < 0.6 ? playCoinSound() : playSlotDing();
+    scheduleCasinoFX();
+  }, delay);
+}
+
+// ── Loading-screen sounds ──
+
+function playSlotSpinSound() {
+  // Mechanical clicking during reel spin — speeds up then holds
+  if (!audioCtx) return;
+  const total = 6.0;
+  let t = 0, interval = 0.18;
+  while (t < total) {
+    const osc = audioCtx.createOscillator();
+    const g   = audioCtx.createGain();
+    osc.type = 'square';
+    osc.connect(g); g.connect(audioCtx.destination);
+    osc.frequency.value = 700 + Math.random() * 500;
+    const at = audioCtx.currentTime + t;
+    g.gain.setValueAtTime(0.06, at);
+    g.gain.exponentialRampToValueAtTime(0.001, at + 0.04);
+    osc.start(at); osc.stop(at + 0.05);
+    // Accelerate: interval shrinks over first 2s then holds at ~0.05
+    interval = Math.max(0.05, interval - 0.007);
+    t += interval;
+  }
+}
+
+function playJackpotSound() {
+  if (!audioCtx) return;
+  // Coin shower
+  for (let i = 0; i < 22; i++) {
+    const t    = audioCtx.currentTime + i * 0.07;
+    const freq = 900 + Math.random() * 1100;
+    const osc  = audioCtx.createOscillator();
+    const g    = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.connect(g); g.connect(audioCtx.destination);
+    osc.frequency.value = freq;
+    g.gain.setValueAtTime(0.18, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+    osc.start(t); osc.stop(t + 0.16);
+  }
+  // Victory fanfare
+  [523, 659, 784, 1047, 1319, 1568].forEach((f, i) => {
+    const t   = audioCtx.currentTime + 1.2 + i * 0.14;
+    const osc = audioCtx.createOscillator();
+    const g   = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.connect(g); g.connect(audioCtx.destination);
+    osc.frequency.value = f;
+    g.gain.setValueAtTime(0.22, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.42);
+    osc.start(t); osc.stop(t + 0.44);
+  });
 }
 
 // ─── Slot reel animation ───────────────────────────────────────
@@ -657,7 +1038,7 @@ function startReels() {
   });
 }
 
-function stopReels(win = false) {
+function stopReels(win) {
   reelIntervals.forEach(iv => clearInterval(iv));
   if (win) {
     document.getElementById('reel-1').textContent = '7️⃣';
@@ -670,25 +1051,15 @@ function stopReels(win = false) {
 function runLoadingBar(totalMs, onComplete) {
   const bar = document.getElementById('loading-bar');
   const pct = document.getElementById('loading-pct');
-  let progress = 0;
-  const steps  = 120;
-  const step   = totalMs / steps;
-
-  // Ease-in-out curve for more natural feel
-  function easeInOut(t) {
-    return t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
-  }
-
+  const steps = 120;
+  const step  = totalMs / steps;
+  function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
   let tick = 0;
   const iv = setInterval(() => {
     tick++;
-    const raw = tick / steps;
-    const eased = easeInOut(Math.min(raw, 1));
-    progress = eased * 100;
-
-    bar.style.width = progress.toFixed(1) + '%';
-    pct.textContent = Math.floor(progress) + '%';
-
+    const eased = easeInOut(Math.min(tick / steps, 1)) * 100;
+    bar.style.width = eased.toFixed(1) + '%';
+    pct.textContent = Math.floor(eased) + '%';
     if (tick >= steps) {
       clearInterval(iv);
       bar.style.width = '100%';
@@ -698,47 +1069,52 @@ function runLoadingBar(totalMs, onComplete) {
   }, step);
 }
 
-// ─── Main boot sequence ────────────────────────────────────────
+// ─── Navigation ───────────────────────────────────────────────
+function openGamesMenu() {
+  document.getElementById('main-menu').classList.remove('active');
+  document.getElementById('games-menu').classList.add('active');
+}
+
+function closeGamesMenu() {
+  document.getElementById('games-menu').classList.remove('active');
+  document.getElementById('main-menu').classList.add('active');
+}
+
+// ─── Boot sequence ────────────────────────────────────────────
 function boot() {
   initAudio();
   startReels();
-  playCasinoJingle();
+  playSlotSpinSound();
 
-  // Loading takes ~6.5s so total with fade is ~7.5s
-  runLoadingBar(6500, () => {
-    stopReels(true); // 777 jackpot landing
+  runLoadingBar(6800, () => {
+    stopReels(true); // 777 jackpot!
+    playJackpotSound();
 
     setTimeout(() => {
       const ls = document.getElementById('loading-screen');
       ls.classList.add('fade-out');
-
       setTimeout(() => {
         ls.style.display = 'none';
         document.getElementById('main-menu').classList.add('active');
+        startElectroLoop(); // start menu music
       }, 1000);
-    }, 600);
+    }, 800);
   });
 }
 
-// Start on first user interaction (required for AudioContext)
+// Start on first interaction (AudioContext needs user gesture)
 let started = false;
-function tryStart(e) {
+function tryStart() {
   if (started) return;
   started = true;
   boot();
 }
-
-document.addEventListener('click',   tryStart);
-document.addEventListener('keydown', tryStart);
+document.addEventListener('click',      tryStart);
+document.addEventListener('keydown',    tryStart);
 document.addEventListener('touchstart', tryStart);
 
-// Also auto-start after short delay (visuals will play, audio may be muted)
-setTimeout(() => {
-  if (!started) {
-    started = true;
-    boot();
-  }
-}, 500);
+// Auto-start after short delay (visuals run; audio may be muted without gesture)
+setTimeout(() => { if (!started) { started = true; boot(); } }, 500);
 </script>
 </body>
 </html>
