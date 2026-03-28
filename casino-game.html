@@ -887,6 +887,270 @@
     .btn-back:hover { border-color: #ffd700; color: #fff8b0; box-shadow: 0 0 14px #ffd70044; background: linear-gradient(135deg, #180010, #280020); }
     .btn-back:active { transform: scale(0.97); }
 
+    /* ─ Red glowing back button (in-game) ─ */
+    .ws-back-btn {
+      padding: 8px 16px;
+      font-size: 11px;
+      font-family: 'Georgia', serif;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #330000, #550000);
+      border: 1px solid #ff3300;
+      border-radius: 6px;
+      color: #ff7755;
+      cursor: pointer;
+      animation: red-glow 1.4s ease-in-out infinite alternate;
+      flex-shrink: 0;
+      transition: transform 0.1s;
+    }
+    @keyframes red-glow {
+      from { box-shadow: 0 0 6px #ff330033; border-color: #cc2200; }
+      to   { box-shadow: 0 0 16px #ff3300aa, 0 0 30px #aa000033; border-color: #ff5500; }
+    }
+    .ws-back-btn:active { transform: scale(0.96); }
+
+    /* ─ Update Popup ─ */
+    #update-popup {
+      position: fixed; inset: 0; z-index: 5000;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.88); backdrop-filter: blur(6px);
+    }
+    .upop-box {
+      width: min(420px, 92vw);
+      background: linear-gradient(145deg, #0a0018, #150025);
+      border: 2px solid #ffd700; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 0 40px #ffd70022, 0 20px 60px rgba(0,0,0,0.8);
+    }
+    .upop-header {
+      background: linear-gradient(90deg, #1a0500, #3c1600, #1a0500);
+      padding: 16px 20px 12px; text-align: center;
+      border-bottom: 1px solid #ffd70033;
+    }
+    .upop-title {
+      font-size: clamp(14px, 3vw, 20px); font-weight: 900;
+      letter-spacing: 4px; color: #ffd700; text-transform: uppercase;
+      text-shadow: 0 0 12px #ffd700;
+      animation: upop-blink 0.75s step-end infinite;
+    }
+    @keyframes upop-blink { 0%,100%{opacity:1} 50%{opacity:0.1} }
+    .upop-badge { font-size: 10px; color: #886600; letter-spacing: 3px; margin-top: 4px; }
+    .upop-body { padding: 16px 20px; }
+    .upop-news { list-style: none; margin-bottom: 14px; }
+    .upop-news li {
+      font-size: 13px; color: #ccaaff;
+      padding: 6px 0; border-bottom: 1px solid #1e002a; line-height: 1.4;
+    }
+    .upop-news li::before { content: '✦ '; color: #ffd700; }
+    .upop-youth {
+      font-size: 10px; color: #553344; text-align: center;
+      border: 1px solid #2a0822; padding: 8px 10px; border-radius: 6px;
+      line-height: 1.6; margin-bottom: 14px; background: rgba(0,0,0,0.3);
+    }
+    .upop-ok {
+      display: block; width: 100%; padding: 13px; border: none; border-radius: 8px;
+      background: linear-gradient(90deg, #996600, #ffd700, #996600);
+      font-size: 14px; font-family: 'Georgia', serif; letter-spacing: 5px;
+      font-weight: 900; text-transform: uppercase; color: #0a0005;
+      cursor: pointer; box-shadow: 0 0 12px #ffd70033; transition: all 0.2s;
+    }
+    .upop-ok:hover { box-shadow: 0 0 24px #ffd700aa; transform: scale(1.02); }
+
+    /* ─ Gender Select ─ */
+    #gender-select {
+      position: fixed; inset: 0; z-index: 4500;
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: radial-gradient(ellipse at 50% 35%, #2a0055, #0e0020, #000008);
+    }
+    .gs-title {
+      font-size: clamp(16px, 4vw, 28px); font-weight: 900;
+      color: #ffd700; letter-spacing: 5px; text-transform: uppercase;
+      text-align: center; margin-bottom: 8px; text-shadow: 0 0 12px #ffd70055;
+    }
+    .gs-sub { font-size: 11px; color: #664488; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 36px; }
+    .gs-options { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+    .gs-opt {
+      width: clamp(120px, 22vw, 170px); padding: 22px 14px 18px;
+      background: linear-gradient(145deg, #0a0018, #18002e);
+      border: 2px solid #440066; border-radius: 16px;
+      text-align: center; cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 0 10px #44006622;
+    }
+    .gs-opt:hover { border-color: #ffd700; box-shadow: 0 0 20px #ffd70044; transform: translateY(-5px); }
+    .gs-opt .gs-icon { font-size: 52px; margin-bottom: 10px; }
+    .gs-opt .gs-label { font-size: 14px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #ffd700; }
+
+    /* ─ Profile Button ─ */
+    .profile-btn {
+      position: absolute; top: 14px; right: 18px;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 2px solid #ffd700;
+      background: radial-gradient(circle, #1a0035, #080018);
+      font-size: 20px; cursor: pointer; z-index: 10;
+      box-shadow: 0 0 12px #ffd70033; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; color: #ffd700;
+    }
+    .profile-btn:hover { box-shadow: 0 0 22px #ffd70099; transform: scale(1.1); }
+
+    /* ─ Profile Page ─ */
+    #profile-page {
+      position: fixed; inset: 0; z-index: 650;
+      display: none; flex-direction: column;
+      align-items: center;
+      background: radial-gradient(ellipse at 50% 0%, #1a0030, #080018, #000008);
+      overflow-y: auto; padding: 28px 20px 50px;
+    }
+    #profile-page.active { display: flex; }
+    .prof-hdr { text-align: center; margin-bottom: 24px; width: 100%; }
+    .prof-hdr .title {
+      font-size: clamp(20px, 4vw, 34px); font-weight: 900;
+      letter-spacing: 5px; text-transform: uppercase;
+      color: #ffd700; text-shadow: 0 0 12px #ffd70044;
+    }
+    .prof-card {
+      width: min(400px, 92vw);
+      background: linear-gradient(145deg, #0a0018, #150028);
+      border: 1px solid #440066; border-radius: 16px; padding: 22px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    }
+    .prof-avatar-area { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
+    .prof-avatar-wrap {
+      width: 88px; height: 88px; border-radius: 50%;
+      border: 3px solid #ffd700; overflow: hidden;
+      background: #0a0018; display: flex; align-items: center; justify-content: center;
+      font-size: 46px; cursor: pointer; box-shadow: 0 0 16px #ffd70033; position: relative;
+    }
+    #prof-avatar-img { width:100%; height:100%; object-fit:cover; display:none; }
+    .prof-avatar-hint { font-size: 10px; color: #553366; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; cursor: pointer; }
+    #prof-file-input { display: none; }
+    .prof-fld { margin-bottom: 14px; }
+    .prof-fld label { display:block; font-size:9px; color:#664488; letter-spacing:2px; text-transform:uppercase; margin-bottom:5px; }
+    .prof-fld input[type="text"] {
+      width:100%; background:#050010; border:1px solid #440066; border-radius:6px;
+      color:#ffd700; font-size:15px; padding:10px 12px; font-family:'Georgia',serif;
+      letter-spacing:2px; outline:none; transition:border-color 0.2s;
+    }
+    .prof-fld input[type="text"]:focus { border-color:#ffd700; }
+    .prof-level-badge {
+      display:inline-block; background:linear-gradient(135deg,#3300aa,#6600cc);
+      border:1px solid #aa44ff; border-radius:20px; padding:4px 16px;
+      font-size:13px; font-weight:700; color:#fff; letter-spacing:2px;
+      box-shadow:0 0 10px #6600aa33; margin-bottom:12px;
+    }
+    .prof-xp-wrap { width:100%; height:10px; background:#0a0018; border:1px solid #440066; border-radius:8px; overflow:hidden; margin-bottom:5px; }
+    .prof-xp-fill { height:100%; background:linear-gradient(90deg,#6600aa,#aa00ff); border-radius:8px; box-shadow:0 0 8px #aa00ff55; transition:width 0.5s; }
+    .prof-xp-txt { font-size:10px; color:#773399; letter-spacing:1px; text-align:right; margin-bottom:14px; }
+    .prof-gender-display { font-size:12px; color:#884499; letter-spacing:2px; margin-bottom:14px; }
+    .prof-save {
+      display:block; width:100%; padding:12px; border:none; border-radius:8px;
+      background:linear-gradient(90deg,#996600,#ffd700,#996600);
+      font-size:13px; font-family:'Georgia',serif; letter-spacing:4px;
+      font-weight:900; text-transform:uppercase; color:#0a0005;
+      cursor:pointer; box-shadow:0 0 10px #ffd70033; transition:all 0.2s;
+    }
+    .prof-save:hover { box-shadow:0 0 20px #ffd70077; transform:scale(1.02); }
+
+    /* ─ Wild Spins Casino Hall Background ─ */
+    .ws-casino-bg {
+      position: absolute; inset: 0; z-index: 0; overflow: hidden;
+      background: linear-gradient(to bottom, #060005 0%, #100006 35%, #180008 68%, #0e0004 100%);
+    }
+    .wscb-ceiling {
+      position: absolute; top:0; left:0; right:0; height:40%;
+      background: linear-gradient(to bottom, #080006 0%, #12000a 60%, rgba(22,0,8,0) 100%);
+    }
+    .wscb-back-wall {
+      position: absolute; top:15%; left:0; right:0; height:45%;
+      background: linear-gradient(to bottom, rgba(20,2,8,0.9), rgba(30,4,10,0.4), rgba(20,2,8,0));
+    }
+    .wscb-vanish {
+      position: absolute; left:50%; top:38%;
+      transform: translateX(-50%) translateY(-50%);
+      width: 55%; height: 28%;
+      background: radial-gradient(ellipse, rgba(200,80,20,0.2) 0%, rgba(120,30,5,0.08) 50%, transparent 70%);
+    }
+    .wscb-floor {
+      position: absolute; bottom:0; left:0; right:0; height:44%;
+      background: linear-gradient(to bottom, rgba(28,4,2,0) 0%, #200604 35%, #2e0906 75%, #1c0403 100%);
+    }
+    .wscb-floor::before {
+      content:''; position:absolute; inset:0;
+      background: repeating-linear-gradient(90deg, rgba(120,30,5,0.07) 0px, rgba(120,30,5,0.07) 1px, transparent 1px, transparent 55px);
+    }
+    .wscb-lights { position:absolute; top:0; left:0; right:0; }
+    .wscb-pendant {
+      position:absolute; top:0; transform:translateX(-50%);
+      width:2px; height:clamp(22px,5.5vh,46px);
+      background: linear-gradient(to bottom, #220814, rgba(255,170,50,0.45));
+    }
+    .wscb-pendant::after {
+      content:''; position:absolute; bottom:-9px; left:50%;
+      transform:translateX(-50%);
+      width:18px; height:18px; border-radius:50%;
+      background: radial-gradient(circle at 40% 32%, #ffeebb, #ffcc44, #cc8800);
+      box-shadow: 0 0 12px #ffcc4455, 0 0 26px #ff880022;
+      animation: lt-flk var(--f,3.2s) ease-in-out infinite alternate;
+    }
+    @keyframes lt-flk { 0%,100%{opacity:1} 40%{opacity:0.78} 75%{opacity:0.92} }
+    .wscb-pendant::before {
+      content:''; position:absolute; bottom:-68px; left:50%;
+      transform:translateX(-50%); width:0; height:0;
+      border-left:24px solid transparent; border-right:24px solid transparent;
+      border-top:64px solid rgba(255,200,50,0.055);
+    }
+    .wscb-machines { position:absolute; bottom:28%; display:flex; align-items:flex-end; gap:5px; }
+    .wscb-machines.left  { left:0; flex-direction:row-reverse; padding-left:4px; }
+    .wscb-machines.right { right:0; padding-right:4px; }
+    .wscb-m {
+      width:var(--w,55px); height:var(--h,95px); opacity:var(--op,0.8); flex-shrink:0;
+      border-radius:6px 6px 3px 3px;
+      background: linear-gradient(to bottom, #1e0c02, #2e1604, #1e0c02);
+      border: 1px solid #5a3200; box-shadow:0 0 6px rgba(255,100,0,0.07);
+      position:relative;
+    }
+    .wscb-m::before {
+      content:''; position:absolute; top:18%; left:12%; right:12%; height:34%;
+      background: linear-gradient(145deg, #0a0300, #180800);
+      border:1px solid #2e1800; border-radius:3px;
+    }
+    .wscb-m::after {
+      content:''; position:absolute; top:7%; left:22%; right:22%; height:7%;
+      border-radius:2px;
+      background:rgba(255,70,0,0.4); box-shadow:0 0 5px rgba(255,70,0,0.5);
+      animation:mach-neon var(--mn,2.4s) ease-in-out infinite alternate;
+    }
+    @keyframes mach-neon { from{opacity:0.45} to{opacity:1} }
+    .wscb-overlay {
+      position:absolute; inset:0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
+    }
+
+    /* ─ Wild Spins Responsive Layout ─ */
+    .ws-reel-area {
+      display:flex; align-items:center; justify-content:center;
+      gap:clamp(6px,1.5vw,18px); flex:1; padding:4px 8px; overflow:hidden;
+    }
+    .ws-controls-bar {
+      display:flex; align-items:center; justify-content:space-between;
+      background:rgba(0,0,0,0.6); border-top:1px solid #33004a;
+      padding:8px 12px; flex-shrink:0; gap:8px;
+    }
+    .ws-info-group { display:flex; gap:16px; }
+    .ws-bet-group  { display:flex; align-items:center; gap:6px; }
+    .ws-spin-group { display:flex; align-items:center; gap:8px; }
+    .ws-bet-inner  { text-align:center; }
+    .ws-bet-lbl-small { font-size:7px; color:#553366; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:2px; }
+    @media (max-width:520px) {
+      .ws-paytable-mini { display:none !important; }
+      .ws-reel-frame::before { font-size:8px; }
+      .ws-info-group { gap:10px; }
+      .ws-info-lbl { font-size:7px; }
+      .ws-info-val  { font-size:12px; }
+    }
+    @media (max-width:380px) {
+      .ws-bet-group .ws-bet-lbl-small { display:none; }
+    }
+
     /* ─ Game Loader ─ */
     #game-loader {
       position: fixed;
@@ -1117,6 +1381,52 @@
   </style>
 </head>
 <body>
+
+<!-- ============================================================ -->
+<!--  UPDATE POPUP                                                -->
+<!-- ============================================================ -->
+<div id="update-popup">
+  <div class="upop-box">
+    <div class="upop-header">
+      <div class="upop-title">★ Vegas Casino ★</div>
+      <div class="upop-badge">UPDATE 1.0 — NEUIGKEITEN</div>
+    </div>
+    <div class="upop-body">
+      <ul class="upop-news">
+        <li>Wild Spins Slot Machine jetzt spielbar!</li>
+        <li>Neues Casino-Ladebildschirm-Design</li>
+        <li>Sanfte Lounge-Musik im Hauptmenü</li>
+        <li>Spielerprofil mit Level-System hinzugefügt</li>
+        <li>3 weitere Slots in Entwicklung: Lucky 7, Book of Secrets, Mega Wheel</li>
+      </ul>
+      <div class="upop-youth">
+        ⚠️ <strong>Jugendschutzhinweis</strong><br>
+        Dieses Spiel richtet sich ausschließlich an Personen ab 18 Jahren.
+        Glücksspiel kann süchtig machen. Spiele verantwortungsbewusst.
+        Hilfe unter: <em>bzga.de</em>
+      </div>
+      <button class="upop-ok" onclick="closeUpdatePopup()">Verstanden &amp; Weiter</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  GENDER SELECT                                               -->
+<!-- ============================================================ -->
+<div id="gender-select">
+  <div class="gs-title">Wer bist du?</div>
+  <div class="gs-sub">Wähle deinen Spieler-Typ</div>
+  <div class="gs-options">
+    <div class="gs-opt" onclick="selectGender('male')">
+      <div class="gs-icon">👨</div>
+      <div class="gs-label">Männlich</div>
+    </div>
+    <div class="gs-opt" onclick="selectGender('female')">
+      <div class="gs-icon">👩</div>
+      <div class="gs-label">Weiblich</div>
+    </div>
+  </div>
+</div>
 
 <!-- ============================================================ -->
 <!--  SPLASH SCREEN (click-to-start — required for Web Audio)    -->
@@ -1354,7 +1664,46 @@
     </button>
   </div>
 
+  <button class="profile-btn" onclick="openProfile()" title="Profil">👤</button>
   <div class="menu-version">Vegas Casino v1.0</div>
+</div>
+
+
+<!-- ============================================================ -->
+<!--  PROFILE PAGE                                                -->
+<!-- ============================================================ -->
+<div id="profile-page">
+  <button class="btn-back" onclick="closeProfile()" style="align-self:flex-start;margin-bottom:16px;">&#8592; Zurück</button>
+  <div class="prof-hdr">
+    <div class="title">👤 Mein Profil</div>
+  </div>
+  <div class="prof-card">
+    <div class="prof-avatar-area">
+      <div class="prof-avatar-wrap" onclick="document.getElementById('prof-file-input').click()">
+        <span id="prof-avatar-emoji">🎰</span>
+        <img id="prof-avatar-img" alt="Avatar" />
+      </div>
+      <div class="prof-avatar-hint" onclick="document.getElementById('prof-file-input').click()">📷 Foto hochladen</div>
+      <input type="file" id="prof-file-input" accept="image/*" onchange="handleAvatarUpload(this)" />
+    </div>
+    <div class="prof-fld">
+      <label>Dein Name</label>
+      <input type="text" id="prof-name-input" placeholder="Vegas Player" maxlength="24" />
+    </div>
+    <div class="prof-fld">
+      <label>Level</label>
+      <div class="prof-level-badge" id="prof-level-badge">⭐ Level 1</div>
+    </div>
+    <div class="prof-fld">
+      <label>Erfahrung (XP)</label>
+      <div class="prof-xp-wrap">
+        <div class="prof-xp-fill" id="prof-xp-fill" style="width:0%"></div>
+      </div>
+      <div class="prof-xp-txt" id="prof-xp-txt">0 / 100 XP bis Level 2</div>
+    </div>
+    <div class="prof-gender-display" id="prof-gender-display"></div>
+    <button class="prof-save" onclick="saveProfile()">💾 &nbsp;Speichern</button>
+  </div>
 </div>
 
 
@@ -1518,9 +1867,42 @@
 <!--  WILD SPINS SLOT GAME                                       -->
 <!-- ============================================================ -->
 <div id="wildspins-game">
-  <!-- Header -->
+
+  <!-- Casino Hall Background -->
+  <div class="ws-casino-bg">
+    <div class="wscb-ceiling"></div>
+    <div class="wscb-back-wall"></div>
+    <div class="wscb-vanish"></div>
+    <!-- Pendant lights -->
+    <div class="wscb-lights">
+      <div class="wscb-pendant" style="left:12%;--f:3.1s"></div>
+      <div class="wscb-pendant" style="left:28%;--f:2.7s"></div>
+      <div class="wscb-pendant" style="left:44%;--f:3.6s"></div>
+      <div class="wscb-pendant" style="left:60%;--f:2.4s"></div>
+      <div class="wscb-pendant" style="left:76%;--f:3.3s"></div>
+      <div class="wscb-pendant" style="left:90%;--f:2.9s"></div>
+    </div>
+    <!-- Left machine row -->
+    <div class="wscb-machines left">
+      <div class="wscb-m" style="--w:68px;--h:108px;--op:0.9;--mn:2.2s"></div>
+      <div class="wscb-m" style="--w:55px;--h:88px; --op:0.72;--mn:1.8s"></div>
+      <div class="wscb-m" style="--w:42px;--h:70px; --op:0.48;--mn:2.8s"></div>
+      <div class="wscb-m" style="--w:32px;--h:55px; --op:0.28;--mn:2.0s"></div>
+    </div>
+    <!-- Right machine row -->
+    <div class="wscb-machines right">
+      <div class="wscb-m" style="--w:68px;--h:108px;--op:0.9;--mn:1.9s"></div>
+      <div class="wscb-m" style="--w:55px;--h:88px; --op:0.72;--mn:2.5s"></div>
+      <div class="wscb-m" style="--w:42px;--h:70px; --op:0.48;--mn:2.1s"></div>
+      <div class="wscb-m" style="--w:32px;--h:55px; --op:0.28;--mn:2.9s"></div>
+    </div>
+    <div class="wscb-floor"></div>
+    <div class="wscb-overlay"></div>
+  </div>
+
+  <!-- Header (top bar) -->
   <div class="ws-header">
-    <button class="btn-back" onclick="closeWildSpins()">&#8592; Lobby</button>
+    <button class="ws-back-btn" onclick="closeWildSpins()">&#8592; Lobby</button>
     <div class="ws-title-text">🎰 Wild Spins</div>
     <div class="ws-bal-top">
       <span class="ws-bal-label">Guthaben</span>
@@ -1528,10 +1910,9 @@
     </div>
   </div>
 
-  <!-- Main area -->
-  <div class="ws-main">
-
-    <!-- Paytable mini (left) -->
+  <!-- Reel area -->
+  <div class="ws-reel-area">
+    <!-- Mini paytable (hidden on small screens) -->
     <div class="ws-paytable-mini">
       <div class="ws-pt-row"><span class="ws-pt-sym">⭐</span><span class="ws-pt-val">×10</span><span>Wild</span></div>
       <div class="ws-pt-row"><span class="ws-pt-sym">7️⃣</span><span class="ws-pt-val">×8</span></div>
@@ -1542,48 +1923,41 @@
       <div class="ws-pt-row"><span class="ws-pt-sym">🌸</span><span class="ws-pt-val">×2</span></div>
       <div class="ws-pt-row"><span class="ws-pt-sym">🍀</span><span class="ws-pt-val">×1.5</span></div>
     </div>
-
     <!-- Reel frame -->
     <div class="ws-reel-frame">
-      <div class="ws-reels" id="ws-reels">
-        <!-- built by wsInit() -->
+      <div class="ws-reels" id="ws-reels"></div>
+    </div>
+  </div>
+
+  <!-- Bottom controls bar (always at bottom, responsive) -->
+  <div class="ws-controls-bar">
+    <!-- Left: info displays -->
+    <div class="ws-info-group">
+      <div class="ws-info-item">
+        <div class="ws-info-lbl">Guthaben</div>
+        <div class="ws-info-val" id="ws-balance">100.00 €</div>
+      </div>
+      <div class="ws-info-item">
+        <div class="ws-info-lbl">Gewinn</div>
+        <div class="ws-info-val" id="ws-win-display">0.00 €</div>
       </div>
     </div>
-
-    <!-- Right control panel -->
-    <div class="ws-panel">
+    <!-- Center: bet controls -->
+    <div class="ws-bet-group">
+      <button class="ws-bet-btn" onclick="wsBetDown()">−</button>
+      <div class="ws-bet-inner">
+        <div class="ws-bet-lbl-small">Einsatz / L.</div>
+        <div class="ws-bet-val" id="ws-bet-display">1.00 €</div>
+      </div>
+      <button class="ws-bet-btn" onclick="wsBetUp()">+</button>
+    </div>
+    <!-- Right: max + spin -->
+    <div class="ws-spin-group">
+      <button class="ws-max-btn" onclick="wsBetMax()">MAX</button>
       <button class="ws-spin-btn" id="ws-spin-btn" onclick="wsDoSpin()">
         <span class="ws-spin-icon">▶</span>
         <span>SPIN</span>
       </button>
-
-      <div class="ws-bet-section">
-        <div class="ws-bet-lbl">Einsatz/Linie</div>
-        <div class="ws-bet-row">
-          <button class="ws-bet-btn" onclick="wsBetDown()">−</button>
-          <div class="ws-bet-val" id="ws-bet-display">1.00 €</div>
-          <button class="ws-bet-btn" onclick="wsBetUp()">+</button>
-        </div>
-      </div>
-
-      <button class="ws-max-btn" onclick="wsBetMax()">MAX BET</button>
-      <div class="ws-lines-info">10 Linien</div>
-    </div>
-  </div>
-
-  <!-- Bottom info bar -->
-  <div class="ws-info-bar">
-    <div class="ws-info-item">
-      <div class="ws-info-lbl">Guthaben</div>
-      <div class="ws-info-val" id="ws-balance">100.00 €</div>
-    </div>
-    <div class="ws-info-item">
-      <div class="ws-info-lbl">Gewinn</div>
-      <div class="ws-info-val" id="ws-win-display">0.00 €</div>
-    </div>
-    <div class="ws-info-item">
-      <div class="ws-info-lbl">Gesamt-Einsatz</div>
-      <div class="ws-info-val" id="ws-total-bet">10.00 €</div>
     </div>
   </div>
 
@@ -2414,11 +2788,130 @@ const splash = document.getElementById('splash');
 splash.addEventListener('click', () => {
   splash.classList.add('hide');
   setTimeout(() => { splash.style.display = 'none'; }, 850);
-  boot(); // guaranteed user gesture → AudioContext works
+  boot();
 });
 splash.addEventListener('keydown', e => {
   if (e.key === 'Enter' || e.key === ' ') splash.click();
 });
+
+// ─── Update popup + gender select ────────────────────────────
+function closeUpdatePopup() {
+  const popup = document.getElementById('update-popup');
+  popup.style.opacity = '0';
+  popup.style.transition = 'opacity 0.4s';
+  setTimeout(() => { popup.style.display = 'none'; }, 420);
+
+  // Show gender select if not yet chosen, else show splash
+  const profile = loadProfile();
+  if (!profile.gender) {
+    setTimeout(() => {
+      document.getElementById('gender-select').style.display = 'flex';
+    }, 100);
+  }
+  // Splash stays visible (user still needs to click it to start audio)
+}
+
+function selectGender(g) {
+  const profile = loadProfile();
+  profile.gender = g;
+  saveProfileData(profile);
+  document.getElementById('gender-select').style.display = 'none';
+  // Update splash emoji based on gender (cosmetic)
+  const deco = document.querySelector('.splash-deco-row');
+  if (deco) deco.textContent = g === 'female' ? '👩 🎰 🃏 🎲 👩' : '👨 🎰 🃏 🎲 👨';
+}
+
+// ─── Profile system ───────────────────────────────────────────
+function loadProfile() {
+  try {
+    return JSON.parse(localStorage.getItem('vc_profile') || '{}');
+  } catch(e) { return {}; }
+}
+function saveProfileData(data) {
+  try { localStorage.setItem('vc_profile', JSON.stringify(data)); } catch(e) {}
+}
+
+function openProfile() {
+  const p = loadProfile();
+  document.getElementById('main-menu').classList.remove('active');
+  document.getElementById('profile-page').classList.add('active');
+
+  // Name
+  const nameInput = document.getElementById('prof-name-input');
+  if (nameInput) nameInput.value = p.name || '';
+
+  // Avatar
+  if (p.avatar) {
+    const img = document.getElementById('prof-avatar-img');
+    const emo = document.getElementById('prof-avatar-emoji');
+    if (img) { img.src = p.avatar; img.style.display = 'block'; }
+    if (emo) emo.style.display = 'none';
+  }
+
+  // Gender
+  const genderEl = document.getElementById('prof-gender-display');
+  if (genderEl && p.gender) {
+    genderEl.textContent = p.gender === 'female' ? '👩 Weiblich' : '👨 Männlich';
+  }
+
+  // Level & XP
+  const xp    = p.xp    || 0;
+  const level = p.level || 1;
+  const xpNeeded = level * 100;
+  const pct   = Math.min((xp % xpNeeded) / xpNeeded * 100, 100);
+
+  const badge  = document.getElementById('prof-level-badge');
+  const xpFill = document.getElementById('prof-xp-fill');
+  const xpTxt  = document.getElementById('prof-xp-txt');
+  if (badge)  badge.textContent  = '⭐ Level ' + level;
+  if (xpFill) xpFill.style.width = pct + '%';
+  if (xpTxt)  xpTxt.textContent  = (xp % xpNeeded) + ' / ' + xpNeeded + ' XP bis Level ' + (level+1);
+}
+
+function closeProfile() {
+  document.getElementById('profile-page').classList.remove('active');
+  document.getElementById('main-menu').classList.add('active');
+}
+
+function saveProfile() {
+  const p = loadProfile();
+  const nameInput = document.getElementById('prof-name-input');
+  if (nameInput) p.name = nameInput.value.trim() || 'Vegas Player';
+  saveProfileData(p);
+  // Visual feedback
+  const btn = document.querySelector('.prof-save');
+  if (btn) { btn.textContent = '✓ Gespeichert!'; setTimeout(() => { btn.textContent = '💾  Speichern'; }, 1800); }
+}
+
+function handleAvatarUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const data = e.target.result;
+    const img  = document.getElementById('prof-avatar-img');
+    const emo  = document.getElementById('prof-avatar-emoji');
+    if (img) { img.src = data; img.style.display = 'block'; }
+    if (emo) emo.style.display = 'none';
+    const p = loadProfile();
+    p.avatar = data;
+    saveProfileData(p);
+  };
+  reader.readAsDataURL(file);
+}
+
+// Award XP helper (call after wins in slot game)
+function awardXP(amount) {
+  const p = loadProfile();
+  p.xp    = (p.xp || 0) + amount;
+  p.level = p.level || 1;
+  const needed = p.level * 100;
+  if (p.xp >= needed) {
+    p.xp    -= needed;
+    p.level += 1;
+  }
+  saveProfileData(p);
+}
 </script>
 </body>
 </html>
