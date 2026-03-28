@@ -3165,9 +3165,9 @@
     <!-- Model Panel (hidden by default) -->
     <div class="ai-model-panel" id="ai-model-panel">
       <select id="ai-model">
-        <option value="claude-haiku-4-5">⚡ Claude Haiku 4.5 — schnell</option>
-        <option value="claude-sonnet-4-6">⚖ Claude Sonnet 4.6 — ausgewogen</option>
-        <option value="claude-opus-4-6">🏆 Claude Opus 4.6 — stärkst</option>
+        <option value="gpt-4o-mini">⚡ GPT-4o Mini — schnell</option>
+        <option value="gpt-4o">⚖ GPT-4o — ausgewogen</option>
+        <option value="gpt-4-turbo">🏆 GPT-4 Turbo — stärkst</option>
       </select>
       <button class="ai-clear-btn" onclick="clearChat()">✕ Chat löschen</button>
     </div>
@@ -3465,7 +3465,7 @@ function _backToKlassenDOM() {
 ═══════════════════════════════════════════════════ */
 
 // Der API-Key befindet sich ausschließlich im Backend (server.js / .env).
-// Das Frontend sendet Anfragen nur an /api/chat – niemals direkt an Anthropic.
+// Das Frontend sendet Anfragen nur an /api/chat – niemals direkt an OpenAI.
 
 const AI_SYSTEM_PROMPT = `Du bist ein intelligenter Assistent, der in den Dennis Pro Rechner integriert ist.
 
@@ -4029,7 +4029,7 @@ async function klasseSend() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5',
+        model: 'gpt-4o-mini',
         system: klasseSystemPrompts[activeKlasse],
         messages: hist,
         max_tokens: 1200
@@ -4735,7 +4735,7 @@ function openPdfGenerator() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'claude-haiku-4-5',
+      model: 'gpt-4o-mini',
       system: systemCtx,
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 1800
