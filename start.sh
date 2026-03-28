@@ -14,32 +14,61 @@ echo "  ║   Dennis Pro Rechner — DRX Studios   ║"
 echo "  ╚══════════════════════════════════════╝"
 echo ""
 
-# npm install (nur wenn node_modules fehlt oder veraltet)
-if [ ! -d "node_modules" ]; then
-  echo "📦 Installiere Abhängigkeiten (einmalig)..."
-  npm install --silent
-  echo "✅ Abhängigkeiten installiert."
-else
-  echo "📦 Abhängigkeiten bereits vorhanden."
+# Node.js prüfen
+if ! command -v node &>/dev/null; then
+  echo "❌ FEHLER: Node.js ist nicht installiert!"
+  echo "   → https://nodejs.org herunterladen und installieren."
+  echo ""
+  read -p "Drücke Enter zum Beenden..."
+  exit 1
 fi
+
+# npm prüfen
+if ! command -v npm &>/dev/null; then
+  echo "❌ FEHLER: npm ist nicht installiert!"
+  echo "   → Node.js neu installieren (npm ist dabei enthalten)."
+  echo ""
+  read -p "Drücke Enter zum Beenden..."
+  exit 1
+fi
+
+# Abhängigkeiten immer prüfen und installieren
+echo "📦 Prüfe Abhängigkeiten..."
+npm install
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ FEHLER: npm install fehlgeschlagen!"
+  echo "   Stelle sicher, dass du eine Internetverbindung hast."
+  echo ""
+  read -p "Drücke Enter zum Beenden..."
+  exit 1
+fi
+echo "✅ Alle Abhängigkeiten bereit."
 
 echo ""
 echo "🚀 Starte Server auf http://localhost:3000 ..."
 node server.js &
 SERVER_PID=$!
 
-# Kurz warten bis der Server hochgefahren ist
-sleep 1.5
+# Warten bis der Server hochgefahren ist
+sleep 2
+
+# Prüfen ob der Server wirklich läuft
+if ! kill -0 $SERVER_PID 2>/dev/null; then
+  echo ""
+  echo "❌ FEHLER: Server konnte nicht gestartet werden!"
+  echo "   Prüfe deine .env Datei (OPENAI_API_KEY)."
+  echo ""
+  read -p "Drücke Enter zum Beenden..."
+  exit 1
+fi
 
 # Browser öffnen — plattformübergreifend
 if command -v xdg-open &>/dev/null; then
-  # Linux
   xdg-open "http://localhost:3000" &>/dev/null &
 elif command -v open &>/dev/null; then
-  # macOS
   open "http://localhost:3000"
 elif command -v cmd.exe &>/dev/null; then
-  # Windows WSL
   cmd.exe /c start "http://localhost:3000" &>/dev/null
 else
   echo ""
