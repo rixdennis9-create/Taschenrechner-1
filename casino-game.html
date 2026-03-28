@@ -34,28 +34,156 @@
       pointer-events: none;
     }
 
-    /* --- Night sky --- */
-    .night-sky {
-      position: absolute;
+    /* ===== SPLASH SCREEN ===== */
+    #splash {
+      position: fixed;
       inset: 0;
-      background: radial-gradient(ellipse at 50% 0%, #1a0030 0%, #0a0018 40%, #000008 100%);
-      overflow: hidden;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      background: radial-gradient(ellipse at 50% 35%, #2a0055 0%, #0e0020 55%, #000008 100%);
+      cursor: pointer;
+      transition: opacity 0.8s ease;
+    }
+    #splash.hide { opacity: 0; pointer-events: none; }
+
+    .splash-deco-row {
+      font-size: clamp(22px, 4vw, 36px);
+      letter-spacing: 16px;
+      margin-bottom: 28px;
+      opacity: 0.6;
+      animation: splash-deco-spin 6s linear infinite;
+    }
+    @keyframes splash-deco-spin {
+      0%,100% { letter-spacing: 16px; opacity: 0.5; }
+      50%      { letter-spacing: 22px; opacity: 0.8; }
+    }
+    .splash-logo {
+      font-size: clamp(42px, 9vw, 100px);
+      font-weight: 900;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      text-align: center;
+      background: linear-gradient(180deg, #fff8b0 0%, #ffd700 45%, #ff8800 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 24px #ffd700aa);
+      animation: title-glow 2s ease-in-out infinite alternate;
+      line-height: 1.05;
+    }
+    .splash-sub-text {
+      font-size: clamp(11px, 2vw, 17px);
+      color: #cc44ff;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px #aa00ff;
+      margin: 10px 0 50px;
+    }
+    .splash-tap {
+      font-size: clamp(13px, 2.2vw, 18px);
+      color: #fff;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      border: 2px solid #ffd700;
+      padding: 15px 48px;
+      border-radius: 50px;
+      background: rgba(255,215,0,0.08);
+      animation: tap-pulse 1.3s ease-in-out infinite alternate;
+      font-family: 'Georgia', serif;
+    }
+    @keyframes tap-pulse {
+      from { opacity: 0.55; box-shadow: 0 0 12px #ffd70044, 0 0 0 0 #ffd70022; }
+      to   { opacity: 1.00; box-shadow: 0 0 28px #ffd700bb, 0 0 0 8px #ffd70011; }
+    }
+    .splash-hint {
+      margin-top: 22px;
+      font-size: 11px;
+      color: #444;
+      letter-spacing: 3px;
     }
 
-    /* Stars */
-    .stars {
+    /* ===== CASINO SLOT MACHINES BACKGROUND ===== */
+    .slot-bg {
       position: absolute;
       inset: 0;
+      background: linear-gradient(160deg, #0e0005 0%, #080010 50%, #0a0004 100%);
+      overflow: hidden;
     }
-    .star {
+    .slot-mini {
       position: absolute;
-      background: #fff;
-      border-radius: 50%;
-      animation: twinkle var(--dur, 2s) ease-in-out infinite alternate;
+      left: var(--x);
+      top: var(--y);
+      transform: scale(var(--s,1)) translateX(-50%);
+      transform-origin: top center;
+      opacity: var(--op, 0.2);
+      pointer-events: none;
+      width: 148px;
     }
-    @keyframes twinkle {
-      from { opacity: 0.2; transform: scale(1); }
-      to   { opacity: 1;   transform: scale(1.4); }
+    .sm-body {
+      background: linear-gradient(160deg, #1e0a00, #321400, #1e0a00);
+      border: 2px solid #7a4000;
+      border-radius: 14px 14px 8px 8px;
+      overflow: hidden;
+      box-shadow: 0 0 18px rgba(255,150,0,0.08);
+    }
+    .sm-title {
+      text-align: center;
+      background: linear-gradient(90deg, #120300, #2e1000, #120300);
+      padding: 5px 0;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: #ffd700;
+      text-shadow: 0 0 6px #ffd700;
+      border-bottom: 1px solid #553300;
+    }
+    .sm-reels-row {
+      background: #060002;
+      margin: 6px 8px;
+      border: 2px solid #3a2000;
+      border-radius: 6px;
+      padding: 5px 4px;
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      position: relative;
+    }
+    .sm-reels-row::after {
+      content: '';
+      position: absolute;
+      left: 4px; right: 4px; top: 50%;
+      height: 2px;
+      background: rgba(255,50,50,0.4);
+      transform: translateY(-50%);
+    }
+    .sm-reel {
+      width: 34px;
+      height: 34px;
+      background: #0c0004;
+      border: 1px solid #281000;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      overflow: hidden;
+    }
+    .sm-foot {
+      display: flex;
+      justify-content: center;
+      padding: 5px 8px;
+      border-top: 1px solid #3a1500;
+    }
+    .sm-btn {
+      width: 44px;
+      height: 11px;
+      background: linear-gradient(to bottom, #cc2000, #880000);
+      border-radius: 4px;
+      border: 1px solid #ff3300;
+      box-shadow: 0 0 5px #ff220022;
     }
 
     /* --- Vegas Skyline SVG --- */
@@ -442,6 +570,171 @@
     }
     .bg-slot-machine.jackpot { animation: jackpot-flash 0.38s ease-in-out 6; }
 
+    /* ===== SLOTS LOBBY ===== */
+    #slots-lobby {
+      position: fixed;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      background: radial-gradient(ellipse at 50% 0%, #0d0020 0%, #050010 55%, #000005 100%);
+      z-index: 700;
+      overflow-y: auto;
+      padding: 28px 20px 50px;
+    }
+    #slots-lobby.active { display: flex; }
+
+    .lobby-header { text-align: center; margin-bottom: 30px; }
+    .lobby-header .title {
+      font-size: clamp(22px, 4.5vw, 48px);
+      font-weight: 900;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #fff8b0 0%, #ffd700 50%, #ff8800 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 14px #ffd70066);
+    }
+    .lobby-header .sub { font-size: 11px; color: #886600; letter-spacing: 5px; text-transform: uppercase; margin-top: 5px; }
+
+    .lobby-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      gap: 22px;
+      width: min(1100px, 96vw);
+    }
+
+    /* ─ Base card ─ */
+    .lobby-card {
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+      transition: transform 0.2s, box-shadow 0.25s;
+      min-height: 290px;
+      display: flex;
+      flex-direction: column;
+      cursor: default;
+    }
+    .lobby-card:hover { transform: translateY(-6px); box-shadow: 0 16px 44px rgba(0,0,0,0.85); }
+    .lc-bg { position: absolute; inset: 0; }
+    .lc-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 100%);
+    }
+    .lc-content { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; padding: 18px 16px 16px; }
+    .lc-badge {
+      align-self: flex-start;
+      font-size: 9px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      backdrop-filter: blur(4px);
+      margin-bottom: 8px;
+    }
+    .lc-symbols { font-size: clamp(26px, 4.5vw, 40px); letter-spacing: 7px; margin: 6px 0 10px; }
+    .lc-name { font-size: clamp(17px, 2.8vw, 24px); font-weight: 900; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; }
+    .lc-features {
+      list-style: none;
+      margin: 6px 0 14px;
+      flex: 1;
+    }
+    .lc-features li { font-size: 12px; letter-spacing: 1px; padding: 3px 0; opacity: 0.82; line-height: 1.4; }
+    .lc-features li::before { content: '✦ '; font-size: 9px; }
+    .lc-play-btn {
+      display: block;
+      text-align: center;
+      padding: 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-family: 'Georgia', serif;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 700;
+      border: none;
+      cursor: not-allowed;
+      opacity: 0.5;
+      margin-top: auto;
+    }
+    /* Demnächst overlay */
+    .lc-soon {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.28);
+      border-radius: 18px;
+    }
+    .lc-soon span {
+      font-size: clamp(15px, 3vw, 22px);
+      font-weight: 900;
+      letter-spacing: 6px;
+      color: #fff;
+      text-transform: uppercase;
+      padding: 9px 24px;
+      border: 2px solid rgba(255,255,255,0.38);
+      border-radius: 8px;
+      background: rgba(0,0,0,0.52);
+      backdrop-filter: blur(6px);
+    }
+
+    /* Card 1 — Wild Spins (purple/magenta) */
+    .card-wildspins .lc-bg {
+      background: linear-gradient(145deg, #18003a 0%, #3a0060 40%, #5e0078 70%, #18003a 100%);
+    }
+    .card-wildspins .lc-bg::before {
+      content: '';position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 25%, rgba(255,0,200,0.3) 0%, transparent 65%);
+    }
+    .card-wildspins .lc-name { color: #ff88ff; text-shadow: 0 0 14px #ff00ff; }
+    .card-wildspins .lc-features li { color: #ddaaff; }
+    .card-wildspins .lc-play-btn { background: linear-gradient(90deg,#5500aa,#8800cc); color:#fff; border:1px solid #aa44ff; }
+
+    /* Card 2 — Lucky 7 (red/gold classic) */
+    .card-lucky7 .lc-bg {
+      background: linear-gradient(145deg, #1a0000 0%, #440000 40%, #200000 70%, #0a0000 100%);
+    }
+    .card-lucky7 .lc-bg::before {
+      content:'';position:absolute;inset:0;
+      background: radial-gradient(ellipse at 40% 50%, rgba(255,215,0,0.2) 0%, transparent 60%);
+    }
+    .card-lucky7 .lc-name { color: #ffd700; text-shadow: 0 0 12px #ff8800; }
+    .card-lucky7 .lc-features li { color: #ffcc66; }
+    .card-lucky7 .lc-play-btn { background: linear-gradient(90deg,#880000,#bb0000); color:#ffd700; border:1px solid #ff4400; }
+
+    /* Card 3 — Book of Secrets (Egypt gold) */
+    .card-bookof .lc-bg {
+      background: linear-gradient(145deg, #0f0700 0%, #2c1800 40%, #1a0f00 70%, #0d0600 100%);
+    }
+    .card-bookof .lc-bg::before {
+      content:'';position:absolute;inset:0;
+      background: radial-gradient(ellipse at 50% 60%, rgba(210,155,40,0.28) 0%, transparent 65%);
+    }
+    .card-bookof .lc-name { color: #f0c040; text-shadow: 0 0 12px #cc8800; }
+    .card-bookof .lc-features li { color: #d4a850; }
+    .card-bookof .lc-play-btn { background: linear-gradient(90deg,#3a1e00,#6a3800); color:#f0c040; border:1px solid #aa7700; }
+
+    /* Card 4 — Mega Wheel (electric blue) */
+    .card-megawheel .lc-bg {
+      background: linear-gradient(145deg, #000820 0%, #001840 40%, #00265a 70%, #000820 100%);
+    }
+    .card-megawheel .lc-bg::before {
+      content:'';position:absolute;inset:0;
+      background: radial-gradient(ellipse at 65% 30%, rgba(0,200,255,0.28) 0%, transparent 60%);
+    }
+    .card-megawheel .lc-name { color: #00e5ff; text-shadow: 0 0 14px #0088ff; }
+    .card-megawheel .lc-features li { color: #88ddff; }
+    .card-megawheel .lc-play-btn { background: linear-gradient(90deg,#001840,#002e60); color:#00ddff; border:1px solid #007aaa; }
+
     /* Floating chips animation */
     .chip {
       position: absolute;
@@ -588,14 +881,23 @@
 <body>
 
 <!-- ============================================================ -->
+<!--  SPLASH SCREEN (click-to-start — required for Web Audio)    -->
+<!-- ============================================================ -->
+<div id="splash">
+  <div class="splash-deco-row">🎰 🃏 🎲 🎰 🃏</div>
+  <div class="splash-logo">Vegas<br>Casino</div>
+  <div class="splash-sub-text">The Ultimate Experience</div>
+  <div class="splash-tap">▶ &nbsp;Tippen zum Starten</div>
+  <div class="splash-hint">🔊 Sound an empfohlen</div>
+</div>
+
+<!-- ============================================================ -->
 <!--  LOADING SCREEN                                              -->
 <!-- ============================================================ -->
 <div id="loading-screen">
 
-  <!-- Night sky + stars -->
-  <div class="night-sky">
-    <div class="stars" id="stars-container"></div>
-  </div>
+  <!-- Casino slot machines background (replaces stars) -->
+  <div class="slot-bg" id="slot-bg"></div>
 
   <!-- Big background slot machine -->
   <div class="bg-slot-machine" id="bg-slot-machine">
@@ -830,11 +1132,11 @@
   </div>
 
   <div class="games-grid">
-    <div class="game-card soon">
-      <span class="badge badge-soon">Bald</span>
+    <div class="game-card" style="cursor:pointer;" onclick="openSlotsLobby()">
+      <span class="badge badge-new">Neu</span>
       <span class="icon">🎰</span>
       <div class="name">Slot Machine</div>
-      <div class="desc">Klassischer Einarmiger Bandit</div>
+      <div class="desc">Jetzt ansehen →</div>
     </div>
     <div class="game-card soon">
       <span class="badge badge-soon">Bald</span>
@@ -870,28 +1172,143 @@
 </div>
 
 
+<!-- ============================================================ -->
+<!--  SLOTS LOBBY                                                 -->
+<!-- ============================================================ -->
+<div id="slots-lobby">
+  <button class="btn-back" onclick="closeSlotsLobby()">&#8592; Zurück</button>
+
+  <div class="lobby-header">
+    <div class="title">🎰 Slot Spiele</div>
+    <div class="sub">Wähle deinen Slot</div>
+  </div>
+
+  <div class="lobby-grid">
+
+    <!-- Card 1: Wild Spins -->
+    <div class="lobby-card card-wildspins">
+      <div class="lc-bg"></div>
+      <div class="lc-content">
+        <span class="lc-badge">Freispiele & Multiplikator</span>
+        <div class="lc-symbols">⭐ 🔥 💫</div>
+        <div class="lc-name">Wild Spins</div>
+        <ul class="lc-features">
+          <li>10 Freispiele beim Scatter</li>
+          <li>Wilds ersetzen alle Symbole</li>
+          <li>Multiplikatoren bis zu 50×</li>
+          <li>Sticky Wilds in Freispielen</li>
+        </ul>
+        <button class="lc-play-btn">🔒 Demnächst</button>
+      </div>
+      <div class="lc-soon"><span>Demnächst</span></div>
+    </div>
+
+    <!-- Card 2: Lucky 7 -->
+    <div class="lobby-card card-lucky7">
+      <div class="lc-bg"></div>
+      <div class="lc-content">
+        <span class="lc-badge">Klassischer Vegas Slot</span>
+        <div class="lc-symbols">7️⃣ 🍒 🔔</div>
+        <div class="lc-name">Lucky 7</div>
+        <ul class="lc-features">
+          <li>Triple 7 — Mega Jackpot</li>
+          <li>Klassische 3-Rollen Mechanik</li>
+          <li>Kirsche, Glocke, Bar & 7</li>
+          <li>Progressiver Jackpot Pool</li>
+        </ul>
+        <button class="lc-play-btn">🔒 Demnächst</button>
+      </div>
+      <div class="lc-soon"><span>Demnächst</span></div>
+    </div>
+
+    <!-- Card 3: Book of Secrets -->
+    <div class="lobby-card card-bookof">
+      <div class="lc-bg"></div>
+      <div class="lc-content">
+        <span class="lc-badge">Buch Freispiele</span>
+        <div class="lc-symbols">📖 🏺 👁️</div>
+        <div class="lc-name">Book of Secrets</div>
+        <ul class="lc-features">
+          <li>15 Freispiele mit dem Buch</li>
+          <li>Expanding Special Symbol</li>
+          <li>Ägypten Mystery Bonus</li>
+          <li>Re-Trigger bis zu 3×</li>
+        </ul>
+        <button class="lc-play-btn">🔒 Demnächst</button>
+      </div>
+      <div class="lc-soon"><span>Demnächst</span></div>
+    </div>
+
+    <!-- Card 4: Mega Wheel -->
+    <div class="lobby-card card-megawheel">
+      <div class="lc-bg"></div>
+      <div class="lc-content">
+        <span class="lc-badge">Drehräder & Multiplikatoren</span>
+        <div class="lc-symbols">🎡 ⚡ 💎</div>
+        <div class="lc-name">Mega Wheel</div>
+        <ul class="lc-features">
+          <li>Bonus-Rad mit 12 Feldern</li>
+          <li>Multiplikatoren bis 100×</li>
+          <li>Wheel-in-Wheel Feature</li>
+          <li>Lightning-Runde ab 3 Scatter</li>
+        </ul>
+        <button class="lc-play-btn">🔒 Demnächst</button>
+      </div>
+      <div class="lc-soon"><span>Demnächst</span></div>
+    </div>
+
+  </div>
+</div>
+
+
 <script>
-// ─── Stars generator ───────────────────────────────────────────
-function makeStars(containerId, count) {
-  const c = document.getElementById(containerId);
-  if (!c) return;
-  for (let i = 0; i < count; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const size = Math.random() * 2.4 + 0.6;
-    s.style.cssText = `
-      left:${Math.random()*100}%;
-      top:${Math.random()*70}%;
-      width:${size}px;
-      height:${size}px;
-      --dur:${(Math.random()*2+1).toFixed(1)}s;
-      animation-delay:${(Math.random()*3).toFixed(1)}s;
-    `;
-    c.appendChild(s);
-  }
+// ─── Slot machines background builder ─────────────────────────
+const BG_POSITIONS = [
+  { x:'4%',   y:'3%',  s:0.62, op:0.22 },
+  { x:'22%',  y:'5%',  s:0.78, op:0.28 },
+  { x:'42%',  y:'2%',  s:0.55, op:0.18 },
+  { x:'61%',  y:'6%',  s:0.70, op:0.25 },
+  { x:'80%',  y:'3%',  s:0.68, op:0.22 },
+  { x:'96%',  y:'8%',  s:0.52, op:0.16 },
+  { x:'12%',  y:'44%', s:0.50, op:0.14 },
+  { x:'88%',  y:'42%', s:0.55, op:0.15 },
+  { x:'50%',  y:'48%', s:0.46, op:0.12 },
+];
+const BG_MINI_SYM = ['🍒','7️⃣','🔔','💎','⭐','🍋','🎰','🃏','💰','🍀'];
+
+function buildSlotBg() {
+  const container = document.getElementById('slot-bg');
+  if (!container) return;
+  BG_POSITIONS.forEach((pos, pi) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'slot-mini';
+    wrap.style.cssText = `--x:${pos.x};--y:${pos.y};--s:${pos.s};--op:${pos.op}`;
+    wrap.innerHTML = `
+      <div class="sm-body">
+        <div class="sm-title">★ SLOTS ★</div>
+        <div class="sm-reels-row">
+          <div class="sm-reel" id="sbg-${pi}-0">${BG_MINI_SYM[pi % BG_MINI_SYM.length]}</div>
+          <div class="sm-reel" id="sbg-${pi}-1">${BG_MINI_SYM[(pi+3) % BG_MINI_SYM.length]}</div>
+          <div class="sm-reel" id="sbg-${pi}-2">${BG_MINI_SYM[(pi+7) % BG_MINI_SYM.length]}</div>
+        </div>
+        <div class="sm-foot"><div class="sm-btn"></div></div>
+      </div>`;
+    container.appendChild(wrap);
+  });
+
+  // Spin all mini-machine reels independently
+  BG_POSITIONS.forEach((_, pi) => {
+    [0,1,2].forEach(ri => {
+      let idx = (pi + ri * 3) % BG_MINI_SYM.length;
+      const spd = 110 + pi * 22 + ri * 38;
+      setInterval(() => {
+        idx = (idx + 1) % BG_MINI_SYM.length;
+        const el = document.getElementById(`sbg-${pi}-${ri}`);
+        if (el) el.textContent = BG_MINI_SYM[idx];
+      }, spd);
+    });
+  });
 }
-makeStars('stars-container', 140);
-makeStars('menu-stars', 160);
 
 // ─── Audio Engine ─────────────────────────────────────────────
 let audioCtx    = null;
@@ -1217,32 +1634,40 @@ function openGamesMenu() {
   document.getElementById('main-menu').classList.remove('active');
   document.getElementById('games-menu').classList.add('active');
 }
-
 function closeGamesMenu() {
   document.getElementById('games-menu').classList.remove('active');
   document.getElementById('main-menu').classList.add('active');
 }
+function openSlotsLobby() {
+  document.getElementById('games-menu').classList.remove('active');
+  document.getElementById('slots-lobby').classList.add('active');
+}
+function closeSlotsLobby() {
+  document.getElementById('slots-lobby').classList.remove('active');
+  document.getElementById('games-menu').classList.add('active');
+}
 
-// ─── Boot sequence ────────────────────────────────────────────
+// ─── Boot sequence (called after splash click) ────────────────
 function boot() {
+  // AudioContext is guaranteed valid here (user already clicked splash)
   initAudio();
+  startAmbientMusic();   // music starts immediately
 
-  // Start ambient music immediately (loading screen + menu share same track)
-  startAmbientMusic();
+  // Build & start slot machine background
+  buildSlotBg();
 
-  // Small top reels + slot spin clicks
+  // Small top reels + mechanical click sounds
   startReels();
   playSlotSpinSound();
 
-  // Big background slot machine
+  // Big center slot machine
   startBgReels();
   scheduleNextJackpot();
 
-  // Loading bar (~7s)
+  // Show loading screen, run bar
   runLoadingBar(7000, () => {
-    stopReels(true);
+    stopReels(true);     // 777
     playJackpotSound();
-
     setTimeout(() => {
       const ls = document.getElementById('loading-screen');
       ls.classList.add('fade-out');
@@ -1251,30 +1676,22 @@ function boot() {
         stopBgReels();
         if (bgJPTimer) clearTimeout(bgJPTimer);
         document.getElementById('main-menu').classList.add('active');
-        // Ambient music is already playing — no restart needed
+        // Ambient music continues uninterrupted
       }, 1000);
     }, 800);
   });
 }
 
-// Start on first user interaction (AudioContext requires gesture in most browsers)
-let started = false;
-function tryStart() {
-  if (started) return;
-  started = true;
-  // Resume suspended context (autoplay policy)
-  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-  boot();
-}
-document.addEventListener('click',      tryStart, { once: true });
-document.addEventListener('keydown',    tryStart, { once: true });
-document.addEventListener('touchstart', tryStart, { once: true });
-
-// Pre-init AudioContext early (may be suspended until gesture)
-try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-
-// Auto-start visuals immediately; audio resumes on first click
-setTimeout(() => { if (!started) { started = true; boot(); } }, 300);
+// ─── Splash screen handler ────────────────────────────────────
+const splash = document.getElementById('splash');
+splash.addEventListener('click', () => {
+  splash.classList.add('hide');
+  setTimeout(() => { splash.style.display = 'none'; }, 850);
+  boot(); // guaranteed user gesture → AudioContext works
+});
+splash.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') splash.click();
+});
 </script>
 </body>
 </html>
