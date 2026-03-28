@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vegas Casino</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0f;
+      font-family: 'Georgia', serif;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* ========== LOADING SCREEN ========== */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 60px;
+      background: #0a0008;
+      transition: opacity 1s ease;
+    }
+
+    #loading-screen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* --- Night sky --- */
+    .night-sky {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, #1a0030 0%, #0a0018 40%, #000008 100%);
+      overflow: hidden;
+    }
+
+    /* Stars */
+    .stars {
+      position: absolute;
+      inset: 0;
+    }
+    .star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle var(--dur, 2s) ease-in-out infinite alternate;
+    }
+    @keyframes twinkle {
+      from { opacity: 0.2; transform: scale(1); }
+      to   { opacity: 1;   transform: scale(1.4); }
+    }
+
+    /* --- Vegas Skyline SVG --- */
+    .skyline {
+      position: absolute;
+      bottom: 140px;
+      left: 0;
+      width: 100%;
+    }
+
+    /* --- Neon glow on buildings --- */
+    @keyframes neon-pulse {
+      0%, 100% { filter: drop-shadow(0 0 6px #ff0080) drop-shadow(0 0 12px #ff0080); }
+      50%       { filter: drop-shadow(0 0 14px #ff00ff) drop-shadow(0 0 28px #ff00ff); }
+    }
+    @keyframes neon-pulse-gold {
+      0%, 100% { filter: drop-shadow(0 0 6px #ffd700) drop-shadow(0 0 14px #ff8800); }
+      50%       { filter: drop-shadow(0 0 16px #ffff00) drop-shadow(0 0 32px #ffd700); }
+    }
+    @keyframes neon-pulse-cyan {
+      0%, 100% { filter: drop-shadow(0 0 8px #00ffff) drop-shadow(0 0 16px #0088ff); }
+      50%       { filter: drop-shadow(0 0 18px #00ffff) drop-shadow(0 0 36px #00ccff); }
+    }
+
+    .neon-pink  { animation: neon-pulse      1.8s ease-in-out infinite; }
+    .neon-gold  { animation: neon-pulse-gold 2.2s ease-in-out infinite; }
+    .neon-cyan  { animation: neon-pulse-cyan 1.5s ease-in-out infinite; }
+
+    /* --- Road / Ground --- */
+    .ground {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 145px;
+      background: linear-gradient(to bottom, #0d0d0d 0%, #1a1a1a 100%);
+      border-top: 2px solid #333;
+    }
+    .road-line {
+      position: absolute;
+      bottom: 60px;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: repeating-linear-gradient(
+        90deg,
+        #ffd700 0px, #ffd700 60px,
+        transparent 60px, transparent 120px
+      );
+      animation: road-scroll 1s linear infinite;
+    }
+    @keyframes road-scroll {
+      from { background-position: 0 0; }
+      to   { background-position: 120px 0; }
+    }
+
+    /* --- Slot machine decoration --- */
+    .slot-deco {
+      position: absolute;
+      top: 18px;
+      display: flex;
+      gap: 12px;
+    }
+    .slot-reel {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+      border: 3px solid #ffd700;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 0 12px #ffd70066, inset 0 0 8px #00000088;
+      animation: reel-spin 0.18s steps(1) infinite;
+      overflow: hidden;
+      position: relative;
+    }
+    .slot-reel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, #ffffff18 0%, transparent 50%, #00000044 100%);
+      pointer-events: none;
+    }
+
+    @keyframes reel-spin {
+      0%   { --sym: "🍒"; }
+      14%  { --sym: "7️⃣"; }
+      28%  { --sym: "🔔"; }
+      42%  { --sym: "💎"; }
+      57%  { --sym: "⭐"; }
+      71%  { --sym: "🍋"; }
+      85%  { --sym: "🎰"; }
+    }
+
+    /* --- Title --- */
+    .casino-title {
+      position: absolute;
+      top: 90px;
+      text-align: center;
+      width: 100%;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+    }
+    .casino-title .main {
+      font-size: clamp(32px, 6vw, 72px);
+      font-weight: 900;
+      background: linear-gradient(180deg, #fff8b0 0%, #ffd700 40%, #ff8800 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px #ffd70099);
+      animation: title-glow 2s ease-in-out infinite alternate;
+    }
+    .casino-title .sub {
+      font-size: clamp(14px, 2.5vw, 22px);
+      color: #cc00cc;
+      letter-spacing: 10px;
+      text-shadow: 0 0 12px #ff00ff, 0 0 24px #cc00cc;
+      margin-top: 4px;
+    }
+    @keyframes title-glow {
+      from { filter: drop-shadow(0 0 10px #ffd70066); }
+      to   { filter: drop-shadow(0 0 30px #ffd700cc); }
+    }
+
+    /* --- Bottom HUD: loading --- */
+    .loading-hud {
+      position: relative;
+      z-index: 10;
+      width: min(480px, 90vw);
+      text-align: center;
+    }
+    .loading-label {
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #aaffaa;
+      margin-bottom: 10px;
+      text-shadow: 0 0 8px #00ff88;
+    }
+    .loading-bar-wrap {
+      width: 100%;
+      height: 18px;
+      background: #0a1a0a;
+      border: 2px solid #00aa44;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 12px #00ff4433, inset 0 0 6px #000;
+      position: relative;
+    }
+    .loading-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00cc44, #66ff88, #00ff44);
+      border-radius: 8px;
+      transition: width 0.12s ease;
+      box-shadow: 0 0 10px #00ff44, 0 0 20px #00cc44;
+      position: relative;
+    }
+    .loading-bar-fill::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 10px; right: 10px; height: 4px;
+      background: rgba(255,255,255,0.35);
+      border-radius: 4px;
+    }
+    .loading-pct {
+      font-size: 11px;
+      color: #44ff88;
+      margin-top: 7px;
+      letter-spacing: 2px;
+      text-shadow: 0 0 6px #00ff44;
+    }
+
+    /* ========== MAIN MENU ========== */
+    #main-menu {
+      position: fixed;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at 50% 0%, #1a0030 0%, #0a0018 50%, #000008 100%);
+      z-index: 500;
+    }
+    #main-menu.active { display: flex; }
+
+    .menu-bg-stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    /* Decorative corner neons */
+    .corner-deco {
+      position: absolute;
+      font-size: 36px;
+      opacity: 0.55;
+    }
+    .corner-deco.tl { top: 18px; left: 24px; }
+    .corner-deco.tr { top: 18px; right: 24px; }
+    .corner-deco.bl { bottom: 18px; left: 24px; }
+    .corner-deco.br { bottom: 18px; right: 24px; }
+
+    .menu-title {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .menu-title .big {
+      font-size: clamp(36px, 7vw, 84px);
+      font-weight: 900;
+      background: linear-gradient(180deg, #fff8b0 0%, #ffd700 45%, #ff8800 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      filter: drop-shadow(0 0 24px #ffd700aa);
+      animation: title-glow 2.5s ease-in-out infinite alternate;
+    }
+    .menu-title .small {
+      font-size: clamp(12px, 2vw, 18px);
+      color: #ff44cc;
+      letter-spacing: 12px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px #ff00ff;
+      margin-top: 6px;
+    }
+
+    .menu-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: min(340px, 85vw);
+    }
+    .menu-btn {
+      padding: 16px 32px;
+      font-size: 16px;
+      font-family: 'Georgia', serif;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .menu-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      transition: left 0.4s;
+    }
+    .menu-btn:hover::before { left: 140%; }
+    .menu-btn:hover { transform: translateY(-2px); }
+    .menu-btn:active { transform: translateY(0px); }
+
+    .btn-play {
+      background: linear-gradient(135deg, #cc0044, #ff0066, #cc0044);
+      color: #fff;
+      box-shadow: 0 0 18px #ff006688, 0 4px 16px #880033;
+      border: 1px solid #ff4488;
+    }
+    .btn-play:hover { box-shadow: 0 0 28px #ff0066cc, 0 6px 20px #990044; }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #111, #222, #111);
+      color: #ffd700;
+      box-shadow: 0 0 10px #ffd70033, 0 4px 12px #000;
+      border: 1px solid #ffd700;
+    }
+    .btn-secondary:hover { box-shadow: 0 0 20px #ffd70066, 0 6px 16px #000; }
+
+    .menu-version {
+      position: absolute;
+      bottom: 16px;
+      right: 20px;
+      font-size: 10px;
+      color: #444;
+      letter-spacing: 2px;
+    }
+
+    /* Floating chips animation */
+    .chip {
+      position: absolute;
+      font-size: 22px;
+      animation: float-chip var(--dur, 8s) ease-in-out infinite;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+    @keyframes float-chip {
+      0%   { transform: translateY(0px) rotate(0deg); opacity: 0.15; }
+      50%  { transform: translateY(-30px) rotate(180deg); opacity: 0.35; }
+      100% { transform: translateY(0px) rotate(360deg); opacity: 0.15; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!--  LOADING SCREEN                                              -->
+<!-- ============================================================ -->
+<div id="loading-screen">
+
+  <!-- Night sky + stars -->
+  <div class="night-sky">
+    <div class="stars" id="stars-container"></div>
+  </div>
+
+  <!-- Vegas Skyline -->
+  <div class="skyline">
+    <svg viewBox="0 0 1200 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet" width="100%" height="auto">
+      <defs>
+        <linearGradient id="bld1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0a2e"/><stop offset="100%" stop-color="#0a0010"/></linearGradient>
+        <linearGradient id="bld2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a1a2e"/><stop offset="100%" stop-color="#050d18"/></linearGradient>
+        <linearGradient id="bld3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e0a0a"/><stop offset="100%" stop-color="#0f0505"/></linearGradient>
+        <filter id="glow-pink"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="glow-gold"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+
+      <!-- Far background buildings -->
+      <rect x="0"   y="200" width="80"  height="140" fill="#080010" rx="2"/>
+      <rect x="85"  y="180" width="60"  height="160" fill="#08000e" rx="2"/>
+      <rect x="150" y="210" width="50"  height="130" fill="#09000f" rx="2"/>
+      <rect x="1070" y="185" width="70" height="155" fill="#080010" rx="2"/>
+      <rect x="1145" y="200" width="55" height="140" fill="#08000e" rx="2"/>
+
+      <!-- LEFT SIDE: Big hotel tower -->
+      <rect x="20" y="60" width="120" height="280" fill="url(#bld1)" rx="3"/>
+      <rect x="40" y="40" width="80"  height="30"  fill="#1a0a2e" rx="2"/>
+      <rect x="75" y="20" width="10"  height="25"  fill="#cc00cc"/>
+      <!-- windows left tower -->
+      <rect x="35" y="75"  width="18" height="12" fill="#ffff0033" rx="1"/>
+      <rect x="62" y="75"  width="18" height="12" fill="#ffff0044" rx="1"/>
+      <rect x="89" y="75"  width="18" height="12" fill="#ffff0022" rx="1"/>
+      <rect x="116"y="75"  width="18" height="12" fill="#ffff0033" rx="1"/>
+      <rect x="35" y="100" width="18" height="12" fill="#ffaa0044" rx="1"/>
+      <rect x="62" y="100" width="18" height="12" fill="#ffff0033" rx="1"/>
+      <rect x="89" y="100" width="18" height="12" fill="#ffff0055" rx="1"/>
+      <rect x="116"y="100" width="18" height="12" fill="#ffaa0033" rx="1"/>
+      <rect x="35" y="125" width="18" height="12" fill="#ffff0022" rx="1"/>
+      <rect x="62" y="125" width="18" height="12" fill="#ffff0044" rx="1"/>
+      <rect x="89" y="125" width="18" height="12" fill="#ffff0033" rx="1"/>
+      <rect x="116"y="125" width="18" height="12" fill="#ffff0022" rx="1"/>
+      <rect x="35" y="150" width="18" height="12" fill="#ffaa0044" rx="1"/>
+      <rect x="62" y="150" width="18" height="12" fill="#ffff0033" rx="1"/>
+      <!-- Neon sign left -->
+      <text x="80" y="195" text-anchor="middle" font-size="11" fill="#ff00ff" filter="url(#glow-pink)" class="neon-pink" font-family="Arial" font-weight="bold">ROYAL</text>
+      <text x="80" y="210" text-anchor="middle" font-size="10" fill="#ff00ff" filter="url(#glow-pink)" class="neon-pink" font-family="Arial" font-weight="bold">CASINO</text>
+
+      <!-- CENTER: Eiffel tower silhouette style / iconic tower -->
+      <polygon points="590,10 570,160 610,160" fill="#0d0020"/>
+      <rect x="555" y="155" width="90" height="8" fill="#1a0030"/>
+      <rect x="545" y="163" width="110" height="30" fill="#0f001a"/>
+      <circle cx="590" cy="8" r="4" fill="#ff0000" opacity="0.9"/>
+      <!-- tower supports -->
+      <polygon points="560,160 548,220 575,220" fill="#0d0020"/>
+      <polygon points="620,160 625,220 652,220" fill="#0d0020"/>
+      <rect x="548" y="218" width="104" height="6" fill="#1a0030"/>
+      <!-- cross beams -->
+      <line x1="560" y1="185" x2="625" y2="185" stroke="#1a0040" stroke-width="3"/>
+      <line x1="555" y1="205" x2="630" y2="205" stroke="#1a0040" stroke-width="3"/>
+
+      <!-- CENTER LEFT: Big casino with marquee -->
+      <rect x="350" y="80" width="200" height="260" fill="url(#bld2)" rx="3"/>
+      <rect x="370" y="60" width="160" height="30" fill="#0a1a3e" rx="2"/>
+      <!-- Marquee sign -->
+      <rect x="355" y="95" width="190" height="55" fill="#080020" rx="4"/>
+      <rect x="360" y="100" width="180" height="45" fill="#0a0030" rx="3" stroke="#ffd700" stroke-width="1.5"/>
+      <text x="450" y="120" text-anchor="middle" font-size="13" fill="#ffd700" filter="url(#glow-gold)" class="neon-gold" font-family="Arial" font-weight="bold">★ GOLDEN ★</text>
+      <text x="450" y="136" text-anchor="middle" font-size="12" fill="#ffd700" filter="url(#glow-gold)" class="neon-gold" font-family="Arial" font-weight="bold">PALACE</text>
+      <!-- windows -->
+      <rect x="370" y="165" width="22" height="16" fill="#ffff0033" rx="1"/>
+      <rect x="402" y="165" width="22" height="16" fill="#ffff0044" rx="1"/>
+      <rect x="434" y="165" width="22" height="16" fill="#ffff0022" rx="1"/>
+      <rect x="466" y="165" width="22" height="16" fill="#ffff0055" rx="1"/>
+      <rect x="498" y="165" width="22" height="16" fill="#ffff0033" rx="1"/>
+      <rect x="370" y="192" width="22" height="16" fill="#ffaa0044" rx="1"/>
+      <rect x="402" y="192" width="22" height="16" fill="#ffff0033" rx="1"/>
+      <rect x="434" y="192" width="22" height="16" fill="#ffff0055" rx="1"/>
+      <rect x="466" y="192" width="22" height="16" fill="#ffaa0033" rx="1"/>
+      <rect x="498" y="192" width="22" height="16" fill="#ffff0044" rx="1"/>
+      <rect x="370" y="219" width="22" height="16" fill="#ffff0022" rx="1"/>
+      <rect x="402" y="219" width="22" height="16" fill="#ffff0044" rx="1"/>
+      <rect x="434" y="219" width="22" height="16" fill="#ffff0033" rx="1"/>
+      <rect x="466" y="219" width="22" height="16" fill="#ffff0055" rx="1"/>
+      <rect x="498" y="219" width="22" height="16" fill="#ffff0022" rx="1"/>
+      <!-- entrance -->
+      <rect x="415" y="280" width="70" height="60" fill="#050015" rx="3"/>
+      <rect x="420" y="285" width="28" height="55" fill="#080020" rx="2"/>
+      <rect x="452" y="285" width="28" height="55" fill="#080020" rx="2"/>
+
+      <!-- CENTER RIGHT: Pyramid + sphinx hint -->
+      <polygon points="760,100 700,300 820,300" fill="#0f0508"/>
+      <rect x="695" y="296" width="130" height="12" fill="#140a0a"/>
+      <!-- pyramid windows -->
+      <polygon points="760,140 752,170 768,170" fill="#ffaa0022"/>
+      <polygon points="760,180 748,215 772,215" fill="#ffaa0033"/>
+      <!-- sphinx silhouette hint -->
+      <rect x="825" y="260" width="50" height="40" fill="#0f0508" rx="5"/>
+      <ellipse cx="875" cy="260" rx="18" ry="15" fill="#0f0508"/>
+      <!-- pyramid neon -->
+      <text x="760" y="255" text-anchor="middle" font-size="10" fill="#00ffff" filter="url(#glow-gold)" class="neon-cyan" font-family="Arial" font-weight="bold">LUXOR</text>
+
+      <!-- RIGHT SIDE: Tall cylinder tower -->
+      <rect x="960" y="40" width="130" height="300" fill="url(#bld3)" rx="3"/>
+      <ellipse cx="1025" cy="40" rx="65" ry="15" fill="#1e0a0a"/>
+      <rect x="1020" y="18" width="10" height="28" fill="#ff0000"/>
+      <circle cx="1025" cy="16" r="5" fill="#ff0000" opacity="0.9"/>
+      <!-- windows right tower -->
+      <rect x="975"  y="65" width="20" height="14" fill="#ffff0033" rx="1"/>
+      <rect x="1006" y="65" width="20" height="14" fill="#ffff0044" rx="1"/>
+      <rect x="1037" y="65" width="20" height="14" fill="#ffff0022" rx="1"/>
+      <rect x="1068" y="65" width="20" height="14" fill="#ffff0055" rx="1"/>
+      <rect x="975"  y="92" width="20" height="14" fill="#ffaa0033" rx="1"/>
+      <rect x="1006" y="92" width="20" height="14" fill="#ffff0044" rx="1"/>
+      <rect x="1037" y="92" width="20" height="14" fill="#ffff0055" rx="1"/>
+      <rect x="1068" y="92" width="20" height="14" fill="#ffaa0033" rx="1"/>
+      <rect x="975"  y="120" width="20" height="14" fill="#ffff0022" rx="1"/>
+      <rect x="1006" y="120" width="20" height="14" fill="#ffff0033" rx="1"/>
+      <rect x="1037" y="120" width="20" height="14" fill="#ffff0055" rx="1"/>
+      <rect x="1068" y="120" width="20" height="14" fill="#ffff0022" rx="1"/>
+      <!-- Neon sign right tower -->
+      <text x="1025" y="165" text-anchor="middle" font-size="11" fill="#ff0080" filter="url(#glow-pink)" class="neon-pink" font-family="Arial" font-weight="bold">VEGAS</text>
+      <text x="1025" y="180" text-anchor="middle" font-size="10" fill="#ff0080" filter="url(#glow-pink)" class="neon-pink" font-family="Arial" font-weight="bold">TOWER</text>
+
+      <!-- Street lights -->
+      <line x1="200" y1="240" x2="200" y2="320" stroke="#444" stroke-width="3"/>
+      <circle cx="200" cy="238" r="5" fill="#ffee88" opacity="0.7"/>
+      <line x1="400" y1="255" x2="400" y2="320" stroke="#444" stroke-width="3"/>
+      <circle cx="400" cy="253" r="5" fill="#ffee88" opacity="0.7"/>
+      <line x1="800" y1="255" x2="800" y2="320" stroke="#444" stroke-width="3"/>
+      <circle cx="800" cy="253" r="5" fill="#ffee88" opacity="0.7"/>
+      <line x1="1000" y1="248" x2="1000" y2="320" stroke="#444" stroke-width="3"/>
+      <circle cx="1000" cy="246" r="5" fill="#ffee88" opacity="0.7"/>
+    </svg>
+  </div>
+
+  <!-- Ground / Road -->
+  <div class="ground">
+    <div class="road-line"></div>
+  </div>
+
+  <!-- Casino title -->
+  <div class="casino-title">
+    <div class="main">Vegas Casino</div>
+    <div class="sub">The Ultimate Experience</div>
+  </div>
+
+  <!-- Slot machine decoration top center -->
+  <div class="slot-deco" id="slot-deco">
+    <div class="slot-reel" id="reel-1">🍒</div>
+    <div class="slot-reel" id="reel-2">7️⃣</div>
+    <div class="slot-reel" id="reel-3">💎</div>
+  </div>
+
+  <!-- Loading HUD -->
+  <div class="loading-hud">
+    <div class="loading-label">Lade Spieldaten</div>
+    <div class="loading-bar-wrap">
+      <div class="loading-bar-fill" id="loading-bar"></div>
+    </div>
+    <div class="loading-pct" id="loading-pct">0%</div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!--  MAIN MENU                                                   -->
+<!-- ============================================================ -->
+<div id="main-menu">
+  <div class="menu-bg-stars" id="menu-stars"></div>
+
+  <!-- Floating casino chips -->
+  <div class="chip" style="left:8%;  top:20%; --dur:7s;">🎰</div>
+  <div class="chip" style="left:88%; top:15%; --dur:9s;">💰</div>
+  <div class="chip" style="left:5%;  top:65%; --dur:6s;">🃏</div>
+  <div class="chip" style="left:91%; top:70%; --dur:11s;">🎲</div>
+  <div class="chip" style="left:50%; top:8%;  --dur:8s;">⭐</div>
+  <div class="chip" style="left:20%; top:85%; --dur:10s;">🍀</div>
+  <div class="chip" style="left:78%; top:82%; --dur:7.5s;">💎</div>
+
+  <!-- Corner decorations -->
+  <div class="corner-deco tl">🎰</div>
+  <div class="corner-deco tr">🎰</div>
+  <div class="corner-deco bl">🃏</div>
+  <div class="corner-deco br">🃏</div>
+
+  <!-- Title -->
+  <div class="menu-title">
+    <div class="big">Vegas Casino</div>
+    <div class="small">The Ultimate Experience</div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="menu-buttons">
+    <button class="menu-btn btn-play" onclick="alert('Spiele werden bald hinzugefügt!')">
+      🎰 &nbsp;Spielen
+    </button>
+    <button class="menu-btn btn-secondary" onclick="alert('High Scores kommen bald!')">
+      🏆 &nbsp;Bestenliste
+    </button>
+    <button class="menu-btn btn-secondary" onclick="alert('Einstellungen kommen bald!')">
+      ⚙️ &nbsp;Einstellungen
+    </button>
+    <button class="menu-btn btn-secondary" onclick="alert('Vegas Casino v1.0 – Entwickelt mit ❤️')">
+      ℹ️ &nbsp;Info
+    </button>
+  </div>
+
+  <div class="menu-version">Vegas Casino v1.0</div>
+</div>
+
+
+<script>
+// ─── Stars generator ───────────────────────────────────────────
+function makeStars(containerId, count) {
+  const c = document.getElementById(containerId);
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.4 + 0.6;
+    s.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${Math.random()*70}%;
+      width:${size}px;
+      height:${size}px;
+      --dur:${(Math.random()*2+1).toFixed(1)}s;
+      animation-delay:${(Math.random()*3).toFixed(1)}s;
+    `;
+    c.appendChild(s);
+  }
+}
+makeStars('stars-container', 140);
+makeStars('menu-stars', 160);
+
+// ─── Casino sound (Web Audio API) ──────────────────────────────
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+
+function initAudio() {
+  try { audioCtx = new AudioCtx(); } catch(e) { return; }
+}
+
+function playNote(freq, start, dur, vol = 0.12, type = 'sine') {
+  if (!audioCtx) return;
+  const osc  = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, audioCtx.currentTime + start);
+  gain.gain.setValueAtTime(0, audioCtx.currentTime + start);
+  gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + start + 0.05);
+  gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + start + dur);
+  osc.start(audioCtx.currentTime + start);
+  osc.stop(audioCtx.currentTime + start + dur + 0.05);
+}
+
+function playChime(freq, t) {
+  playNote(freq,   t,      0.4,  0.18, 'triangle');
+  playNote(freq*2, t+0.02, 0.25, 0.08, 'sine');
+}
+
+function playCasinoJingle() {
+  // Ascending sparkle arpeggio - casino feel
+  const notes = [523, 659, 784, 1047, 880, 784, 1047, 1175, 1319, 1047, 1319, 1568];
+  notes.forEach((f, i) => playChime(f, i * 0.22));
+
+  // Low rumble shimmer
+  for (let i = 0; i < 18; i++) {
+    const t = i * 0.25;
+    playNote(60 + Math.random()*20, t, 0.3, 0.04, 'sawtooth');
+  }
+
+  // Final fanfare chord
+  [523, 659, 784, 1047].forEach(f =>
+    playNote(f, 4.0, 1.2, 0.08, 'triangle')
+  );
+}
+
+// ─── Slot reel animation ───────────────────────────────────────
+const symbols = ['🍒','7️⃣','🔔','💎','⭐','🍋','🎰','🃏','💰','🍀'];
+const reelIds  = ['reel-1','reel-2','reel-3'];
+let reelIntervals = [];
+
+function startReels() {
+  reelIds.forEach((id, ri) => {
+    let idx = ri;
+    const iv = setInterval(() => {
+      idx = (idx + 1) % symbols.length;
+      document.getElementById(id).textContent = symbols[idx];
+    }, 90 + ri * 30);
+    reelIntervals.push(iv);
+  });
+}
+
+function stopReels(win = false) {
+  reelIntervals.forEach(iv => clearInterval(iv));
+  if (win) {
+    document.getElementById('reel-1').textContent = '7️⃣';
+    document.getElementById('reel-2').textContent = '7️⃣';
+    document.getElementById('reel-3').textContent = '7️⃣';
+  }
+}
+
+// ─── Loading bar ───────────────────────────────────────────────
+function runLoadingBar(totalMs, onComplete) {
+  const bar = document.getElementById('loading-bar');
+  const pct = document.getElementById('loading-pct');
+  let progress = 0;
+  const steps  = 120;
+  const step   = totalMs / steps;
+
+  // Ease-in-out curve for more natural feel
+  function easeInOut(t) {
+    return t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+  }
+
+  let tick = 0;
+  const iv = setInterval(() => {
+    tick++;
+    const raw = tick / steps;
+    const eased = easeInOut(Math.min(raw, 1));
+    progress = eased * 100;
+
+    bar.style.width = progress.toFixed(1) + '%';
+    pct.textContent = Math.floor(progress) + '%';
+
+    if (tick >= steps) {
+      clearInterval(iv);
+      bar.style.width = '100%';
+      pct.textContent = '100%';
+      setTimeout(onComplete, 400);
+    }
+  }, step);
+}
+
+// ─── Main boot sequence ────────────────────────────────────────
+function boot() {
+  initAudio();
+  startReels();
+  playCasinoJingle();
+
+  // Loading takes ~6.5s so total with fade is ~7.5s
+  runLoadingBar(6500, () => {
+    stopReels(true); // 777 jackpot landing
+
+    setTimeout(() => {
+      const ls = document.getElementById('loading-screen');
+      ls.classList.add('fade-out');
+
+      setTimeout(() => {
+        ls.style.display = 'none';
+        document.getElementById('main-menu').classList.add('active');
+      }, 1000);
+    }, 600);
+  });
+}
+
+// Start on first user interaction (required for AudioContext)
+let started = false;
+function tryStart(e) {
+  if (started) return;
+  started = true;
+  boot();
+}
+
+document.addEventListener('click',   tryStart);
+document.addEventListener('keydown', tryStart);
+document.addEventListener('touchstart', tryStart);
+
+// Also auto-start after short delay (visuals will play, audio may be muted)
+setTimeout(() => {
+  if (!started) {
+    started = true;
+    boot();
+  }
+}, 500);
+</script>
+</body>
+</html>
