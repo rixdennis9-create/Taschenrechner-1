@@ -1209,6 +1209,7 @@
       font-size: 7px; color: #334488; letter-spacing: 2px;
       text-transform: uppercase; margin-bottom: 2px;
     }
+    .ws-stat-sublabel { font-size: 7px; color: #334466; letter-spacing: 1px; text-transform: uppercase; }
     .ws-stat-value {
       font-size: clamp(12px, 2.2vw, 16px); color: #ffd700; font-weight: 700;
       text-shadow: 0 0 8px #ffd70044;
@@ -1390,6 +1391,38 @@
       letter-spacing: 5px; color: #44aaff; white-space: nowrap;
       text-shadow: 0 0 8px #0088ff, 0 0 18px #0055cc;
     }
+    /* ─ Free Spins Transition overlay ─ */
+    .ws-fs-transition {
+      position: absolute; inset: 0; z-index: 60;
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+      background: radial-gradient(ellipse at center, #001a44 0%, #000510 100%);
+      animation: ws-fs-tr-in 0.4s ease-out;
+    }
+    @keyframes ws-fs-tr-in { from { opacity:0; transform:scale(1.08); } to { opacity:1; transform:scale(1); } }
+    .ws-fs-tr-burst {
+      font-size: 28px; letter-spacing: 18px; color: #ffd700;
+      animation: ws-burst-spin 0.6s ease-out infinite alternate;
+      text-shadow: 0 0 20px #ffd700, 0 0 40px #ff8800;
+    }
+    @keyframes ws-burst-spin { from{letter-spacing:14px;opacity:0.7} to{letter-spacing:22px;opacity:1} }
+    .ws-fs-tr-title {
+      font-size: clamp(36px, 8vw, 72px); font-weight: 900; letter-spacing: 6px;
+      background: linear-gradient(180deg, #fff8b0, #ffd700, #ff8800);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 30px #ffd700aa);
+      animation: ws-fstr-pop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes ws-fstr-pop { from{opacity:0;transform:scale(0.4)} to{opacity:1;transform:scale(1)} }
+    .ws-fs-tr-sub {
+      font-size: clamp(12px, 2.5vw, 20px); letter-spacing: 5px; color: #88ccff;
+      text-transform: uppercase; text-shadow: 0 0 12px #0088ff;
+    }
+    .ws-fs-tr-stars {
+      font-size: 28px; letter-spacing: 12px; margin-top: 6px;
+      animation: ws-star-wave 0.8s ease-in-out infinite alternate;
+    }
+    @keyframes ws-star-wave { from{opacity:0.5;transform:translateY(-4px)} to{opacity:1;transform:translateY(4px)} }
     /* Free Spins HUD overlay on reel frame */
     .ws-fs-hud {
       position: absolute; top: -12px; right: 8px;
@@ -2145,8 +2178,9 @@
       </div>
       <div class="ws-stat-divider"></div>
       <div class="ws-stat-item">
-        <div class="ws-stat-label">EINSATZ GESAMT</div>
-        <div class="ws-stat-value" id="ws-total-bet">10.00 €</div>
+        <div class="ws-stat-label">EINSATZ / LINIEN</div>
+        <div class="ws-stat-value" id="ws-total-bet">1.00 €</div>
+        <div class="ws-stat-sublabel" id="ws-lines-count">25 Linien</div>
       </div>
     </div>
     <!-- Action row -->
@@ -2194,6 +2228,15 @@
       <div class="ws-fs-sum-total" id="ws-fs-sum-total">0.00 €</div>
       <button class="ws-fs-sum-btn" onclick="wsCloseFSSummary()">WEITER</button>
     </div>
+  </div>
+
+
+  <!-- Free Spins Transition overlay -->
+  <div class="ws-fs-transition" id="ws-fs-transition" style="display:none">
+    <div class="ws-fs-tr-burst">✦ ✦ ✦</div>
+    <div class="ws-fs-tr-title">FREISPIELE!</div>
+    <div class="ws-fs-tr-sub">Wähle deinen Bonus</div>
+    <div class="ws-fs-tr-stars">⭐ 💫 ⭐ 💫 ⭐</div>
   </div>
 
   <!-- Big Win overlay -->
@@ -2676,19 +2719,20 @@ const WS_EMOJI = {
   bonus:   '🎁',
 };
 
-// pay multipliers [3-match, 4-match, 5-match] × bet-per-line
+// Pay multipliers [3-match, 4-match, 5-match] — values are × (totalBet / lines / 100)
+// Tuned for ~90% RTP with 25 lines
 const WS_PAY = {
-  wild:    [500, 1000, 2500],
-  seven:   [200,  500, 1500],
-  diamond: [150,  350, 1000],
-  bell:    [100,  250,  700],
-  fire:    [ 75,  200,  500],
-  crystal: [ 50,  125,  300],
-  flower:  [ 30,   80,  200],
-  clover:  [ 20,   50,  150],
-  scatter: [  0,    0,    0],
-  mystery: [  0,    0,    0],
-  bonus:   [  0,    0,    0],
+  wild:    [120, 350,  900],
+  seven:   [ 90, 220,  650],
+  diamond: [ 65, 160,  450],
+  bell:    [ 45, 110,  300],
+  fire:    [ 28,  75,  190],
+  crystal: [ 18,  50,  130],
+  flower:  [ 12,  32,   85],
+  clover:  [  8,  20,   55],
+  scatter: [  0,   0,    0],
+  mystery: [  0,   0,    0],
+  bonus:   [  0,   0,    0],
 };
 
 // Paying symbols that mystery can transform into
@@ -2961,11 +3005,14 @@ function wsAfterMystery() {
 // ── Win detection + cascade ──
 function wsCheckWinsAndCascade(cascadeLevel, runningWin, onDone) {
   const grid = wsGetGridResolved();
-  const bet  = WS_BETS[wsBetIdx];
+  const totalBet = WS_BETS[wsBetIdx];
+  const activeLines = wsInFreeSpin ? WS_PAYLINES_FS : WS_PAYLINES;
+  const numLines = activeLines.length;
+  const bet  = totalBet / numLines; // bet per line
   let roundWin = 0;
   const winCells = new Set();
 
-  WS_PAYLINES.forEach(line => {
+  activeLines.forEach(line => {
     const lineSyms = line.map((row, r) => grid[r][row]);
     let base = lineSyms.find(s => s !== 'wild' && s !== 'scatter' && s !== 'mystery' && s !== 'bonus') || 'wild';
     let count = 0;
@@ -2995,7 +3042,7 @@ function wsCheckWinsAndCascade(cascadeLevel, runningWin, onDone) {
   // Bonus: 3 on reels 1+3+5 (indices 0,2,4)
   const bonusOnOdd = [0,2,4].filter(r => grid[r].includes('bonus'));
   if (bonusOnOdd.length === 3) {
-    let bonusWin = bet * WS_LINES * 10;
+    let bonusWin = totalBet * 10;
     if (wsInFreeSpin) bonusWin *= wsFreeSpinsMult;
     roundWin += bonusWin;
     [0,2,4].forEach(r => {
@@ -3024,11 +3071,11 @@ function wsCheckWinsAndCascade(cascadeLevel, runningWin, onDone) {
       winEl.textContent = totalRunning.toFixed(2) + ' €';
       winEl.className = 'ws-stat-value win-val';
     }
-    if (roundWin > 0) wsPlayWinSound(roundWin, bet * WS_LINES);
+    if (roundWin > 0) wsPlayWinSound(roundWin, totalBet);
 
     // Big win check
-    const bigThresh = bet * WS_LINES * 5;
-    if (totalRunning >= bigThresh) wsShowBigWin(totalRunning, bet);
+    const bigThresh = totalBet * 5;
+    if (totalRunning >= bigThresh) wsShowBigWin(totalRunning, totalBet);
 
     // Scatter: trigger free spins (only during normal spin, not free spins)
     if (scatCount >= 3 && !wsInFreeSpin) {
@@ -3100,13 +3147,69 @@ function wsCascade(winCells, grid, onDone) {
 
 // ── Free Spins Choice ──
 function wsShowFSChoice() {
-  const el = document.getElementById('ws-fs-choice');
-  if (el) el.classList.add('active');
+  // First play a dramatic transition animation
+  const overlay = document.getElementById('ws-fs-transition');
+  if (overlay) {
+    overlay.style.display = 'flex';
+    // Fanfare music
+    wsPlayFSFanfare();
+    setTimeout(() => {
+      if (overlay) overlay.style.display = 'none';
+      const el = document.getElementById('ws-fs-choice');
+      if (el) el.style.display = 'flex';
+    }, 2200);
+  } else {
+    const el = document.getElementById('ws-fs-choice');
+    if (el) el.style.display = 'flex';
+  }
+}
+
+function wsPlayFSFanfare() {
+  if (!audioCtx) return;
+  // Triumphant ascending fanfare: C E G C' E' G' C''
+  const notes = [261.6, 329.6, 392.0, 523.3, 659.3, 784.0, 1046.5, 1318.5];
+  notes.forEach((f, i) => {
+    const t = audioCtx.currentTime + i * 0.18;
+    // Main tone
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = f;
+    osc.connect(g); g.connect(audioCtx.destination);
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.22, t + 0.06);
+    g.gain.setValueAtTime(0.22, t + 0.12);
+    g.gain.linearRampToValueAtTime(0, t + 0.28);
+    osc.start(t); osc.stop(t + 0.3);
+    // Harmony (5th above)
+    const osc2 = audioCtx.createOscillator();
+    const g2 = audioCtx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.value = f * 1.5;
+    osc2.connect(g2); g2.connect(audioCtx.destination);
+    g2.gain.setValueAtTime(0, t);
+    g2.gain.linearRampToValueAtTime(0.10, t + 0.06);
+    g2.gain.linearRampToValueAtTime(0, t + 0.28);
+    osc2.start(t); osc2.stop(t + 0.3);
+  });
+  // Final sustained chord
+  const tFin = audioCtx.currentTime + notes.length * 0.18;
+  [261.6, 329.6, 392.0, 523.3].forEach(f => {
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = 'triangle'; osc.frequency.value = f;
+    osc.connect(g); g.connect(audioCtx.destination);
+    g.gain.setValueAtTime(0, tFin);
+    g.gain.linearRampToValueAtTime(0.18, tFin + 0.1);
+    g.gain.setValueAtTime(0.18, tFin + 0.7);
+    g.gain.linearRampToValueAtTime(0, tFin + 1.2);
+    osc.start(tFin); osc.stop(tFin + 1.3);
+  });
 }
 
 function wsChooseFS(spins, mult) {
   const el = document.getElementById('ws-fs-choice');
-  if (el) el.classList.remove('active');
+  if (el) el.style.display = 'none';
   wsFreeSpinsLeft  = spins;
   wsFreeSpinsMult  = mult;
   wsFreeSpinsTotal = 0;
@@ -3135,8 +3238,8 @@ function wsShowBigWin(amount, bet) {
   const amt = document.getElementById('ws-bigwin-amt');
   if (!ov) return;
   let label = 'BIG WIN!';
-  if (amount >= bet * WS_LINES * 20) label = '★ MEGA WIN! ★';
-  if (amount >= bet * WS_LINES * 50) label = '🏆 JACKPOT! 🏆';
+  if (amount >= bet * 20) label = '★ MEGA WIN! ★';
+  if (amount >= bet * 50) label = '🏆 JACKPOT! 🏆';
   if (txt) txt.textContent = label;
   if (amt) amt.textContent = '€ ' + amount.toFixed(2);
   ov.style.display = 'flex';
