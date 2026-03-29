@@ -1055,6 +1055,128 @@
     }
     .prof-save:hover { box-shadow:0 0 20px #ffd70077; transform:scale(1.02); }
 
+    /* ─ Welcome / Bankrupt / Calendar Popups ─ */
+    .bonus-popup {
+      position: fixed; inset: 0; z-index: 9000;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.82); backdrop-filter: blur(4px);
+    }
+    .bonus-popup.show { display: flex; }
+    .bonus-box {
+      width: min(360px, 90vw);
+      background: linear-gradient(145deg, #0d0020, #1a0038);
+      border: 2px solid #ffd700; border-radius: 20px;
+      padding: 32px 24px 28px; text-align: center;
+      box-shadow: 0 0 60px #ffd70044, 0 0 120px #ff880022;
+      animation: bp-pop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes bp-pop { from{opacity:0;transform:scale(0.6)} to{opacity:1;transform:scale(1)} }
+    .bonus-icon { font-size: 64px; margin-bottom: 12px; animation: bp-bounce 1s ease-in-out infinite alternate; }
+    @keyframes bp-bounce { from{transform:translateY(-6px)} to{transform:translateY(6px)} }
+    .bonus-title {
+      font-size: clamp(20px,5vw,30px); font-weight:900; letter-spacing:4px;
+      background: linear-gradient(180deg,#fff8b0,#ffd700,#ff8800);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      filter:drop-shadow(0 0 16px #ffd700aa); margin-bottom:10px;
+    }
+    .bonus-amount {
+      font-size: clamp(32px,8vw,56px); font-weight:900; color:#ffd700;
+      text-shadow:0 0 24px #ffd700,0 0 48px #ff8800; margin:10px 0;
+      letter-spacing:3px;
+    }
+    .bonus-desc { font-size:13px; color:#aa88cc; letter-spacing:2px; line-height:1.6; margin-bottom:22px; }
+    .bonus-btn {
+      display:inline-block; padding:14px 40px; border:none; border-radius:40px;
+      background:linear-gradient(90deg,#aa7700,#ffd700,#aa7700);
+      color:#000; font-size:15px; font-family:'Georgia',serif; font-weight:700;
+      letter-spacing:3px; text-transform:uppercase; cursor:pointer;
+      box-shadow:0 0 20px #ffd70066; transition:all 0.2s;
+    }
+    .bonus-btn:hover { transform:scale(1.05); box-shadow:0 0 32px #ffd700aa; }
+    .bonus-btn.blue {
+      background:linear-gradient(90deg,#004488,#0088ff,#004488); color:#fff;
+      box-shadow:0 0 20px #0066ff44;
+    }
+
+    /* ─ Daily Calendar ─ */
+    #daily-calendar {
+      position: fixed; inset: 0; z-index: 8500;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(4px);
+    }
+    #daily-calendar.show { display: flex; }
+    .cal-box {
+      width: min(420px, 96vw);
+      background: linear-gradient(145deg, #050015, #0d0028);
+      border: 2px solid #5500aa; border-radius: 20px;
+      padding: 24px 18px 22px;
+      box-shadow: 0 0 50px #5500aa44;
+      max-height: 92vh; overflow-y: auto;
+    }
+    .cal-header { text-align:center; margin-bottom:18px; }
+    .cal-title {
+      font-size:clamp(18px,4vw,26px); font-weight:900; letter-spacing:5px;
+      color:#ffd700; text-shadow:0 0 14px #ffd70066; text-transform:uppercase;
+    }
+    .cal-sub { font-size:11px; color:#664488; letter-spacing:3px; margin-top:5px; }
+    .cal-grid {
+      display: grid; grid-template-columns: repeat(6,1fr); gap: 6px;
+      margin-bottom: 16px;
+    }
+    .cal-day {
+      border-radius:10px; padding:8px 4px; text-align:center; cursor:default;
+      background:#0a001a; border:1px solid #220033;
+      transition:all 0.18s;
+    }
+    .cal-day-num { font-size:10px; color:#443355; font-weight:700; margin-bottom:3px; }
+    .cal-day-icon { font-size:18px; line-height:1; }
+    .cal-day-reward { font-size:8px; color:#ffd700; letter-spacing:1px; margin-top:3px; }
+    .cal-day.claimed { background:#0a0020; border-color:#220044; opacity:0.55; }
+    .cal-day.claimed .cal-day-num { color:#553377; }
+    .cal-day.claimable {
+      background:linear-gradient(145deg,#1a0040,#2e0060); border-color:#aa44ff;
+      cursor:pointer; box-shadow:0 0 14px #7700aa44;
+      animation:cal-pulse 1.2s ease-in-out infinite alternate;
+    }
+    @keyframes cal-pulse { from{box-shadow:0 0 8px #7700aa33} to{box-shadow:0 0 22px #aa44ffaa} }
+    .cal-day.claimable .cal-day-num { color:#cc88ff; }
+    .cal-day.today-claimed { background:#0f0030; border-color:#440088; opacity:0.8; }
+    .cal-day.locked { opacity:0.3; }
+    .cal-claim-msg {
+      display:none; text-align:center; color:#ffd700; font-size:14px; font-weight:700;
+      letter-spacing:3px; padding:10px; margin-bottom:10px;
+      text-shadow:0 0 16px #ffd700; animation:bp-pop 0.4s ease-out;
+    }
+    .cal-streak {
+      text-align:center; font-size:11px; color:#6644aa; letter-spacing:2px;
+      margin-bottom:14px;
+    }
+    .cal-close-btn {
+      display:block; width:100%; padding:12px; border:1px solid #440088;
+      border-radius:10px; background:#0a0020; color:#aa66ff;
+      font-size:13px; font-family:'Georgia',serif; letter-spacing:3px;
+      text-transform:uppercase; cursor:pointer; transition:all 0.18s;
+    }
+    .cal-close-btn:hover { border-color:#aa44ff; color:#fff; }
+
+    /* Calendar button (top-left main menu) */
+    .cal-menu-btn {
+      position:absolute; top:14px; left:16px; z-index:10;
+      width:44px; height:44px; border-radius:12px; border:1px solid #440088;
+      background:linear-gradient(145deg,#0a001a,#150030);
+      color:#cc88ff; font-size:22px; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 0 12px #44008833; transition:all 0.18s;
+    }
+    .cal-menu-btn:hover { border-color:#aa44ff; box-shadow:0 0 20px #aa44ff55; transform:scale(1.08); }
+    .cal-notif-dot {
+      position:absolute; top:-4px; right:-4px;
+      width:12px; height:12px; border-radius:50%;
+      background:#ff4444; border:2px solid #0a001a;
+      display:none; animation:notif-ping 1.2s ease-in-out infinite;
+    }
+    @keyframes notif-ping { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.3);opacity:0.7} }
+
     /* ─ Settings Page ─ */
     #settings-page {
       position: fixed; inset: 0; z-index: 650;
@@ -2008,6 +2130,13 @@
   </div>
 
   <button class="profile-btn" onclick="openProfile()" title="Profil">👤</button>
+
+  <!-- Daily calendar button (top-left) -->
+  <button class="cal-menu-btn" onclick="openCalendar()" title="Täglicher Bonus">
+    📅
+    <span class="cal-notif-dot" id="cal-notif-dot"></span>
+  </button>
+
   <div class="menu-version">Vegas Casino v1.0</div>
 </div>
 
@@ -3013,6 +3142,9 @@ function wsGetGrid() {
 
 // ── Initialize / render reels ──
 function wsInit() {
+  // Load persisted balance
+  const saved = loadSavedBalance();
+  if (saved !== null) wsBalance = saved;
   const container = document.getElementById('ws-reels');
   if (!container) return;
   container.innerHTML = '';
@@ -3076,7 +3208,7 @@ function wsDoSpin() {
     wsFreeSpinsLeft--;
   } else {
     const totalBet = WS_BETS[wsBetIdx];
-    if (wsBalance < totalBet) { wsBalance = 100.00; wsUpdateUI(); return; }
+    if (wsBalance < totalBet) { wsUpdateUI(); checkBankruptcy(); return; }
     wsBalance -= totalBet;
   }
 
@@ -3201,6 +3333,7 @@ function wsAfterMystery() {
         const c = document.getElementById(`ws-c-${r}-${row}`);
         if (c) delete c.dataset.override;
       }
+    saveBalance();
     wsUpdateUI();
     // Continue free spins if any
     if (wsInFreeSpin && wsFreeSpinsLeft > 0) {
@@ -3208,6 +3341,8 @@ function wsAfterMystery() {
     } else if (wsInFreeSpin && wsFreeSpinsLeft <= 0) {
       wsInFreeSpin = false;
       wsShowFSSummary();
+    } else {
+      checkBankruptcy();
     }
   });
 }
@@ -3439,7 +3574,9 @@ function wsShowFSSummary() {
 function wsCloseFSSummary() {
   const el = document.getElementById('ws-fs-summary');
   if (el) el.classList.remove('active');
+  saveBalance();
   wsUpdateUI();
+  checkBankruptcy();
 }
 
 function wsShowBigWin(amount, bet) {
@@ -3609,6 +3746,7 @@ function boot() {
         stopBgReels();
         if (bgJPTimer) clearTimeout(bgJPTimer);
         document.getElementById('main-menu').classList.add('active');
+        checkFirstVisit();
         // Ambient music continues uninterrupted
       }, 1000);
     }, 800);
@@ -3805,8 +3943,142 @@ function setNotifs(checked) {
   const s = loadSettings(); s.notifs = checked; saveSettings(s);
 }
 
+// ─── Balance persistence ──────────────────────────────────────
+function loadSavedBalance() {
+  const p = loadProfile();
+  return typeof p.balance === 'number' ? p.balance : null;
+}
+function saveBalance() {
+  const p = loadProfile();
+  p.balance = wsBalance;
+  saveProfileData(p);
+}
+
+// ─── Welcome bonus (first visit) ──────────────────────────────
+function checkFirstVisit() {
+  const p = loadProfile();
+  if (!p.welcomeDone) {
+    setTimeout(() => {
+      document.getElementById('welcome-popup').classList.add('show');
+    }, 600);
+  }
+  updateCalNotif();
+}
+function claimWelcomeBonus() {
+  wsBalance = 10000;
+  saveBalance();
+  wsUpdateUI();
+  const p = loadProfile();
+  p.welcomeDone = true;
+  saveProfileData(p);
+  document.getElementById('welcome-popup').classList.remove('show');
+  if (navigator.vibrate) navigator.vibrate([60, 30, 60]);
+}
+
+// ─── Bankruptcy / rescue ──────────────────────────────────────
+function checkBankruptcy() {
+  if (wsBalance > 0) return;
+  const p = loadProfile();
+  if (!p.rescueUsed) {
+    setTimeout(() => {
+      document.getElementById('bankrupt-popup').classList.add('show');
+    }, 500);
+  } else {
+    setTimeout(() => {
+      document.getElementById('bankrupt-wait-popup').classList.add('show');
+    }, 500);
+  }
+}
+function claimRescueBonus() {
+  wsBalance = 2000;
+  saveBalance();
+  wsUpdateUI();
+  const p = loadProfile();
+  p.rescueUsed = true;
+  saveProfileData(p);
+  document.getElementById('bankrupt-popup').classList.remove('show');
+  if (navigator.vibrate) navigator.vibrate(80);
+}
+function closeBankruptWait() {
+  document.getElementById('bankrupt-wait-popup').classList.remove('show');
+}
+function openCalendarFromBankrupt() {
+  document.getElementById('bankrupt-wait-popup').classList.remove('show');
+  openCalendar();
+}
+
+// ─── Daily calendar ───────────────────────────────────────────
+function getTodayStr() {
+  return new Date().toISOString().slice(0, 10);
+}
+function openCalendar() {
+  renderCalendar();
+  document.getElementById('daily-calendar').classList.add('show');
+}
+function closeCalendar() {
+  document.getElementById('daily-calendar').classList.remove('show');
+}
+function renderCalendar() {
+  const p = loadProfile();
+  const today = getTodayStr();
+  const currentDay = p.calendarDay || 0;
+  const lastClaim  = p.lastClaimDate || '';
+  const canClaim   = lastClaim !== today && currentDay < 24;
+  const nextDay    = currentDay + 1;
+
+  const grid = document.getElementById('cal-grid');
+  const streak = document.getElementById('cal-streak');
+  if (!grid) return;
+  if (streak) streak.textContent = 'Tag ' + currentDay + ' / 24 abgeschlossen';
+
+  grid.innerHTML = '';
+  for (let d = 1; d <= 24; d++) {
+    const div = document.createElement('div');
+    if (d < nextDay) {
+      div.className = 'cal-day claimed';
+      div.innerHTML = `<div class="cal-day-num">${d}</div><div class="cal-day-icon">✅</div>`;
+    } else if (d === nextDay && canClaim) {
+      div.className = 'cal-day claimable';
+      div.innerHTML = `<div class="cal-day-num">${d}</div><div class="cal-day-icon">🎁</div><div class="cal-day-reward">5.000 €</div>`;
+      div.onclick = claimDailyReward;
+    } else if (d === nextDay && !canClaim) {
+      div.className = 'cal-day today-claimed';
+      div.innerHTML = `<div class="cal-day-num">${d}</div><div class="cal-day-icon">✓</div>`;
+    } else {
+      div.className = 'cal-day locked';
+      div.innerHTML = `<div class="cal-day-num">${d}</div><div class="cal-day-icon">🔒</div>`;
+    }
+    grid.appendChild(div);
+  }
+}
+function claimDailyReward() {
+  const p = loadProfile();
+  const today = getTodayStr();
+  if (p.lastClaimDate === today || (p.calendarDay || 0) >= 24) return;
+  p.calendarDay    = (p.calendarDay || 0) + 1;
+  p.lastClaimDate  = today;
+  saveProfileData(p);
+  wsBalance += 5000;
+  saveBalance();
+  wsUpdateUI();
+  const msg = document.getElementById('cal-claim-msg');
+  if (msg) { msg.style.display = 'block'; setTimeout(() => { msg.style.display = 'none'; }, 2800); }
+  if (navigator.vibrate) navigator.vibrate([50, 30, 100]);
+  renderCalendar();
+  updateCalNotif();
+}
+function updateCalNotif() {
+  const p = loadProfile();
+  const today = getTodayStr();
+  const canClaim = p.lastClaimDate !== today && (p.calendarDay || 0) < 24;
+  const dot = document.getElementById('cal-notif-dot');
+  if (dot) dot.style.display = canClaim ? 'block' : 'none';
+}
+
+// ─── Reset balance via settings ───────────────────────────────
 function settResetBalance() {
   wsBalance = 100.00;
+  saveBalance();
   wsUpdateUI();
   const btn = event.currentTarget;
   const orig = btn.textContent;
@@ -3865,5 +4137,73 @@ function awardXP(amount) {
   saveProfileData(p);
 }
 </script>
+
+<!-- ============================================================ -->
+<!--  WELCOME BONUS POPUP (first visit)                          -->
+<!-- ============================================================ -->
+<div class="bonus-popup" id="welcome-popup">
+  <div class="bonus-box">
+    <div class="bonus-icon">🎰</div>
+    <div class="bonus-title">Willkommen!</div>
+    <div class="bonus-amount">10.000 €</div>
+    <div class="bonus-desc">
+      Als Neukunde schenken wir dir<br>
+      <strong style="color:#ffd700">10.000 € Startguthaben</strong><br>
+      Viel Glück beim Spielen!
+    </div>
+    <button class="bonus-btn" onclick="claimWelcomeBonus()">🎁 &nbsp;Bonus abholen</button>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  BANKRUPT POPUP (first time at 0)                           -->
+<!-- ============================================================ -->
+<div class="bonus-popup" id="bankrupt-popup">
+  <div class="bonus-box">
+    <div class="bonus-icon">😔</div>
+    <div class="bonus-title">Kein Guthaben!</div>
+    <div class="bonus-amount" style="font-size:clamp(24px,6vw,40px);color:#ff8844">0.00 €</div>
+    <div class="bonus-desc">
+      Kein Problem! Als einmalige<br>
+      <strong style="color:#ffd700">Entschädigung</strong> erhältst du:<br>
+    </div>
+    <div class="bonus-amount">2.000 €</div>
+    <button class="bonus-btn" onclick="claimRescueBonus()">💰 &nbsp;Jetzt abholen</button>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  BANKRUPT WAIT POPUP (second time at 0)                     -->
+<!-- ============================================================ -->
+<div class="bonus-popup" id="bankrupt-wait-popup">
+  <div class="bonus-box">
+    <div class="bonus-icon">⏳</div>
+    <div class="bonus-title">Guthaben leer</div>
+    <div class="bonus-desc" style="margin-bottom:8px">
+      Du hast deine Entschädigung bereits verwendet.<br><br>
+      Nutze den täglichen <strong style="color:#cc88ff">Kalender-Bonus</strong><br>
+      um neues Guthaben zu erhalten!
+    </div>
+    <button class="bonus-btn blue" style="margin-bottom:10px" onclick="openCalendarFromBankrupt()">📅 &nbsp;Kalender öffnen</button><br>
+    <button class="bonus-btn" style="margin-top:10px;background:linear-gradient(90deg,#330022,#550033)" onclick="closeBankruptWait()">Schließen</button>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  DAILY CALENDAR                                              -->
+<!-- ============================================================ -->
+<div id="daily-calendar">
+  <div class="cal-box">
+    <div class="cal-header">
+      <div class="cal-title">📅 Täglicher Bonus</div>
+      <div class="cal-sub">Täglich einloggen · 5.000 € pro Tag</div>
+    </div>
+    <div class="cal-streak" id="cal-streak">Tag 0 / 24 abgeschlossen</div>
+    <div class="cal-claim-msg" id="cal-claim-msg">🎉 +5.000 € gutgeschrieben!</div>
+    <div class="cal-grid" id="cal-grid"></div>
+    <button class="cal-close-btn" onclick="closeCalendar()">✕ &nbsp;Schließen</button>
+  </div>
+</div>
+
 </body>
 </html>
