@@ -1896,6 +1896,52 @@
     .ws-pt-row { display: flex; align-items: center; gap: 5px; color: #334466; }
     .ws-pt-sym { font-size: clamp(12px, 2vw, 18px); }
     .ws-pt-val { color: #ffd700; font-weight: 700; min-width: 32px; }
+
+    /* ─ Wild Flash Effect ─ */
+    .ws-cell.wild-flash {
+      animation: wild-flash-anim 0.3s ease-in-out 3;
+      z-index: 10;
+    }
+    @keyframes wild-flash-anim {
+      0%   { box-shadow: 0 0 0 0 #ffd700; border-color: #ffd700; transform: scale(1); }
+      50%  { box-shadow: 0 0 30px 8px #ffd700aa; border-color: #fff; transform: scale(1.15); }
+      100% { box-shadow: 0 0 0 0 #ffd700; border-color: #ffd700; transform: scale(1); }
+    }
+
+    /* ─ Free Spins Fire Particles ─ */
+    .ws-fire-container {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+      pointer-events: none; overflow: hidden; z-index: 4;
+      display: none;
+    }
+    .ws-fire-container.active { display: block; }
+    .ws-fire-particle {
+      position: absolute; bottom: -10px;
+      font-size: clamp(16px, 3vw, 24px);
+      animation: fire-rise var(--dur, 1.4s) ease-out var(--delay, 0s) infinite;
+      opacity: 0;
+    }
+    @keyframes fire-rise {
+      0%   { transform: translateY(0) scale(0.7) rotate(var(--rot,-10deg)); opacity: 0.9; }
+      70%  { opacity: 0.6; }
+      100% { transform: translateY(-90px) scale(0.3) rotate(var(--rot2,10deg)); opacity: 0; }
+    }
+
+    /* ─ Chest Event button ─ */
+    .chest-menu-btn {
+      position: absolute; top: 66px; left: 16px; z-index: 10;
+      width: 44px; height: 44px; border-radius: 12px; border: 1px solid #885500;
+      background: linear-gradient(145deg, #1a0800, #2e1500);
+      color: #ffd700; font-size: 22px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 12px #ffd70033; transition: all 0.18s;
+      animation: chest-star-blink 1.4s ease-in-out infinite alternate;
+    }
+    @keyframes chest-star-blink {
+      from { box-shadow: 0 0 8px #ffd70033; border-color: #664400; }
+      to   { box-shadow: 0 0 20px #ffd700aa; border-color: #ffaa00; }
+    }
+    .chest-menu-btn:hover { transform: scale(1.1); }
   </style>
 </head>
 <body>
@@ -2187,6 +2233,11 @@
     <span class="cal-notif-dot" id="cal-notif-dot"></span>
   </button>
 
+  <!-- Chest event button -->
+  <button class="chest-menu-btn" onclick="openChestEvent()" title="Chest Event">
+    ⭐
+  </button>
+
   <div class="menu-version">Vegas Casino v1.0</div>
 </div>
 
@@ -2302,7 +2353,7 @@
   <div class="sett-card">
 
     <!-- Language -->
-    <div class="sett-section">🌐 Sprache / Language</div>
+    <div class="sett-section" data-i18n="sett.lang">🌐 Sprache / Language</div>
     <div class="sett-lang-grid" id="sett-lang">
       <div class="sett-lang-btn active" data-lang="de" onclick="setLang('de')">🇩🇪 Deutsch</div>
       <div class="sett-lang-btn" data-lang="en" onclick="setLang('en')">🇬🇧 English</div>
@@ -2313,7 +2364,7 @@
     </div>
 
     <!-- Graphics -->
-    <div class="sett-section">🎮 Grafikqualität / Graphics</div>
+    <div class="sett-section" data-i18n="sett.gfx">🎮 Grafikqualität / Graphics</div>
     <div class="sett-chip-row" id="sett-gfx">
       <div class="sett-chip" data-val="low"    onclick="setGfx('low')">Low</div>
       <div class="sett-chip active" data-val="medium" onclick="setGfx('medium')">Medium</div>
@@ -2322,7 +2373,7 @@
     </div>
 
     <!-- FPS -->
-    <div class="sett-section">⚡ Bildwiederholrate / Frame Rate</div>
+    <div class="sett-section" data-i18n="sett.fps">⚡ Bildwiederholrate / Frame Rate</div>
     <div class="sett-chip-row" id="sett-fps">
       <div class="sett-chip" data-val="30"  onclick="setFPS('30')">30 FPS</div>
       <div class="sett-chip active" data-val="60"  onclick="setFPS('60')">60 FPS</div>
@@ -2331,7 +2382,7 @@
     </div>
 
     <!-- Sound -->
-    <div class="sett-section">🔊 Sound</div>
+    <div class="sett-section" data-i18n="sett.sound">🔊 Sound</div>
     <div class="sett-row">
       <span class="sett-label">Musik</span>
       <input type="range" class="sett-slider" id="sett-music-vol" min="0" max="100" value="70"
@@ -2346,7 +2397,7 @@
     </div>
 
     <!-- Toggles -->
-    <div class="sett-section">📱 Weitere Optionen</div>
+    <div class="sett-section" data-i18n="sett.more">📱 Weitere Optionen</div>
     <div class="sett-row sett-toggle-row">
       <span class="sett-label">Vibration</span>
       <label class="sett-toggle">
@@ -2377,7 +2428,7 @@
     </div>
 
     <!-- Account / Reset -->
-    <div class="sett-section">⚠️ Konto / Account</div>
+    <div class="sett-section" data-i18n="sett.account">⚠️ Konto / Account</div>
     <button class="sett-reset-btn" onclick="settResetBalance()">💰 Guthaben zurücksetzen (100 €)</button>
 
     <button class="sett-back-btn" onclick="closeSettings()">← Zurück zum Menü</button>
@@ -2582,7 +2633,7 @@
 
   <!-- Header (top bar) -->
   <div class="ws-header">
-    <button class="ws-back-btn" onclick="closeWildSpins()">&#8592; Lobby</button>
+    <button class="ws-back-btn" onclick="closeWildSpins()" data-i18n="ws.back">&#8592; Lobby</button>
     <div class="ws-title-text">🎰 Wild Spins</div>
     <div class="ws-bal-top">
       <span class="ws-bal-label">Guthaben</span>
@@ -2606,6 +2657,7 @@
     <!-- Reel frame -->
     <div class="ws-reel-frame" id="ws-reel-frame">
       <div class="ws-reels" id="ws-reels"></div>
+      <div class="ws-fire-container" id="ws-fire-container"></div>
       <!-- Free Spins HUD -->
       <div class="ws-fs-hud" id="ws-fs-hud">FS: — left ×—</div>
       <!-- Cascade banner -->
@@ -2635,7 +2687,7 @@
     </div>
     <!-- Action row -->
     <div class="ws-action-row">
-      <button class="ws-max-btn" onclick="wsBetMax()">MAX BET</button>
+      <button class="ws-max-btn" onclick="wsBetMax()" data-i18n="ws.maxbet">MAX BET</button>
       <div class="ws-bet-control">
         <button class="ws-bet-adj" onclick="wsBetDown()">−</button>
         <div class="ws-bet-mid">
@@ -2646,7 +2698,7 @@
       </div>
       <button class="ws-spin-btn" id="ws-spin-btn" onclick="wsDoSpin()">
         <span class="ws-spin-icon">▶</span>
-        <span class="ws-spin-label">SPIN</span>
+        <span class="ws-spin-label" data-i18n="ws.spin">SPIN</span>
       </button>
     </div>
   </div>
@@ -3596,6 +3648,19 @@ function wsCheckWinsAndCascade(cascadeLevel, runningWin, onDone) {
     }
   });
 
+  // Wild visual effect: flash gold star on wild cells that contributed to wins
+  winCells.forEach(key => {
+    const [r, row] = key.split('-');
+    const sym = grid[+r][+row];
+    if (sym === 'wild') {
+      const c = document.getElementById(`ws-c-${r}-${row}`);
+      if (c) {
+        c.classList.add('wild-flash');
+        setTimeout(() => c && c.classList.remove('wild-flash'), 1000);
+      }
+    }
+  });
+
   if (roundWin > 0 || scatCount >= 3) {
     // Update balance and display
     wsBalance += roundWin;
@@ -3741,6 +3806,30 @@ function wsPlayFSFanfare() {
   });
 }
 
+function wsToggleFire(on) {
+  const c = document.getElementById('ws-fire-container');
+  if (!c) return;
+  if (on) {
+    c.innerHTML = '';
+    const emojis = ['🔥','🔥','✨','🔥','💫','🔥'];
+    for (let i = 0; i < 12; i++) {
+      const p = document.createElement('div');
+      p.className = 'ws-fire-particle';
+      p.textContent = emojis[i % emojis.length];
+      p.style.left = (5 + Math.random() * 90) + '%';
+      p.style.setProperty('--dur',  (1.1 + Math.random() * 0.8) + 's');
+      p.style.setProperty('--delay',(Math.random() * 1.2) + 's');
+      p.style.setProperty('--rot',  (Math.random() * 20 - 10) + 'deg');
+      p.style.setProperty('--rot2', (Math.random() * 20 - 10) + 'deg');
+      c.appendChild(p);
+    }
+    c.classList.add('active');
+  } else {
+    c.classList.remove('active');
+    c.innerHTML = '';
+  }
+}
+
 function wsChooseFS(spins, mult) {
   const el = document.getElementById('ws-fs-choice');
   if (el) el.style.display = 'none';
@@ -3748,6 +3837,7 @@ function wsChooseFS(spins, mult) {
   wsFreeSpinsMult  = mult;
   wsFreeSpinsTotal = 0;
   wsInFreeSpin     = true;
+  wsToggleFire(true);
   wsUpdateUI();
   // Start first free spin
   setTimeout(wsDoSpin, 400);
@@ -3763,6 +3853,7 @@ function wsShowFSSummary() {
 function wsCloseFSSummary() {
   const el = document.getElementById('ws-fs-summary');
   if (el) el.classList.remove('active');
+  wsToggleFire(false);
   saveBalance();
   wsUpdateUI();
   checkBankruptcy();
@@ -4135,9 +4226,160 @@ function highlightSettChip(containerId, val, chipClass) {
   });
 }
 
+// ─── Translations ──────────────────────────────────────────────
+const I18N = {
+  de: {
+    'menu.play':        '🎰 Spielen',
+    'menu.settings':    '⚙️ Einstellungen',
+    'menu.info':        'ℹ️ Info',
+    'menu.tagline':     'THE ULTIMATE EXPERIENCE',
+    'gs.title':         'Wer bist du?',
+    'gs.sub':           'Wähle deinen Spieler-Typ',
+    'gs.male':          'Männlich',
+    'gs.female':        'Weiblich',
+    'ws.back':          '← Lobby',
+    'ws.balance':       'GUTHABEN',
+    'ws.win':           'GEWINN',
+    'ws.bet':           'EINSATZ / LINIEN',
+    'ws.spin':          'SPIN',
+    'ws.maxbet':        'MAX BET',
+    'ws.lines':         'Linien',
+    'sett.lang':        '🌐 Sprache / Language',
+    'sett.gfx':         '🎮 Grafikqualität / Graphics',
+    'sett.fps':         '⚡ Bildwiederholrate / Frame Rate',
+    'sett.sound':       '🔊 Sound',
+    'sett.more':        '📱 Weitere Optionen',
+    'sett.account':     '⚠️ Konto / Account',
+  },
+  en: {
+    'menu.play':        '🎰 Play',
+    'menu.settings':    '⚙️ Settings',
+    'menu.info':        'ℹ️ Info',
+    'menu.tagline':     'THE ULTIMATE EXPERIENCE',
+    'gs.title':         'Who are you?',
+    'gs.sub':           'Choose your player type',
+    'gs.male':          'Male',
+    'gs.female':        'Female',
+    'ws.back':          '← Lobby',
+    'ws.balance':       'BALANCE',
+    'ws.win':           'WIN',
+    'ws.bet':           'BET / LINES',
+    'ws.spin':          'SPIN',
+    'ws.maxbet':        'MAX BET',
+    'ws.lines':         'Lines',
+    'sett.lang':        '🌐 Language',
+    'sett.gfx':         '🎮 Graphics Quality',
+    'sett.fps':         '⚡ Frame Rate',
+    'sett.sound':       '🔊 Sound',
+    'sett.more':        '📱 More Options',
+    'sett.account':     '⚠️ Account',
+  },
+  hi: {
+    'menu.play':        '🎰 खेलें',
+    'menu.settings':    '⚙️ सेटिंग्स',
+    'menu.info':        'ℹ️ जानकारी',
+    'menu.tagline':     'अल्टीमेट अनुभव',
+    'gs.title':         'आप कौन हैं?',
+    'gs.sub':           'अपना प्रकार चुनें',
+    'gs.male':          'पुरुष',
+    'gs.female':        'महिला',
+    'ws.back':          '← लॉबी',
+    'ws.balance':       'शेष राशि',
+    'ws.win':           'जीत',
+    'ws.bet':           'दांव',
+    'ws.spin':          'स्पिन',
+    'ws.maxbet':        'मैक्स',
+    'ws.lines':         'लाइनें',
+    'sett.lang':        '🌐 भाषा',
+    'sett.gfx':         '🎮 ग्राफिक्स',
+    'sett.fps':         '⚡ फ्रेम दर',
+    'sett.sound':       '🔊 ध्वनि',
+    'sett.more':        '📱 अन्य विकल्प',
+    'sett.account':     '⚠️ खाता',
+  },
+  zh: {
+    'menu.play':        '🎰 开始游戏',
+    'menu.settings':    '⚙️ 设置',
+    'menu.info':        'ℹ️ 信息',
+    'menu.tagline':     '终极体验',
+    'gs.title':         '你是谁？',
+    'gs.sub':           '选择你的角色类型',
+    'gs.male':          '男性',
+    'gs.female':        '女性',
+    'ws.back':          '← 大厅',
+    'ws.balance':       '余额',
+    'ws.win':           '赢得',
+    'ws.bet':           '投注',
+    'ws.spin':          '旋转',
+    'ws.maxbet':        '最大',
+    'ws.lines':         '线',
+    'sett.lang':        '🌐 语言',
+    'sett.gfx':         '🎮 图形质量',
+    'sett.fps':         '⚡ 帧率',
+    'sett.sound':       '🔊 音效',
+    'sett.more':        '📱 更多选项',
+    'sett.account':     '⚠️ 账户',
+  },
+  ja: {
+    'menu.play':        '🎰 プレイ',
+    'menu.settings':    '⚙️ 設定',
+    'menu.info':        'ℹ️ 情報',
+    'menu.tagline':     '究極の体験',
+    'gs.title':         'あなたは誰ですか？',
+    'gs.sub':           'プレイヤータイプを選択',
+    'gs.male':          '男性',
+    'gs.female':        '女性',
+    'ws.back':          '← ロビー',
+    'ws.balance':       '残高',
+    'ws.win':           '獲得',
+    'ws.bet':           'ベット',
+    'ws.spin':          'スピン',
+    'ws.maxbet':        'MAX',
+    'ws.lines':         'ライン',
+    'sett.lang':        '🌐 言語',
+    'sett.gfx':         '🎮 グラフィック',
+    'sett.fps':         '⚡ フレームレート',
+    'sett.sound':       '🔊 サウンド',
+    'sett.more':        '📱 その他',
+    'sett.account':     '⚠️ アカウント',
+  },
+  tr: {
+    'menu.play':        '🎰 Oyna',
+    'menu.settings':    '⚙️ Ayarlar',
+    'menu.info':        'ℹ️ Bilgi',
+    'menu.tagline':     'EN İYİ DENEYİM',
+    'gs.title':         'Sen kimsin?',
+    'gs.sub':           'Oyuncu tipini seç',
+    'gs.male':          'Erkek',
+    'gs.female':        'Kadın',
+    'ws.back':          '← Lobi',
+    'ws.balance':       'BAKİYE',
+    'ws.win':           'KAZANÇ',
+    'ws.bet':           'BAHİS',
+    'ws.spin':          'DÖNDÜR',
+    'ws.maxbet':        'MAX',
+    'ws.lines':         'Satır',
+    'sett.lang':        '🌐 Dil',
+    'sett.gfx':         '🎮 Grafik Kalitesi',
+    'sett.fps':         '⚡ Kare Hızı',
+    'sett.sound':       '🔊 Ses',
+    'sett.more':        '📱 Diğer Seçenekler',
+    'sett.account':     '⚠️ Hesap',
+  },
+};
+
+function applyLang(lang) {
+  const t = I18N[lang] || I18N['de'];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+}
+
 function setLang(lang) {
   const s = loadSettings(); s.lang = lang; saveSettings(s);
   highlightSettChip('sett-lang', lang, 'sett-lang-btn');
+  applyLang(lang);
 }
 
 function setGfx(val) {
@@ -4321,6 +4563,125 @@ function updateCalNotif() {
   if (dot) dot.style.display = canClaim ? 'block' : 'none';
 }
 
+// ─── Chest Event ───────────────────────────────────────────────
+function getPotions() {
+  const p = loadProfile(); return p.bluePotions || 0;
+}
+function addPotion() {
+  const p = loadProfile(); p.bluePotions = (p.bluePotions || 0) + 1; saveProfileData(p);
+}
+function spendPotion() {
+  const p = loadProfile();
+  if ((p.bluePotions || 0) <= 0) return false;
+  p.bluePotions -= 1; saveProfileData(p); return true;
+}
+
+function openChestEvent() {
+  const el = document.getElementById('chest-event');
+  if (!el) return;
+  el.style.display = 'flex';
+  document.getElementById('chest-result').style.display = 'none';
+  document.getElementById('chest-potions-display').textContent = 'Blaue Tränke: ' + getPotions();
+  const choices = document.getElementById('chest-choices');
+  if (choices) choices.style.display = 'flex';
+  renderChestCards();
+}
+
+function closeChestEvent() {
+  const el = document.getElementById('chest-event');
+  if (el) el.style.display = 'none';
+}
+
+function renderChestCards() {
+  const container = document.getElementById('chest-choices');
+  if (!container) return;
+  container.innerHTML = '';
+  const chests = [
+    { id:'wood',     icon:'📦', name:'Holzkiste',   color:'#8B4513', border:'#A0522D', desc:'1 – 10.000 €' },
+    { id:'gold',     icon:'🎁', name:'Goldkiste',   color:'#8B6914', border:'#FFD700', desc:'5.000 – 50.000 € oder Profil-Deko' },
+    { id:'platinum', icon:'💎', name:'Platinkiste', color:'#2a2a4a', border:'#aaaaff', desc:'50.000 – 1.000.000 € + Token' },
+  ];
+  chests.forEach(ch => {
+    const card = document.createElement('div');
+    card.style.cssText = `width:clamp(100px,28vw,130px); padding:16px 8px; border-radius:14px; text-align:center; cursor:pointer; background:linear-gradient(145deg,${ch.color}33,${ch.color}66); border:2px solid ${ch.border}; transition:all 0.2s;`;
+    card.innerHTML = `<div style="font-size:42px; margin-bottom:6px;">${ch.icon}</div><div style="font-size:12px; font-weight:700; color:#fff; letter-spacing:2px; margin-bottom:4px;">${ch.name}</div><div style="font-size:9px; color:#ccaa66; letter-spacing:1px;">${ch.desc}</div>`;
+    card.onmouseenter = () => { card.style.transform = 'translateY(-6px) scale(1.05)'; card.style.boxShadow = `0 0 20px ${ch.border}66`; };
+    card.onmouseleave = () => { card.style.transform = ''; card.style.boxShadow = ''; };
+    card.onclick = () => openChest(ch.id);
+    container.appendChild(card);
+  });
+}
+
+function openChest(type) {
+  if (!spendPotion()) {
+    alert('Keine blauen Tränke! Steige ein Level auf um einen zu erhalten.');
+    return;
+  }
+  const choices = document.getElementById('chest-choices');
+  const result  = document.getElementById('chest-result');
+  if (choices) choices.style.display = 'none';
+  if (result)  result.style.display  = 'block';
+
+  let icon, title, desc, reward = 0, deco = null, token = false;
+
+  if (type === 'wood') {
+    // 1–10000€, jackpot (10000) probability ~1%
+    const roll = Math.random();
+    if      (roll < 0.01)  reward = 10000;
+    else if (roll < 0.08)  reward = 1000 + Math.floor(Math.random() * 2000);
+    else if (roll < 0.30)  reward = 100  + Math.floor(Math.random() * 400);
+    else                   reward = 1    + Math.floor(Math.random() * 99);
+    icon  = reward >= 5000 ? '🎉' : reward >= 500 ? '💰' : '📦';
+    title = reward >= 5000 ? 'JACKPOT!' : reward >= 500 ? 'Guter Gewinn!' : 'Kleiner Gewinn';
+    desc  = `Du hast <strong style="color:#ffd700">€ ${reward.toLocaleString('de-DE')}</strong> gewonnen!`;
+
+  } else if (type === 'gold') {
+    const roll = Math.random();
+    if (roll < 0.25) {
+      // Profile decoration
+      const decos = ['👑 Goldene Krone', '🌟 Goldener Stern', '💫 Schimmer-Effekt', '🦁 Löwen-Badge'];
+      deco  = decos[Math.floor(Math.random() * decos.length)];
+      icon  = '👑'; title = 'Profil-Dekoration!';
+      desc  = `Du hast <strong style="color:#ffd700">${deco}</strong> erhalten!`;
+    } else {
+      reward = 5000 + Math.floor(Math.random() * 45000);
+      icon   = reward >= 30000 ? '🤑' : '🎁';
+      title  = reward >= 30000 ? 'MEGA GEWINN!' : 'Toller Gewinn!';
+      desc   = `Du hast <strong style="color:#ffd700">€ ${reward.toLocaleString('de-DE')}</strong> gewonnen!`;
+    }
+
+  } else { // platinum
+    reward = 50000 + Math.floor(Math.random() * 950000);
+    token  = true;
+    icon   = '💎'; title = 'PLATINGEWINN!';
+    desc   = `Du hast <strong style="color:#aaaaff">€ ${reward.toLocaleString('de-DE')}</strong> gewonnen!<br><span style="color:#aaaaff; font-size:11px;">+ 1× Unbekannter Token erhalten</span>`;
+  }
+
+  document.getElementById('chest-result-icon').textContent  = icon;
+  document.getElementById('chest-result-title').textContent = title;
+  document.getElementById('chest-result-desc').innerHTML    = desc;
+
+  // Apply rewards
+  if (reward > 0) {
+    wsBalance += reward;
+    saveBalance();
+    wsUpdateUI();
+  }
+  if (deco) {
+    const p = loadProfile();
+    p.decorations = p.decorations || [];
+    p.decorations.push(deco);
+    saveProfileData(p);
+  }
+  if (token) {
+    const p = loadProfile();
+    p.unknownTokens = (p.unknownTokens || 0) + 1;
+    saveProfileData(p);
+  }
+
+  if (navigator.vibrate) navigator.vibrate([80, 30, 120]);
+}
+
 // ─── Reset balance via settings ───────────────────────────────
 function settResetBalance() {
   wsBalance = 100.00;
@@ -4341,6 +4702,7 @@ function settResetBalance() {
   window.vc_sfx_vol   = (s.sfxVol  ?? 80) / 100;
   window.vc_target_fps = s.fps ? (+s.fps || 999) : 60;
   window.vc_quickspin  = s.quickspin === true;
+  applyLang(s.lang || 'de');
 }());
 
 function saveProfile() {
@@ -4379,6 +4741,7 @@ function awardXP(amount) {
   if (p.xp >= needed) {
     p.xp    -= needed;
     p.level += 1;
+    p.bluePotions = (p.bluePotions || 0) + 1;
   }
   saveProfileData(p);
 }
@@ -4448,6 +4811,25 @@ function awardXP(amount) {
     <div class="cal-claim-msg" id="cal-claim-msg">🎉 +5.000 € gutgeschrieben!</div>
     <div class="cal-grid" id="cal-grid"></div>
     <button class="cal-close-btn" onclick="closeCalendar()">✕ &nbsp;Schließen</button>
+  </div>
+</div>
+
+<!-- CHEST EVENT -->
+<div id="chest-event" style="display:none; position:fixed; inset:0; z-index:8800; background:rgba(0,0,0,0.88); backdrop-filter:blur(5px); align-items:center; justify-content:center; flex-direction:column;">
+  <div style="text-align:center; max-width:min(420px,94vw); padding:0 16px;">
+    <div style="font-size:clamp(22px,5vw,34px); font-weight:900; letter-spacing:5px; color:#ffd700; text-shadow:0 0 20px #ffd700; margin-bottom:6px;">⭐ CHEST EVENT ⭐</div>
+    <div style="font-size:11px; color:#885500; letter-spacing:3px; margin-bottom:8px; text-transform:uppercase;">Kosten: 1 Blauer Trank</div>
+    <div style="font-size:13px; color:#cc8844; margin-bottom:20px;" id="chest-potions-display">Blaue Tränke: 0</div>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;" id="chest-choices">
+      <!-- Chest cards injected by JS -->
+    </div>
+    <div id="chest-result" style="display:none; margin-top:24px; text-align:center; animation: bp-pop 0.5s cubic-bezier(0.34,1.56,0.64,1);">
+      <div id="chest-result-icon" style="font-size:64px; margin-bottom:8px;"></div>
+      <div id="chest-result-title" style="font-size:22px; font-weight:900; color:#ffd700; letter-spacing:3px;"></div>
+      <div id="chest-result-desc" style="font-size:14px; color:#cc9955; margin:8px 0 20px; line-height:1.6;"></div>
+      <button class="bonus-btn" onclick="closeChestEvent()">Schließen</button>
+    </div>
+    <button class="bonus-btn" style="margin-top:18px; background:linear-gradient(90deg,#330022,#550033);" onclick="closeChestEvent()">✕ Schließen</button>
   </div>
 </div>
 
