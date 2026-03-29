@@ -1001,7 +1001,7 @@
       display: none; flex-direction: column;
       align-items: center;
       background: radial-gradient(ellipse at 50% 0%, #1a0030, #080018, #000008);
-      overflow-y: auto; padding: 28px 20px 50px;
+      overflow-y: auto; padding: 70px 20px 50px;
     }
     #profile-page.active { display: flex; }
     .prof-hdr { text-align: center; margin-bottom: 24px; width: 100%; }
@@ -1175,12 +1175,67 @@
     }
     @keyframes notif-ping { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.3);opacity:0.7} }
 
+    /* ─ Info Page ─ */
+    #info-page {
+      position: fixed; inset: 0; z-index: 650;
+      display: none; flex-direction: column; align-items: center;
+      background: radial-gradient(ellipse at 50% 0%, #0a1a00, #050e00, #000005);
+      overflow-y: auto; padding: 70px 20px 60px;
+    }
+    #info-page.active { display: flex; }
+    .info-card {
+      width: min(460px, 94vw);
+      background: linear-gradient(145deg, #060d00, #0c1800);
+      border: 1px solid #224400; border-radius: 18px; padding: 22px 18px 28px;
+      box-shadow: 0 8px 40px rgba(0,30,0,0.7);
+    }
+    .info-version-badge {
+      display: inline-block; padding: 4px 14px; border-radius: 20px;
+      background: linear-gradient(90deg, #1a3300, #2a5500);
+      border: 1px solid #44aa00; color: #88ff44;
+      font-size: 10px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; margin-bottom: 18px;
+    }
+    .info-update-block { margin-bottom: 22px; }
+    .info-coming { opacity: 0.6; }
+    .info-update-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    }
+    .info-update-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #44ff00; box-shadow: 0 0 8px #44ff00;
+      flex-shrink: 0;
+    }
+    .info-update-title {
+      font-size: 13px; font-weight: 900; letter-spacing: 4px;
+      color: #88ff44; text-transform: uppercase;
+    }
+    .info-update-date {
+      font-size: 9px; color: #336622; letter-spacing: 2px;
+      text-transform: uppercase; margin-left: auto;
+      border: 1px solid #224400; border-radius: 10px; padding: 2px 8px;
+    }
+    .info-update-list {
+      list-style: none; display: flex; flex-direction: column; gap: 8px;
+    }
+    .info-update-list li {
+      font-size: 12px; color: #99cc77; line-height: 1.5;
+      padding: 6px 10px; background: rgba(0,40,0,0.3);
+      border-radius: 8px; border-left: 2px solid #224400;
+    }
+    .info-update-list li strong { color: #ccff88; }
+    .info-footer {
+      margin-top: 20px; padding-top: 16px; border-top: 1px solid #1a2a00;
+      font-size: 10px; color: #334422; letter-spacing: 2px;
+      text-align: center; line-height: 1.8;
+    }
+
     /* ─ Settings Page ─ */
     #settings-page {
       position: fixed; inset: 0; z-index: 650;
       display: none; flex-direction: column; align-items: center;
       background: radial-gradient(ellipse at 50% 0%, #001a30, #000c18, #000005);
-      overflow-y: auto; padding: 28px 20px 60px;
+      overflow-y: auto; padding: 70px 20px 60px;
     }
     #settings-page.active { display: flex; }
 
@@ -2116,13 +2171,10 @@
     <button class="menu-btn btn-play" onclick="openGamesMenu()">
       🎰 &nbsp;Spielen
     </button>
-    <button class="menu-btn btn-secondary" onclick="alert('High Scores kommen bald!')">
-      🏆 &nbsp;Bestenliste
-    </button>
     <button class="menu-btn btn-secondary" onclick="openSettings()">
       ⚙️ &nbsp;Einstellungen
     </button>
-    <button class="menu-btn btn-secondary" onclick="alert('Vegas Casino v1.0 – Entwickelt mit ❤️')">
+    <button class="menu-btn btn-secondary" onclick="openInfo()">
       ℹ️ &nbsp;Info
     </button>
   </div>
@@ -2143,7 +2195,7 @@
 <!--  PROFILE PAGE                                                -->
 <!-- ============================================================ -->
 <div id="profile-page">
-  <button class="btn-back" onclick="closeProfile()" style="align-self:flex-start;margin-bottom:16px;">&#8592; Zurück</button>
+  <button class="btn-back" onclick="closeProfile()">&#8592; Zurück</button>
   <div class="prof-hdr">
     <div class="title">👤 Mein Profil</div>
   </div>
@@ -2176,6 +2228,67 @@
   </div>
 </div>
 
+
+<!-- ============================================================ -->
+<!--  INFO PAGE                                                   -->
+<!-- ============================================================ -->
+<div id="info-page">
+  <button class="btn-back" onclick="closeInfo()">&#8592; Zurück</button>
+  <div class="prof-hdr">
+    <div class="title">ℹ️ Info</div>
+  </div>
+
+  <div class="info-card">
+
+    <div class="info-version-badge">Vegas Casino v1.0</div>
+
+    <!-- Update 1.0 -->
+    <div class="info-update-block">
+      <div class="info-update-header">
+        <span class="info-update-dot"></span>
+        <span class="info-update-title">UPDATE 1.0</span>
+        <span class="info-update-date">Aktuell</span>
+      </div>
+      <ul class="info-update-list">
+        <li>🎰 <strong>Wild Spins</strong> — Vollständige 5×3 Slot Machine spielbar</li>
+        <li>💫 <strong>Freispiele</strong> — 3 Scatter = Auswahl: 5×10 oder 3×60 Multiplikator</li>
+        <li>🌀 <strong>Mystery-Symbol</strong> — Verwandelt sich nach dem Stopp in ein Zufallssymbol</li>
+        <li>🔥 <strong>Gewinn-Serien</strong> — Kaskadierende Gewinne mit steigendem Multiplikator</li>
+        <li>📅 <strong>Täglicher Kalender</strong> — 24 Tage, täglich 5.000 € einloggen</li>
+        <li>🎁 <strong>10.000 € Startbonus</strong> — Für alle Neukunden</li>
+        <li>⭐ <strong>Chest Event</strong> — Holz-, Gold- und Platinkisten mit Tränken öffnen</li>
+        <li>👤 <strong>Spielerprofil</strong> — Level-System, XP, Foto-Upload, Dekorationen</li>
+        <li>⚙️ <strong>Einstellungen</strong> — Sprache, Grafik, FPS, Lautstärke, Toggles</li>
+        <li>🎵 <strong>Musik-Upgrade</strong> — 4-stimmige Jazzchords, Bass, Drums, Melodie</li>
+        <li>🔮 <strong>25/27 Gewinnlinien</strong> — 25 normal, 27 in Freispielen</li>
+        <li>💰 <strong>Einsätze ab 0,10 €</strong> — Von 0,10 € bis 50 € wählbar</li>
+        <li>📱 <strong>Mobile optimiert</strong> — Android-Zurück-Taste, Safe-Area, Touch</li>
+        <li>❓ <strong>Unbekannter Token</strong> — Aus der Platinkiste. Verwendung: <em style="color:#aaaaff">Geheimnis...</em></li>
+      </ul>
+    </div>
+
+    <!-- Kommende Updates -->
+    <div class="info-update-block info-coming">
+      <div class="info-update-header">
+        <span class="info-update-dot" style="background:#444;"></span>
+        <span class="info-update-title" style="color:#556677;">DEMNÄCHST</span>
+      </div>
+      <ul class="info-update-list" style="color:#445566;">
+        <li>🃏 Blackjack — Schlag den Dealer auf 21</li>
+        <li>🎡 Roulette — Das Rad des Glücks</li>
+        <li>🎲 Lucky 7, Book of Secrets, Mega Wheel</li>
+        <li>🏆 Bestenliste — Globales Ranking</li>
+        <li>🔓 Unbekannter Token — Funktion wird enthüllt</li>
+      </ul>
+    </div>
+
+    <div class="info-footer">
+      Vegas Casino — Nur zur Unterhaltung · Kein Echtgeld<br>
+      <span style="color:#332244">Entwickelt mit ❤️ · v1.0</span>
+    </div>
+
+  </div>
+</div>
 
 <!-- ============================================================ -->
 <!--  SETTINGS PAGE                                               -->
@@ -3103,7 +3216,7 @@ window.addEventListener('popstate', function(e) {
 
 // ── State ──
 let wsBalance   = 100.00;
-let wsBetIdx    = 0;      // index into WS_BETS (total bet)
+let wsBetIdx    = 4;      // index into WS_BETS (total bet, default 1.00€)
 let wsSpinning  = false;
 let wsGameMusicId = null;
 let wsGameMusicPlaying = false;
@@ -3115,8 +3228,8 @@ let wsFreeSpinsMult  = 1;
 let wsFreeSpinsTotal = 0;
 let wsInFreeSpin     = false;
 
-// Total bet per spin (shown to player directly — no per-line confusion)
-const WS_BETS  = [1.00, 2.00, 5.00, 10.00, 20.00, 50.00];
+// Total bet per spin (shown to player directly)
+const WS_BETS  = [0.10, 0.20, 0.50, 0.80, 1.00, 2.00, 5.00, 10.00, 20.00, 50.00];
 const WS_LINES = 25;
 
 // ── Symbols ──
@@ -3973,6 +4086,15 @@ function loadSettings() {
 }
 function saveSettings(s) {
   try { localStorage.setItem('vc_settings', JSON.stringify(s)); } catch(e) {}
+}
+
+function openInfo() {
+  document.getElementById('main-menu').classList.remove('active');
+  document.getElementById('info-page').classList.add('active');
+}
+function closeInfo() {
+  document.getElementById('info-page').classList.remove('active');
+  document.getElementById('main-menu').classList.add('active');
 }
 
 function openSettings() {
