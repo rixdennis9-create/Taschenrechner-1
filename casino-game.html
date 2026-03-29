@@ -1932,16 +1932,16 @@
 <!--  GENDER SELECT                                               -->
 <!-- ============================================================ -->
 <div id="gender-select">
-  <div class="gs-title">Wer bist du?</div>
-  <div class="gs-sub">Wähle deinen Spieler-Typ</div>
+  <div class="gs-title" data-i18n="gs.title">Wer bist du?</div>
+  <div class="gs-sub" data-i18n="gs.sub">Wähle deinen Spieler-Typ</div>
   <div class="gs-options">
     <div class="gs-opt" onclick="selectGender('male')">
       <div class="gs-icon">👨</div>
-      <div class="gs-label">Männlich</div>
+      <div class="gs-label" data-i18n="gs.male">Männlich</div>
     </div>
     <div class="gs-opt" onclick="selectGender('female')">
       <div class="gs-icon">👩</div>
-      <div class="gs-label">Weiblich</div>
+      <div class="gs-label" data-i18n="gs.female">Weiblich</div>
     </div>
   </div>
 </div>
@@ -1952,7 +1952,7 @@
 <div id="splash">
   <div class="splash-deco-row">🎰 🃏 🎲 🎰 🃏</div>
   <div class="splash-logo">Vegas<br>Casino</div>
-  <div class="splash-sub-text">The Ultimate Experience</div>
+  <div class="splash-sub-text" data-i18n="menu.tagline">The Ultimate Experience</div>
   <div class="splash-tap">▶ &nbsp;Tippen zum Starten</div>
   <div class="splash-hint">🔊 Sound an empfohlen</div>
 </div>
@@ -2168,13 +2168,13 @@
 
   <!-- Buttons -->
   <div class="menu-buttons">
-    <button class="menu-btn btn-play" onclick="openGamesMenu()">
+    <button class="menu-btn btn-play" onclick="openGamesMenu()" data-i18n="menu.play">
       🎰 &nbsp;Spielen
     </button>
-    <button class="menu-btn btn-secondary" onclick="openSettings()">
+    <button class="menu-btn btn-secondary" onclick="openSettings()" data-i18n="menu.settings">
       ⚙️ &nbsp;Einstellungen
     </button>
-    <button class="menu-btn btn-secondary" onclick="openInfo()">
+    <button class="menu-btn btn-secondary" onclick="openInfo()" data-i18n="menu.info">
       ℹ️ &nbsp;Info
     </button>
   </div>
