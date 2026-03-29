@@ -1055,6 +1055,121 @@
     }
     .prof-save:hover { box-shadow:0 0 20px #ffd70077; transform:scale(1.02); }
 
+    /* ─ Settings Page ─ */
+    #settings-page {
+      position: fixed; inset: 0; z-index: 650;
+      display: none; flex-direction: column; align-items: center;
+      background: radial-gradient(ellipse at 50% 0%, #001a30, #000c18, #000005);
+      overflow-y: auto; padding: 28px 20px 60px;
+    }
+    #settings-page.active { display: flex; }
+
+    .sett-card {
+      width: min(440px, 94vw);
+      background: linear-gradient(145deg, #00101e, #001828);
+      border: 1px solid #0044aa; border-radius: 18px; padding: 24px 20px;
+      box-shadow: 0 8px 40px rgba(0,30,80,0.7), 0 0 0 1px #002255;
+    }
+    .sett-section {
+      font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+      color: #4488cc; border-bottom: 1px solid #002255;
+      padding-bottom: 6px; margin: 20px 0 12px;
+    }
+    .sett-section:first-child { margin-top: 0; }
+
+    /* Language grid */
+    .sett-lang-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    }
+    .sett-lang-btn {
+      padding: 10px 6px; border-radius: 10px; text-align: center; cursor: pointer;
+      background: #001020; border: 1px solid #002244;
+      color: #8899bb; font-size: clamp(11px,2.2vw,13px); letter-spacing: 1px;
+      transition: all 0.18s;
+    }
+    .sett-lang-btn:hover { border-color: #0066cc; color: #aaccff; }
+    .sett-lang-btn.active {
+      background: linear-gradient(135deg, #001e44, #003388);
+      border-color: #0088ff; color: #ffffff;
+      box-shadow: 0 0 12px #0066ff44;
+    }
+
+    /* Chip selector (FPS / Graphics) */
+    .sett-chip-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .sett-chip {
+      padding: 8px 14px; border-radius: 20px; cursor: pointer;
+      background: #001020; border: 1px solid #002244;
+      color: #8899bb; font-size: 12px; letter-spacing: 1px;
+      transition: all 0.18s;
+    }
+    .sett-chip:hover { border-color: #0066cc; color: #aaccff; }
+    .sett-chip.active {
+      background: linear-gradient(135deg, #001e44, #003388);
+      border-color: #0088ff; color: #fff;
+      box-shadow: 0 0 10px #0055ff44;
+    }
+
+    /* Slider rows */
+    .sett-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 12px;
+    }
+    .sett-label { font-size: 12px; color: #7799bb; min-width: 68px; letter-spacing: 1px; }
+    .sett-val   { font-size: 12px; color: #ffd700; min-width: 38px; text-align: right; font-weight: 700; }
+    .sett-slider {
+      flex: 1; -webkit-appearance: none; appearance: none;
+      height: 4px; border-radius: 2px;
+      background: linear-gradient(to right, #0066ff var(--pct,70%), #002244 var(--pct,70%));
+      outline: none; cursor: pointer;
+    }
+    .sett-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+      background: radial-gradient(circle at 38% 32%, #44aaff, #0055cc);
+      border: 2px solid #0088ff; box-shadow: 0 0 8px #0066ff88; cursor: pointer;
+    }
+
+    /* Toggle switch */
+    .sett-toggle-row { justify-content: space-between; }
+    .sett-toggle { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+    .sett-toggle input { opacity: 0; width: 0; height: 0; }
+    .sett-toggle-slider {
+      position: absolute; inset: 0; border-radius: 24px; cursor: pointer;
+      background: #002244; transition: background 0.2s;
+      border: 1px solid #003366;
+    }
+    .sett-toggle-slider::before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px; border-radius: 50%;
+      left: 2px; top: 2px;
+      background: #336688; transition: transform 0.2s, background 0.2s;
+    }
+    .sett-toggle input:checked + .sett-toggle-slider { background: #003388; border-color: #0066ff; }
+    .sett-toggle input:checked + .sett-toggle-slider::before { transform: translateX(20px); background: #44aaff; box-shadow: 0 0 8px #0088ff88; }
+
+    /* Reset / action buttons */
+    .sett-reset-btn {
+      width: 100%; padding: 11px; border: 1px solid #cc6600; border-radius: 8px;
+      background: linear-gradient(135deg, #1a0800, #2a1000);
+      color: #ffaa44; font-size: 13px; font-family: 'Georgia',serif;
+      letter-spacing: 2px; cursor: pointer; transition: all 0.18s;
+      text-transform: uppercase;
+    }
+    .sett-reset-btn:hover { border-color: #ff8800; box-shadow: 0 0 14px #ff880033; }
+    .sett-back-btn {
+      display: block; width: 100%; padding: 13px; margin-top: 22px;
+      border: none; border-radius: 8px;
+      background: linear-gradient(90deg, #004488, #0066cc, #004488);
+      color: #fff; font-size: 14px; font-family: 'Georgia',serif;
+      font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; box-shadow: 0 0 14px #0044aa44; transition: all 0.2s;
+    }
+    .sett-back-btn:hover { box-shadow: 0 0 24px #0088ff88; transform: scale(1.02); }
+
+    /* no-animations mode */
+    body.no-animations *,
+    body.no-animations *::before,
+    body.no-animations *::after { animation: none !important; transition: none !important; }
+
     /* ─ Wild Spins Futuristic Neon Background ─ */
     .ws-bg {
       position: absolute; inset: 0; z-index: 0; overflow: hidden;
@@ -1884,7 +1999,7 @@
     <button class="menu-btn btn-secondary" onclick="alert('High Scores kommen bald!')">
       🏆 &nbsp;Bestenliste
     </button>
-    <button class="menu-btn btn-secondary" onclick="alert('Einstellungen kommen bald!')">
+    <button class="menu-btn btn-secondary" onclick="openSettings()">
       ⚙️ &nbsp;Einstellungen
     </button>
     <button class="menu-btn btn-secondary" onclick="alert('Vegas Casino v1.0 – Entwickelt mit ❤️')">
@@ -1931,6 +2046,101 @@
     </div>
     <div class="prof-gender-display" id="prof-gender-display"></div>
     <button class="prof-save" onclick="saveProfile()">💾 &nbsp;Speichern</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!--  SETTINGS PAGE                                               -->
+<!-- ============================================================ -->
+<div id="settings-page">
+  <div class="prof-hdr">
+    <div class="title">⚙️ Einstellungen</div>
+    <div style="font-size:10px;color:#336688;letter-spacing:4px;margin-top:5px;text-transform:uppercase">Settings</div>
+  </div>
+
+  <div class="sett-card">
+
+    <!-- Language -->
+    <div class="sett-section">🌐 Sprache / Language</div>
+    <div class="sett-lang-grid" id="sett-lang">
+      <div class="sett-lang-btn active" data-lang="de" onclick="setLang('de')">🇩🇪 Deutsch</div>
+      <div class="sett-lang-btn" data-lang="en" onclick="setLang('en')">🇬🇧 English</div>
+      <div class="sett-lang-btn" data-lang="hi" onclick="setLang('hi')">🇮🇳 हिंदी</div>
+      <div class="sett-lang-btn" data-lang="zh" onclick="setLang('zh')">🇨🇳 中文</div>
+      <div class="sett-lang-btn" data-lang="ja" onclick="setLang('ja')">🇯🇵 日本語</div>
+      <div class="sett-lang-btn" data-lang="tr" onclick="setLang('tr')">🇹🇷 Türkçe</div>
+    </div>
+
+    <!-- Graphics -->
+    <div class="sett-section">🎮 Grafikqualität / Graphics</div>
+    <div class="sett-chip-row" id="sett-gfx">
+      <div class="sett-chip" data-val="low"    onclick="setGfx('low')">Low</div>
+      <div class="sett-chip active" data-val="medium" onclick="setGfx('medium')">Medium</div>
+      <div class="sett-chip" data-val="high"   onclick="setGfx('high')">High</div>
+      <div class="sett-chip" data-val="ultra"  onclick="setGfx('ultra')">Ultra</div>
+    </div>
+
+    <!-- FPS -->
+    <div class="sett-section">⚡ Bildwiederholrate / Frame Rate</div>
+    <div class="sett-chip-row" id="sett-fps">
+      <div class="sett-chip" data-val="30"  onclick="setFPS('30')">30 FPS</div>
+      <div class="sett-chip active" data-val="60"  onclick="setFPS('60')">60 FPS</div>
+      <div class="sett-chip" data-val="120" onclick="setFPS('120')">120 FPS</div>
+      <div class="sett-chip" data-val="0"   onclick="setFPS('0')">∞ Max</div>
+    </div>
+
+    <!-- Sound -->
+    <div class="sett-section">🔊 Sound</div>
+    <div class="sett-row">
+      <span class="sett-label">Musik</span>
+      <input type="range" class="sett-slider" id="sett-music-vol" min="0" max="100" value="70"
+             oninput="setMusicVol(this.value)">
+      <span class="sett-val" id="sett-music-val">70%</span>
+    </div>
+    <div class="sett-row">
+      <span class="sett-label">Effekte</span>
+      <input type="range" class="sett-slider" id="sett-sfx-vol" min="0" max="100" value="80"
+             oninput="setSfxVol(this.value)">
+      <span class="sett-val" id="sett-sfx-val">80%</span>
+    </div>
+
+    <!-- Toggles -->
+    <div class="sett-section">📱 Weitere Optionen</div>
+    <div class="sett-row sett-toggle-row">
+      <span class="sett-label">Vibration</span>
+      <label class="sett-toggle">
+        <input type="checkbox" id="sett-vibration" onchange="setVibration(this.checked)" checked>
+        <span class="sett-toggle-slider"></span>
+      </label>
+    </div>
+    <div class="sett-row sett-toggle-row">
+      <span class="sett-label">Animationen</span>
+      <label class="sett-toggle">
+        <input type="checkbox" id="sett-animations" onchange="setAnimationsOpt(this.checked)" checked>
+        <span class="sett-toggle-slider"></span>
+      </label>
+    </div>
+    <div class="sett-row sett-toggle-row">
+      <span class="sett-label">Schnellspin</span>
+      <label class="sett-toggle">
+        <input type="checkbox" id="sett-quickspin" onchange="setQuickspin(this.checked)">
+        <span class="sett-toggle-slider"></span>
+      </label>
+    </div>
+    <div class="sett-row sett-toggle-row">
+      <span class="sett-label">Benachricht.</span>
+      <label class="sett-toggle">
+        <input type="checkbox" id="sett-notifs" onchange="setNotifs(this.checked)" checked>
+        <span class="sett-toggle-slider"></span>
+      </label>
+    </div>
+
+    <!-- Account / Reset -->
+    <div class="sett-section">⚠️ Konto / Account</div>
+    <button class="sett-reset-btn" onclick="settResetBalance()">💰 Guthaben zurücksetzen (100 €)</button>
+
+    <button class="sett-back-btn" onclick="closeSettings()">← Zurück zum Menü</button>
   </div>
 </div>
 
@@ -3494,6 +3704,126 @@ function closeProfile() {
   document.getElementById('profile-page').classList.remove('active');
   document.getElementById('main-menu').classList.add('active');
 }
+
+// ─── Settings ────────────────────────────────────────────────
+function loadSettings() {
+  try { return JSON.parse(localStorage.getItem('vc_settings') || '{}'); } catch(e) { return {}; }
+}
+function saveSettings(s) {
+  try { localStorage.setItem('vc_settings', JSON.stringify(s)); } catch(e) {}
+}
+
+function openSettings() {
+  document.getElementById('main-menu').classList.remove('active');
+  document.getElementById('settings-page').classList.add('active');
+  const s = loadSettings();
+  // Language
+  highlightSettChip('sett-lang', s.lang || 'de', 'sett-lang-btn');
+  // Graphics
+  highlightSettChip('sett-gfx', s.gfx || 'medium', 'sett-chip');
+  // FPS
+  highlightSettChip('sett-fps', s.fps || '60', 'sett-chip');
+  // Sliders
+  const mv = s.musicVol ?? 70;
+  const sv = s.sfxVol  ?? 80;
+  const mvEl = document.getElementById('sett-music-vol');
+  const svEl = document.getElementById('sett-sfx-vol');
+  if (mvEl) { mvEl.value = mv; document.getElementById('sett-music-val').textContent = mv + '%'; }
+  if (svEl) { svEl.value = sv; document.getElementById('sett-sfx-val').textContent = sv + '%'; }
+  // Toggles
+  const chk = id => { const el = document.getElementById(id); if (el) return el; };
+  const vib  = chk('sett-vibration');   if (vib)  vib.checked  = s.vibration   !== false;
+  const anim = chk('sett-animations');  if (anim) anim.checked = s.animations  !== false;
+  const qs   = chk('sett-quickspin');   if (qs)   qs.checked   = s.quickspin   === true;
+  const nf   = chk('sett-notifs');      if (nf)   nf.checked   = s.notifs      !== false;
+}
+
+function closeSettings() {
+  document.getElementById('settings-page').classList.remove('active');
+  document.getElementById('main-menu').classList.add('active');
+}
+
+function highlightSettChip(containerId, val, chipClass) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  c.querySelectorAll('.' + chipClass).forEach(el => {
+    el.classList.toggle('active', el.dataset.lang === val || el.dataset.val === val);
+  });
+}
+
+function setLang(lang) {
+  const s = loadSettings(); s.lang = lang; saveSettings(s);
+  highlightSettChip('sett-lang', lang, 'sett-lang-btn');
+}
+
+function setGfx(val) {
+  const s = loadSettings(); s.gfx = val; saveSettings(s);
+  highlightSettChip('sett-gfx', val, 'sett-chip');
+  // Reduce particle count for low/medium
+  const counts = { low: 4, medium: 10, high: 16, ultra: 20 };
+  const target = counts[val] || 10;
+  document.querySelectorAll('.ws-particle').forEach((p, i) => {
+    p.style.display = i < target ? '' : 'none';
+  });
+}
+
+function setFPS(val) {
+  const s = loadSettings(); s.fps = val; saveSettings(s);
+  highlightSettChip('sett-fps', val, 'sett-chip');
+  // Note: browser caps animation FPS via CSS; this stores the preference
+  // for future requestAnimationFrame loops
+  window.vc_target_fps = +val || 999;
+}
+
+function setMusicVol(val) {
+  document.getElementById('sett-music-val').textContent = val + '%';
+  const s = loadSettings(); s.musicVol = +val; saveSettings(s);
+  window.vc_music_vol = +val / 100;
+}
+
+function setSfxVol(val) {
+  document.getElementById('sett-sfx-val').textContent = val + '%';
+  const s = loadSettings(); s.sfxVol = +val; saveSettings(s);
+  window.vc_sfx_vol = +val / 100;
+}
+
+function setVibration(checked) {
+  const s = loadSettings(); s.vibration = checked; saveSettings(s);
+}
+
+function setAnimationsOpt(checked) {
+  const s = loadSettings(); s.animations = checked; saveSettings(s);
+  document.body.classList.toggle('no-animations', !checked);
+}
+
+function setQuickspin(checked) {
+  const s = loadSettings(); s.quickspin = checked; saveSettings(s);
+  window.vc_quickspin = checked;
+}
+
+function setNotifs(checked) {
+  const s = loadSettings(); s.notifs = checked; saveSettings(s);
+}
+
+function settResetBalance() {
+  wsBalance = 100.00;
+  wsUpdateUI();
+  const btn = event.currentTarget;
+  const orig = btn.textContent;
+  btn.textContent = '✓ Zurückgesetzt!';
+  setTimeout(() => { btn.textContent = orig; }, 1800);
+  if (navigator.vibrate) navigator.vibrate(50);
+}
+
+// Apply saved settings on boot
+(function applySavedSettings() {
+  const s = loadSettings();
+  if (s.animations === false) document.body.classList.add('no-animations');
+  window.vc_music_vol = (s.musicVol ?? 70) / 100;
+  window.vc_sfx_vol   = (s.sfxVol  ?? 80) / 100;
+  window.vc_target_fps = s.fps ? (+s.fps || 999) : 60;
+  window.vc_quickspin  = s.quickspin === true;
+}());
 
 function saveProfile() {
   const p = loadProfile();
