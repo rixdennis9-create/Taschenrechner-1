@@ -584,7 +584,7 @@
       background: radial-gradient(ellipse at 50% 0%, #0d0020 0%, #050010 55%, #000005 100%);
       z-index: 700;
       overflow-y: auto;
-      padding: 28px 20px 50px;
+      padding: 64px 20px 50px;
     }
     #slots-lobby.active { display: flex; }
 
@@ -761,7 +761,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding-top: 40px;
+      padding-top: 70px;
       background: radial-gradient(ellipse at 50% 0%, #001a30 0%, #000d18 50%, #000008 100%);
       z-index: 600;
       overflow-y: auto;
@@ -865,31 +865,29 @@
     }
 
     .btn-back {
-      padding: 9px 20px;
+      position: absolute;
+      top: 18px; left: 16px; z-index: 20;
+      padding: 9px 16px 9px 12px;
       font-size: 11px;
       font-family: 'Georgia', serif;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      background: linear-gradient(135deg, #0a0005, #1a0015);
-      border: 1px solid #aa7700;
-      border-radius: 6px;
-      color: #ffd700;
+      background: rgba(0,0,0,0.38);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 30px;
+      color: rgba(255,255,255,0.72);
       cursor: pointer;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       transition: all 0.2s;
-      box-shadow: 0 0 8px #ffd70018, inset 0 0 6px #00000055;
-      position: relative;
-      overflow: hidden;
+      display: flex; align-items: center; gap: 6px;
     }
-    .btn-back::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%; width: 55%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,215,0,0.14), transparent);
-      transition: left 0.35s;
+    .btn-back:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.32);
+      color: #fff;
     }
-    .btn-back:hover::before { left: 140%; }
-    .btn-back:hover { border-color: #ffd700; color: #fff8b0; box-shadow: 0 0 14px #ffd70044; background: linear-gradient(135deg, #180010, #280020); }
-    .btn-back:active { transform: scale(0.97); }
+    .btn-back:active { transform: scale(0.96); }
 
     /* ─ Red glowing back button (in-game) ─ */
     .ws-back-btn {
@@ -1003,7 +1001,7 @@
       display: none; flex-direction: column;
       align-items: center;
       background: radial-gradient(ellipse at 50% 0%, #1a0030, #080018, #000008);
-      overflow-y: auto; padding: 28px 20px 50px;
+      overflow-y: auto; padding: 70px 20px 50px;
     }
     #profile-page.active { display: flex; }
     .prof-hdr { text-align: center; margin-bottom: 24px; width: 100%; }
@@ -1177,12 +1175,67 @@
     }
     @keyframes notif-ping { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.3);opacity:0.7} }
 
+    /* ─ Info Page ─ */
+    #info-page {
+      position: fixed; inset: 0; z-index: 650;
+      display: none; flex-direction: column; align-items: center;
+      background: radial-gradient(ellipse at 50% 0%, #0a1a00, #050e00, #000005);
+      overflow-y: auto; padding: 70px 20px 60px;
+    }
+    #info-page.active { display: flex; }
+    .info-card {
+      width: min(460px, 94vw);
+      background: linear-gradient(145deg, #060d00, #0c1800);
+      border: 1px solid #224400; border-radius: 18px; padding: 22px 18px 28px;
+      box-shadow: 0 8px 40px rgba(0,30,0,0.7);
+    }
+    .info-version-badge {
+      display: inline-block; padding: 4px 14px; border-radius: 20px;
+      background: linear-gradient(90deg, #1a3300, #2a5500);
+      border: 1px solid #44aa00; color: #88ff44;
+      font-size: 10px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; margin-bottom: 18px;
+    }
+    .info-update-block { margin-bottom: 22px; }
+    .info-coming { opacity: 0.6; }
+    .info-update-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    }
+    .info-update-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #44ff00; box-shadow: 0 0 8px #44ff00;
+      flex-shrink: 0;
+    }
+    .info-update-title {
+      font-size: 13px; font-weight: 900; letter-spacing: 4px;
+      color: #88ff44; text-transform: uppercase;
+    }
+    .info-update-date {
+      font-size: 9px; color: #336622; letter-spacing: 2px;
+      text-transform: uppercase; margin-left: auto;
+      border: 1px solid #224400; border-radius: 10px; padding: 2px 8px;
+    }
+    .info-update-list {
+      list-style: none; display: flex; flex-direction: column; gap: 8px;
+    }
+    .info-update-list li {
+      font-size: 12px; color: #99cc77; line-height: 1.5;
+      padding: 6px 10px; background: rgba(0,40,0,0.3);
+      border-radius: 8px; border-left: 2px solid #224400;
+    }
+    .info-update-list li strong { color: #ccff88; }
+    .info-footer {
+      margin-top: 20px; padding-top: 16px; border-top: 1px solid #1a2a00;
+      font-size: 10px; color: #334422; letter-spacing: 2px;
+      text-align: center; line-height: 1.8;
+    }
+
     /* ─ Settings Page ─ */
     #settings-page {
       position: fixed; inset: 0; z-index: 650;
       display: none; flex-direction: column; align-items: center;
       background: radial-gradient(ellipse at 50% 0%, #001a30, #000c18, #000005);
-      overflow-y: auto; padding: 28px 20px 60px;
+      overflow-y: auto; padding: 70px 20px 60px;
     }
     #settings-page.active { display: flex; }
 
@@ -1843,6 +1896,52 @@
     .ws-pt-row { display: flex; align-items: center; gap: 5px; color: #334466; }
     .ws-pt-sym { font-size: clamp(12px, 2vw, 18px); }
     .ws-pt-val { color: #ffd700; font-weight: 700; min-width: 32px; }
+
+    /* ─ Wild Flash Effect ─ */
+    .ws-cell.wild-flash {
+      animation: wild-flash-anim 0.3s ease-in-out 3;
+      z-index: 10;
+    }
+    @keyframes wild-flash-anim {
+      0%   { box-shadow: 0 0 0 0 #ffd700; border-color: #ffd700; transform: scale(1); }
+      50%  { box-shadow: 0 0 30px 8px #ffd700aa; border-color: #fff; transform: scale(1.15); }
+      100% { box-shadow: 0 0 0 0 #ffd700; border-color: #ffd700; transform: scale(1); }
+    }
+
+    /* ─ Free Spins Fire Particles ─ */
+    .ws-fire-container {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+      pointer-events: none; overflow: hidden; z-index: 4;
+      display: none;
+    }
+    .ws-fire-container.active { display: block; }
+    .ws-fire-particle {
+      position: absolute; bottom: -10px;
+      font-size: clamp(16px, 3vw, 24px);
+      animation: fire-rise var(--dur, 1.4s) ease-out var(--delay, 0s) infinite;
+      opacity: 0;
+    }
+    @keyframes fire-rise {
+      0%   { transform: translateY(0) scale(0.7) rotate(var(--rot,-10deg)); opacity: 0.9; }
+      70%  { opacity: 0.6; }
+      100% { transform: translateY(-90px) scale(0.3) rotate(var(--rot2,10deg)); opacity: 0; }
+    }
+
+    /* ─ Chest Event button ─ */
+    .chest-menu-btn {
+      position: absolute; top: 66px; left: 16px; z-index: 10;
+      width: 44px; height: 44px; border-radius: 12px; border: 1px solid #885500;
+      background: linear-gradient(145deg, #1a0800, #2e1500);
+      color: #ffd700; font-size: 22px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 12px #ffd70033; transition: all 0.18s;
+      animation: chest-star-blink 1.4s ease-in-out infinite alternate;
+    }
+    @keyframes chest-star-blink {
+      from { box-shadow: 0 0 8px #ffd70033; border-color: #664400; }
+      to   { box-shadow: 0 0 20px #ffd700aa; border-color: #ffaa00; }
+    }
+    .chest-menu-btn:hover { transform: scale(1.1); }
   </style>
 </head>
 <body>
@@ -1879,16 +1978,16 @@
 <!--  GENDER SELECT                                               -->
 <!-- ============================================================ -->
 <div id="gender-select">
-  <div class="gs-title">Wer bist du?</div>
-  <div class="gs-sub">Wähle deinen Spieler-Typ</div>
+  <div class="gs-title" data-i18n="gs.title">Wer bist du?</div>
+  <div class="gs-sub" data-i18n="gs.sub">Wähle deinen Spieler-Typ</div>
   <div class="gs-options">
     <div class="gs-opt" onclick="selectGender('male')">
       <div class="gs-icon">👨</div>
-      <div class="gs-label">Männlich</div>
+      <div class="gs-label" data-i18n="gs.male">Männlich</div>
     </div>
     <div class="gs-opt" onclick="selectGender('female')">
       <div class="gs-icon">👩</div>
-      <div class="gs-label">Weiblich</div>
+      <div class="gs-label" data-i18n="gs.female">Weiblich</div>
     </div>
   </div>
 </div>
@@ -1899,7 +1998,7 @@
 <div id="splash">
   <div class="splash-deco-row">🎰 🃏 🎲 🎰 🃏</div>
   <div class="splash-logo">Vegas<br>Casino</div>
-  <div class="splash-sub-text">The Ultimate Experience</div>
+  <div class="splash-sub-text" data-i18n="menu.tagline">The Ultimate Experience</div>
   <div class="splash-tap">▶ &nbsp;Tippen zum Starten</div>
   <div class="splash-hint">🔊 Sound an empfohlen</div>
 </div>
@@ -2115,16 +2214,13 @@
 
   <!-- Buttons -->
   <div class="menu-buttons">
-    <button class="menu-btn btn-play" onclick="openGamesMenu()">
+    <button class="menu-btn btn-play" onclick="openGamesMenu()" data-i18n="menu.play">
       🎰 &nbsp;Spielen
     </button>
-    <button class="menu-btn btn-secondary" onclick="alert('High Scores kommen bald!')">
-      🏆 &nbsp;Bestenliste
-    </button>
-    <button class="menu-btn btn-secondary" onclick="openSettings()">
+    <button class="menu-btn btn-secondary" onclick="openSettings()" data-i18n="menu.settings">
       ⚙️ &nbsp;Einstellungen
     </button>
-    <button class="menu-btn btn-secondary" onclick="alert('Vegas Casino v1.0 – Entwickelt mit ❤️')">
+    <button class="menu-btn btn-secondary" onclick="openInfo()" data-i18n="menu.info">
       ℹ️ &nbsp;Info
     </button>
   </div>
@@ -2137,6 +2233,11 @@
     <span class="cal-notif-dot" id="cal-notif-dot"></span>
   </button>
 
+  <!-- Chest event button -->
+  <button class="chest-menu-btn" onclick="openChestEvent()" title="Chest Event">
+    ⭐
+  </button>
+
   <div class="menu-version">Vegas Casino v1.0</div>
 </div>
 
@@ -2145,7 +2246,7 @@
 <!--  PROFILE PAGE                                                -->
 <!-- ============================================================ -->
 <div id="profile-page">
-  <button class="btn-back" onclick="closeProfile()" style="align-self:flex-start;margin-bottom:16px;">&#8592; Zurück</button>
+  <button class="btn-back" onclick="closeProfile()">&#8592; Zurück</button>
   <div class="prof-hdr">
     <div class="title">👤 Mein Profil</div>
   </div>
@@ -2180,6 +2281,67 @@
 
 
 <!-- ============================================================ -->
+<!--  INFO PAGE                                                   -->
+<!-- ============================================================ -->
+<div id="info-page">
+  <button class="btn-back" onclick="closeInfo()">&#8592; Zurück</button>
+  <div class="prof-hdr">
+    <div class="title">ℹ️ Info</div>
+  </div>
+
+  <div class="info-card">
+
+    <div class="info-version-badge">Vegas Casino v1.0</div>
+
+    <!-- Update 1.0 -->
+    <div class="info-update-block">
+      <div class="info-update-header">
+        <span class="info-update-dot"></span>
+        <span class="info-update-title">UPDATE 1.0</span>
+        <span class="info-update-date">Aktuell</span>
+      </div>
+      <ul class="info-update-list">
+        <li>🎰 <strong>Wild Spins</strong> — Vollständige 5×3 Slot Machine spielbar</li>
+        <li>💫 <strong>Freispiele</strong> — 3 Scatter = Auswahl: 5×10 oder 3×60 Multiplikator</li>
+        <li>🌀 <strong>Mystery-Symbol</strong> — Verwandelt sich nach dem Stopp in ein Zufallssymbol</li>
+        <li>🔥 <strong>Gewinn-Serien</strong> — Kaskadierende Gewinne mit steigendem Multiplikator</li>
+        <li>📅 <strong>Täglicher Kalender</strong> — 24 Tage, täglich 5.000 € einloggen</li>
+        <li>🎁 <strong>10.000 € Startbonus</strong> — Für alle Neukunden</li>
+        <li>⭐ <strong>Chest Event</strong> — Holz-, Gold- und Platinkisten mit Tränken öffnen</li>
+        <li>👤 <strong>Spielerprofil</strong> — Level-System, XP, Foto-Upload, Dekorationen</li>
+        <li>⚙️ <strong>Einstellungen</strong> — Sprache, Grafik, FPS, Lautstärke, Toggles</li>
+        <li>🎵 <strong>Musik-Upgrade</strong> — 4-stimmige Jazzchords, Bass, Drums, Melodie</li>
+        <li>🔮 <strong>25/27 Gewinnlinien</strong> — 25 normal, 27 in Freispielen</li>
+        <li>💰 <strong>Einsätze ab 0,10 €</strong> — Von 0,10 € bis 50 € wählbar</li>
+        <li>📱 <strong>Mobile optimiert</strong> — Android-Zurück-Taste, Safe-Area, Touch</li>
+        <li>❓ <strong>Unbekannter Token</strong> — Aus der Platinkiste. Verwendung: <em style="color:#aaaaff">Geheimnis...</em></li>
+      </ul>
+    </div>
+
+    <!-- Kommende Updates -->
+    <div class="info-update-block info-coming">
+      <div class="info-update-header">
+        <span class="info-update-dot" style="background:#444;"></span>
+        <span class="info-update-title" style="color:#556677;">DEMNÄCHST</span>
+      </div>
+      <ul class="info-update-list" style="color:#445566;">
+        <li>🃏 Blackjack — Schlag den Dealer auf 21</li>
+        <li>🎡 Roulette — Das Rad des Glücks</li>
+        <li>🎲 Lucky 7, Book of Secrets, Mega Wheel</li>
+        <li>🏆 Bestenliste — Globales Ranking</li>
+        <li>🔓 Unbekannter Token — Funktion wird enthüllt</li>
+      </ul>
+    </div>
+
+    <div class="info-footer">
+      Vegas Casino — Nur zur Unterhaltung · Kein Echtgeld<br>
+      <span style="color:#332244">Entwickelt mit ❤️ · v1.0</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================ -->
 <!--  SETTINGS PAGE                                               -->
 <!-- ============================================================ -->
 <div id="settings-page">
@@ -2191,7 +2353,7 @@
   <div class="sett-card">
 
     <!-- Language -->
-    <div class="sett-section">🌐 Sprache / Language</div>
+    <div class="sett-section" data-i18n="sett.lang">🌐 Sprache / Language</div>
     <div class="sett-lang-grid" id="sett-lang">
       <div class="sett-lang-btn active" data-lang="de" onclick="setLang('de')">🇩🇪 Deutsch</div>
       <div class="sett-lang-btn" data-lang="en" onclick="setLang('en')">🇬🇧 English</div>
@@ -2202,7 +2364,7 @@
     </div>
 
     <!-- Graphics -->
-    <div class="sett-section">🎮 Grafikqualität / Graphics</div>
+    <div class="sett-section" data-i18n="sett.gfx">🎮 Grafikqualität / Graphics</div>
     <div class="sett-chip-row" id="sett-gfx">
       <div class="sett-chip" data-val="low"    onclick="setGfx('low')">Low</div>
       <div class="sett-chip active" data-val="medium" onclick="setGfx('medium')">Medium</div>
@@ -2211,7 +2373,7 @@
     </div>
 
     <!-- FPS -->
-    <div class="sett-section">⚡ Bildwiederholrate / Frame Rate</div>
+    <div class="sett-section" data-i18n="sett.fps">⚡ Bildwiederholrate / Frame Rate</div>
     <div class="sett-chip-row" id="sett-fps">
       <div class="sett-chip" data-val="30"  onclick="setFPS('30')">30 FPS</div>
       <div class="sett-chip active" data-val="60"  onclick="setFPS('60')">60 FPS</div>
@@ -2220,7 +2382,7 @@
     </div>
 
     <!-- Sound -->
-    <div class="sett-section">🔊 Sound</div>
+    <div class="sett-section" data-i18n="sett.sound">🔊 Sound</div>
     <div class="sett-row">
       <span class="sett-label">Musik</span>
       <input type="range" class="sett-slider" id="sett-music-vol" min="0" max="100" value="70"
@@ -2235,7 +2397,7 @@
     </div>
 
     <!-- Toggles -->
-    <div class="sett-section">📱 Weitere Optionen</div>
+    <div class="sett-section" data-i18n="sett.more">📱 Weitere Optionen</div>
     <div class="sett-row sett-toggle-row">
       <span class="sett-label">Vibration</span>
       <label class="sett-toggle">
@@ -2266,7 +2428,7 @@
     </div>
 
     <!-- Account / Reset -->
-    <div class="sett-section">⚠️ Konto / Account</div>
+    <div class="sett-section" data-i18n="sett.account">⚠️ Konto / Account</div>
     <button class="sett-reset-btn" onclick="settResetBalance()">💰 Guthaben zurücksetzen (100 €)</button>
 
     <button class="sett-back-btn" onclick="closeSettings()">← Zurück zum Menü</button>
@@ -2471,7 +2633,7 @@
 
   <!-- Header (top bar) -->
   <div class="ws-header">
-    <button class="ws-back-btn" onclick="closeWildSpins()">&#8592; Lobby</button>
+    <button class="ws-back-btn" onclick="closeWildSpins()" data-i18n="ws.back">&#8592; Lobby</button>
     <div class="ws-title-text">🎰 Wild Spins</div>
     <div class="ws-bal-top">
       <span class="ws-bal-label">Guthaben</span>
@@ -2495,6 +2657,7 @@
     <!-- Reel frame -->
     <div class="ws-reel-frame" id="ws-reel-frame">
       <div class="ws-reels" id="ws-reels"></div>
+      <div class="ws-fire-container" id="ws-fire-container"></div>
       <!-- Free Spins HUD -->
       <div class="ws-fs-hud" id="ws-fs-hud">FS: — left ×—</div>
       <!-- Cascade banner -->
@@ -2524,7 +2687,7 @@
     </div>
     <!-- Action row -->
     <div class="ws-action-row">
-      <button class="ws-max-btn" onclick="wsBetMax()">MAX BET</button>
+      <button class="ws-max-btn" onclick="wsBetMax()" data-i18n="ws.maxbet">MAX BET</button>
       <div class="ws-bet-control">
         <button class="ws-bet-adj" onclick="wsBetDown()">−</button>
         <div class="ws-bet-mid">
@@ -2535,7 +2698,7 @@
       </div>
       <button class="ws-spin-btn" id="ws-spin-btn" onclick="wsDoSpin()">
         <span class="ws-spin-icon">▶</span>
-        <span class="ws-spin-label">SPIN</span>
+        <span class="ws-spin-label" data-i18n="ws.spin">SPIN</span>
       </button>
     </div>
   </div>
@@ -2644,60 +2807,117 @@ let ambientChord   = 0;
 let casinoFXId  = null;
 let crowdSrc    = null;
 
-// Smooth lounge: Am → F → C → G at 76 BPM
-const LOUNGE_BPM  = 76;
-const LOUNGE_BEAT = 60 / LOUNGE_BPM;   // ~0.789s
-const CHORD_DUR   = LOUNGE_BEAT * 2.5; // how long each chord rings
-// [root, third, fifth] Hz
+// ══ CASINO LOUNGE MUSIC — Am7·Fmaj7·Cmaj7·G7 @ 80 BPM ══════
+const LOUNGE_BPM  = 80;
+const LOUNGE_BEAT = 60 / LOUNGE_BPM;  // 0.75s
+const CHORD_DUR   = LOUNGE_BEAT * 4;  // 4 beats per chord = 3s
+// 4-note voicings: [root, 3rd, 5th, 7th]
 const CHORDS = [
-  [220.0, 261.6, 329.6],  // Am
-  [174.6, 220.0, 261.6],  // F
-  [261.6, 329.6, 392.0],  // C
-  [196.0, 246.9, 293.7],  // G
+  [110.0, 130.8, 164.8, 196.0],  // Am7:  A2 C3 E3 G3
+  [ 87.3, 110.0, 130.8, 164.8],  // Fmaj7: F2 A2 C3 E3
+  [130.8, 164.8, 196.0, 246.9],  // Cmaj7: C3 E3 G3 B3
+  [ 98.0, 123.5, 146.8, 174.6],  // G7:   G2 B2 D3 F3
 ];
+// Melody motif (Am pentatonic, 2 bars, 8th notes): indices into current chord
+const MELODY = [2,3,2,1,0,1,2,0, 3,2,1,0,2,1,0,-1];  // -1 = rest
 
 function initAudio() {
   try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
   catch(e) {}
 }
 
-// ── Smooth pad tone ──
-function playPad(freq, t, dur, vol = 0.055) {
+// ── Rich pad with chorus (3 detuned oscillators) ──
+function playPad(freq, t, dur, vol = 0.040) {
+  if (!audioCtx) return;
+  const master = audioCtx.createGain();
+  master.connect(audioCtx.destination);
+  const atk = Math.min(0.55, dur * 0.22);
+  const rel = Math.min(0.9,  dur * 0.32);
+  master.gain.setValueAtTime(0, t);
+  master.gain.linearRampToValueAtTime(vol, t + atk);
+  master.gain.setValueAtTime(vol, t + dur - rel);
+  master.gain.linearRampToValueAtTime(0, t + dur);
+  // Three detuned sines → warm chorus
+  [-4, 0, 4].forEach(cents => {
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = freq * Math.pow(2, cents / 1200);
+    osc.connect(master);
+    osc.start(t); osc.stop(t + dur + 0.1);
+  });
+  // 2nd harmonic for body
+  const h = audioCtx.createOscillator();
+  const hg = audioCtx.createGain(); hg.gain.value = 0.15;
+  h.type = 'sine'; h.frequency.value = freq * 2;
+  h.connect(hg); hg.connect(master);
+  h.start(t); h.stop(t + dur + 0.1);
+}
+
+// ── Plucked bass note ──
+function playBass(freq, t, dur) {
   if (!audioCtx) return;
   const osc = audioCtx.createOscillator();
   const g   = audioCtx.createGain();
-  osc.type  = 'sine';
-  // Add a subtle second harmonic for warmth
-  const osc2 = audioCtx.createOscillator();
-  const g2   = audioCtx.createGain();
-  osc2.type  = 'sine';
-  osc2.frequency.value = freq * 2;
-  g2.gain.value = 0.18;
-  osc2.connect(g2); g2.connect(g);
-  osc.connect(g); g.connect(audioCtx.destination);
-  osc.frequency.value = freq;
-  const atk = Math.min(0.45, dur * 0.25);
-  const rel = Math.min(0.7,  dur * 0.35);
-  g.gain.setValueAtTime(0, t);
-  g.gain.linearRampToValueAtTime(vol, t + atk);
-  g.gain.setValueAtTime(vol, t + dur - rel);
-  g.gain.linearRampToValueAtTime(0, t + dur);
-  osc.start(t);  osc.stop(t + dur + 0.05);
-  osc2.start(t); osc2.stop(t + dur + 0.05);
+  const lpf = audioCtx.createBiquadFilter();
+  lpf.type = 'lowpass'; lpf.frequency.value = 400;
+  osc.type = 'sawtooth'; osc.frequency.value = freq;
+  osc.connect(lpf); lpf.connect(g); g.connect(audioCtx.destination);
+  g.gain.setValueAtTime(0.10, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + Math.min(dur, 1.1));
+  osc.start(t); osc.stop(t + Math.min(dur, 1.2));
 }
 
-// ── Gentle arpeggio sparkle ──
+// ── Soft kick drum ──
+function playKick(t) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const g   = audioCtx.createGain();
+  osc.connect(g); g.connect(audioCtx.destination);
+  osc.frequency.setValueAtTime(140, t);
+  osc.frequency.exponentialRampToValueAtTime(38, t + 0.12);
+  g.gain.setValueAtTime(0.28, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+  osc.start(t); osc.stop(t + 0.30);
+}
+
+// ── Soft snare (beat 2 & 4) ──
+function playSnare(t) {
+  if (!audioCtx) return;
+  const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.15, audioCtx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+  const src = audioCtx.createBufferSource(); src.buffer = buf;
+  const bpf = audioCtx.createBiquadFilter(); bpf.type = 'bandpass'; bpf.frequency.value = 1800; bpf.Q.value = 0.8;
+  const g = audioCtx.createGain(); g.gain.value = 0.055;
+  src.connect(bpf); bpf.connect(g); g.connect(audioCtx.destination);
+  src.start(t); src.stop(t + 0.16);
+}
+
+// ── Hi-hat ──
+function playHat(t, vol = 0.022) {
+  if (!audioCtx) return;
+  const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.06, audioCtx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+  const src = audioCtx.createBufferSource(); src.buffer = buf;
+  const hpf = audioCtx.createBiquadFilter(); hpf.type = 'highpass'; hpf.frequency.value = 7000;
+  const g = audioCtx.createGain(); g.gain.value = vol;
+  src.connect(hpf); hpf.connect(g); g.connect(audioCtx.destination);
+  src.start(t); src.stop(t + 0.07);
+}
+
+// ── Piano-like sparkle melody ──
 function playArp(freq, t) {
   if (!audioCtx) return;
   const osc = audioCtx.createOscillator();
   const g   = audioCtx.createGain();
   osc.type  = 'triangle';
   osc.connect(g); g.connect(audioCtx.destination);
-  osc.frequency.value = freq * 2; // octave up
+  osc.frequency.value = freq * 4; // 2 octaves up
   g.gain.setValueAtTime(0, t);
-  g.gain.linearRampToValueAtTime(0.038, t + 0.04);
-  g.gain.exponentialRampToValueAtTime(0.001, t + 0.55);
-  osc.start(t); osc.stop(t + 0.57);
+  g.gain.linearRampToValueAtTime(0.045, t + 0.025);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.50);
+  osc.start(t); osc.stop(t + 0.52);
 }
 
 // ── Ambient music scheduler ──
@@ -2706,14 +2926,35 @@ function ambientScheduler() {
   while (ambientNext < audioCtx.currentTime + 0.5) {
     const chord = CHORDS[ambientChord % 4];
     const t     = ambientNext;
-    // Pad layers
+    const beat  = LOUNGE_BEAT;
+
+    // 1. Rich pad (all 4 chord tones)
     chord.forEach(f => playPad(f, t, CHORD_DUR));
-    // Sub-bass root
-    playPad(chord[0] * 0.5, t, CHORD_DUR, 0.07);
-    // Arpeggio (staggered, gentle)
-    chord.forEach((f, i) => playArp(f, t + i * (LOUNGE_BEAT * 0.38)));
-    // Repeat arp on beat 2
-    chord.forEach((f, i) => playArp(f, t + LOUNGE_BEAT + i * (LOUNGE_BEAT * 0.38)));
+
+    // 2. Deep sub-bass root (one octave below root)
+    playPad(chord[0] * 0.5, t, CHORD_DUR, 0.055);
+
+    // 3. Walking bass: root on beat1, 5th on beat3
+    playBass(chord[0], t,           beat * 0.85);
+    playBass(chord[2], t + beat * 2, beat * 0.85);
+
+    // 4. Drums: kick on 1+3, snare on 2+4, hihat on every 8th
+    playKick(t);
+    playSnare(t + beat);
+    playKick(t + beat * 2);
+    playSnare(t + beat * 3);
+    for (let h = 0; h < 8; h++) playHat(t + h * beat * 0.5, h % 2 === 0 ? 0.025 : 0.015);
+
+    // 5. Arp melody on beats 1–4 (chord tones, octave up)
+    chord.forEach((f, i) => playArp(f, t + i * beat));
+
+    // 6. Melody sparkle on beats 2+3 (high notes)
+    const melStep = ambientChord % 4;
+    const noteA = chord[MELODY[melStep * 2]   >= 0 ? MELODY[melStep * 2]   : 0];
+    const noteB = chord[MELODY[melStep * 2 + 1] >= 0 ? MELODY[melStep * 2 + 1] : 0];
+    if (MELODY[melStep * 2]   >= 0) playArp(noteA * 2, t + beat * 1.5);
+    if (MELODY[melStep * 2 + 1] >= 0) playArp(noteB * 2, t + beat * 2.5);
+
     ambientNext += CHORD_DUR;
     ambientChord++;
   }
@@ -3027,7 +3268,7 @@ window.addEventListener('popstate', function(e) {
 
 // ── State ──
 let wsBalance   = 100.00;
-let wsBetIdx    = 0;      // index into WS_BETS (total bet)
+let wsBetIdx    = 4;      // index into WS_BETS (total bet, default 1.00€)
 let wsSpinning  = false;
 let wsGameMusicId = null;
 let wsGameMusicPlaying = false;
@@ -3039,8 +3280,8 @@ let wsFreeSpinsMult  = 1;
 let wsFreeSpinsTotal = 0;
 let wsInFreeSpin     = false;
 
-// Total bet per spin (shown to player directly — no per-line confusion)
-const WS_BETS  = [1.00, 2.00, 5.00, 10.00, 20.00, 50.00];
+// Total bet per spin (shown to player directly)
+const WS_BETS  = [0.10, 0.20, 0.50, 0.80, 1.00, 2.00, 5.00, 10.00, 20.00, 50.00];
 const WS_LINES = 25;
 
 // ── Symbols ──
@@ -3407,6 +3648,19 @@ function wsCheckWinsAndCascade(cascadeLevel, runningWin, onDone) {
     }
   });
 
+  // Wild visual effect: flash gold star on wild cells that contributed to wins
+  winCells.forEach(key => {
+    const [r, row] = key.split('-');
+    const sym = grid[+r][+row];
+    if (sym === 'wild') {
+      const c = document.getElementById(`ws-c-${r}-${row}`);
+      if (c) {
+        c.classList.add('wild-flash');
+        setTimeout(() => c && c.classList.remove('wild-flash'), 1000);
+      }
+    }
+  });
+
   if (roundWin > 0 || scatCount >= 3) {
     // Update balance and display
     wsBalance += roundWin;
@@ -3552,6 +3806,30 @@ function wsPlayFSFanfare() {
   });
 }
 
+function wsToggleFire(on) {
+  const c = document.getElementById('ws-fire-container');
+  if (!c) return;
+  if (on) {
+    c.innerHTML = '';
+    const emojis = ['🔥','🔥','✨','🔥','💫','🔥'];
+    for (let i = 0; i < 12; i++) {
+      const p = document.createElement('div');
+      p.className = 'ws-fire-particle';
+      p.textContent = emojis[i % emojis.length];
+      p.style.left = (5 + Math.random() * 90) + '%';
+      p.style.setProperty('--dur',  (1.1 + Math.random() * 0.8) + 's');
+      p.style.setProperty('--delay',(Math.random() * 1.2) + 's');
+      p.style.setProperty('--rot',  (Math.random() * 20 - 10) + 'deg');
+      p.style.setProperty('--rot2', (Math.random() * 20 - 10) + 'deg');
+      c.appendChild(p);
+    }
+    c.classList.add('active');
+  } else {
+    c.classList.remove('active');
+    c.innerHTML = '';
+  }
+}
+
 function wsChooseFS(spins, mult) {
   const el = document.getElementById('ws-fs-choice');
   if (el) el.style.display = 'none';
@@ -3559,6 +3837,7 @@ function wsChooseFS(spins, mult) {
   wsFreeSpinsMult  = mult;
   wsFreeSpinsTotal = 0;
   wsInFreeSpin     = true;
+  wsToggleFire(true);
   wsUpdateUI();
   // Start first free spin
   setTimeout(wsDoSpin, 400);
@@ -3574,6 +3853,7 @@ function wsShowFSSummary() {
 function wsCloseFSSummary() {
   const el = document.getElementById('ws-fs-summary');
   if (el) el.classList.remove('active');
+  wsToggleFire(false);
   saveBalance();
   wsUpdateUI();
   checkBankruptcy();
@@ -3648,15 +3928,19 @@ function wsPlayWinSound(win, bet) {
   }
 }
 
-// ── Wild Spins game music (energetic Em-C-G-D, 92 BPM) ──
-const WS_GM_BPM  = 92;
-const WS_GM_BEAT = 60 / WS_GM_BPM;
+// ══ WILD SPINS GAME MUSIC — Em7·Cmaj7·G·Dsus4 @ 105 BPM ════
+// Energetic casino floor feel: synth bass + chord pads + arp + full drums
+const WS_GM_BPM   = 105;
+const WS_GM_BEAT  = 60 / WS_GM_BPM;   // ~0.571s
+// 4-voice chords [root, 3rd, 5th, 7th]
 const WS_GM_CHORDS = [
-  [164.8, 196.0, 246.9],  // Em: E3 G3 B3
-  [261.6, 329.6, 392.0],  // C:  C4 E4 G4
-  [196.0, 246.9, 293.7],  // G:  G3 B3 D4
-  [146.8, 184.9, 220.0],  // D:  D3 F#3 A3
+  [ 82.4, 110.0, 123.5, 164.8],  // Em7:  E2 A2  B2  E3
+  [130.8, 164.8, 196.0, 246.9],  // Cmaj7:C3 E3  G3  B3
+  [ 98.0, 123.5, 146.8, 196.0],  // G:    G2 B2  D3  G3
+  [110.0, 138.6, 164.8, 220.0],  // Dsus4:A2 C#3 E3  A3
 ];
+// Synth lead arp pattern (semitone offsets from root, 8 steps per chord)
+const WS_GM_ARP = [0, 7, 12, 7, 14, 7, 12, 19];
 
 function wsPlayLoadMusic() {
   if (!audioCtx || wsGameMusicPlaying) return;
@@ -3669,48 +3953,92 @@ function wsStopGameMusic() {
   wsGameMusicPlaying = false;
   if (wsGameMusicId) clearTimeout(wsGameMusicId);
 }
+
 function wsGMScheduler() {
   if (!wsGameMusicPlaying || !audioCtx) return;
-  const chordDur = WS_GM_BEAT * 2;
+  const chordDur = WS_GM_BEAT * 4;   // 4 beats per chord
+  const beat     = WS_GM_BEAT;
+
   while (wsGMNext < audioCtx.currentTime + 0.5) {
     const ch = WS_GM_CHORDS[wsGMChord % 4];
     const t  = wsGMNext;
-    // Bright, slightly faster pads
+    const root = ch[0];
+
+    // 1 ── Chord pads (triangle, 3 detuned layers)
     ch.forEach(f => {
-      const osc = audioCtx.createOscillator();
-      const g   = audioCtx.createGain();
-      osc.type  = 'triangle';
-      osc.connect(g); g.connect(audioCtx.destination);
-      osc.frequency.value = f * 2; // octave up = brighter
-      const atk = 0.25, rel = 0.55;
-      g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(0.045, t + atk);
-      g.gain.setValueAtTime(0.045, t + chordDur - rel);
-      g.gain.linearRampToValueAtTime(0, t + chordDur);
-      osc.start(t); osc.stop(t + chordDur + 0.05);
+      [-6, 0, 6].forEach(cents => {
+        const osc = audioCtx.createOscillator();
+        const g   = audioCtx.createGain();
+        osc.type  = 'triangle';
+        osc.frequency.value = f * 2 * Math.pow(2, cents / 1200);
+        osc.connect(g); g.connect(audioCtx.destination);
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.030, t + 0.18);
+        g.gain.setValueAtTime(0.030, t + chordDur - 0.3);
+        g.gain.linearRampToValueAtTime(0, t + chordDur);
+        osc.start(t); osc.stop(t + chordDur + 0.05);
+      });
     });
-    // Staccato arpeggio (shorter, more energetic)
-    ch.forEach((f, i) => {
-      const at = t + i * (WS_GM_BEAT * 0.28);
+
+    // 2 ── Punchy synth bass (square, low octave)
+    [0, beat, beat * 2, beat * 2.5, beat * 3].forEach((off, i) => {
       const osc = audioCtx.createOscillator();
       const g   = audioCtx.createGain();
-      osc.type  = 'square'; osc.connect(g); g.connect(audioCtx.destination);
-      osc.frequency.value = f * 4;
-      g.gain.setValueAtTime(0.028, at);
-      g.gain.exponentialRampToValueAtTime(0.001, at + 0.22);
-      osc.start(at); osc.stop(at + 0.24);
+      const lpf = audioCtx.createBiquadFilter();
+      lpf.type = 'lowpass'; lpf.frequency.value = 320;
+      osc.type = 'square'; osc.frequency.value = root;
+      osc.connect(lpf); lpf.connect(g); g.connect(audioCtx.destination);
+      g.gain.setValueAtTime(0.12, t + off);
+      g.gain.exponentialRampToValueAtTime(0.001, t + off + beat * 0.45);
+      osc.start(t + off); osc.stop(t + off + beat * 0.5);
     });
-    // Kick-like bass pulse on beat 1
-    if (wsGMChord % 4 === 0) {
+
+    // 3 ── Synth lead arp (16th note steps, square high)
+    WS_GM_ARP.forEach((semis, step) => {
+      const at   = t + step * (beat * 0.5);
+      const freq = root * 4 * Math.pow(2, semis / 12);
+      const osc  = audioCtx.createOscillator();
+      const g    = audioCtx.createGain();
+      osc.type   = 'square'; osc.frequency.value = freq;
+      osc.connect(g); g.connect(audioCtx.destination);
+      g.gain.setValueAtTime(0.022, at);
+      g.gain.exponentialRampToValueAtTime(0.001, at + beat * 0.38);
+      osc.start(at); osc.stop(at + beat * 0.4);
+    });
+
+    // 4 ── Drums: kick 1+3, snare 2+4, hihat every 8th
+    [0, beat * 2].forEach(off => {           // kicks
       const osc = audioCtx.createOscillator();
       const g   = audioCtx.createGain();
       osc.connect(g); g.connect(audioCtx.destination);
-      osc.frequency.setValueAtTime(120, t);
-      osc.frequency.exponentialRampToValueAtTime(40, t + 0.18);
-      g.gain.setValueAtTime(0.5, t);
-      g.gain.exponentialRampToValueAtTime(0.001, t + 0.32);
-      osc.start(t); osc.stop(t + 0.34);
+      osc.frequency.setValueAtTime(160, t + off);
+      osc.frequency.exponentialRampToValueAtTime(42, t + off + 0.14);
+      g.gain.setValueAtTime(0.32, t + off);
+      g.gain.exponentialRampToValueAtTime(0.001, t + off + 0.28);
+      osc.start(t + off); osc.stop(t + off + 0.30);
+    });
+    [beat, beat * 3].forEach(off => {        // snares
+      const buf = audioCtx.createBuffer(1, Math.ceil(audioCtx.sampleRate * 0.14), audioCtx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+      const src = audioCtx.createBufferSource(); src.buffer = buf;
+      const bpf = audioCtx.createBiquadFilter(); bpf.type = 'bandpass'; bpf.frequency.value = 2200;
+      const g = audioCtx.createGain(); g.gain.value = 0.07;
+      src.connect(bpf); bpf.connect(g); g.connect(audioCtx.destination);
+      src.start(t + off); src.stop(t + off + 0.15);
+    });
+    for (let h = 0; h < 8; h++) {           // hi-hats
+      const at  = t + h * beat * 0.5;
+      const buf = audioCtx.createBuffer(1, Math.ceil(audioCtx.sampleRate * 0.05), audioCtx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+      const src = audioCtx.createBufferSource(); src.buffer = buf;
+      const hpf = audioCtx.createBiquadFilter(); hpf.type = 'highpass'; hpf.frequency.value = 8000;
+      const g = audioCtx.createGain(); g.gain.value = h % 2 === 0 ? 0.03 : 0.018;
+      src.connect(hpf); hpf.connect(g); g.connect(audioCtx.destination);
+      src.start(at); src.stop(at + 0.06);
     }
+
     wsGMNext += chordDur;
     wsGMChord++;
   }
@@ -3851,6 +4179,15 @@ function saveSettings(s) {
   try { localStorage.setItem('vc_settings', JSON.stringify(s)); } catch(e) {}
 }
 
+function openInfo() {
+  document.getElementById('main-menu').classList.remove('active');
+  document.getElementById('info-page').classList.add('active');
+}
+function closeInfo() {
+  document.getElementById('info-page').classList.remove('active');
+  document.getElementById('main-menu').classList.add('active');
+}
+
 function openSettings() {
   document.getElementById('main-menu').classList.remove('active');
   document.getElementById('settings-page').classList.add('active');
@@ -3889,9 +4226,160 @@ function highlightSettChip(containerId, val, chipClass) {
   });
 }
 
+// ─── Translations ──────────────────────────────────────────────
+const I18N = {
+  de: {
+    'menu.play':        '🎰 Spielen',
+    'menu.settings':    '⚙️ Einstellungen',
+    'menu.info':        'ℹ️ Info',
+    'menu.tagline':     'THE ULTIMATE EXPERIENCE',
+    'gs.title':         'Wer bist du?',
+    'gs.sub':           'Wähle deinen Spieler-Typ',
+    'gs.male':          'Männlich',
+    'gs.female':        'Weiblich',
+    'ws.back':          '← Lobby',
+    'ws.balance':       'GUTHABEN',
+    'ws.win':           'GEWINN',
+    'ws.bet':           'EINSATZ / LINIEN',
+    'ws.spin':          'SPIN',
+    'ws.maxbet':        'MAX BET',
+    'ws.lines':         'Linien',
+    'sett.lang':        '🌐 Sprache / Language',
+    'sett.gfx':         '🎮 Grafikqualität / Graphics',
+    'sett.fps':         '⚡ Bildwiederholrate / Frame Rate',
+    'sett.sound':       '🔊 Sound',
+    'sett.more':        '📱 Weitere Optionen',
+    'sett.account':     '⚠️ Konto / Account',
+  },
+  en: {
+    'menu.play':        '🎰 Play',
+    'menu.settings':    '⚙️ Settings',
+    'menu.info':        'ℹ️ Info',
+    'menu.tagline':     'THE ULTIMATE EXPERIENCE',
+    'gs.title':         'Who are you?',
+    'gs.sub':           'Choose your player type',
+    'gs.male':          'Male',
+    'gs.female':        'Female',
+    'ws.back':          '← Lobby',
+    'ws.balance':       'BALANCE',
+    'ws.win':           'WIN',
+    'ws.bet':           'BET / LINES',
+    'ws.spin':          'SPIN',
+    'ws.maxbet':        'MAX BET',
+    'ws.lines':         'Lines',
+    'sett.lang':        '🌐 Language',
+    'sett.gfx':         '🎮 Graphics Quality',
+    'sett.fps':         '⚡ Frame Rate',
+    'sett.sound':       '🔊 Sound',
+    'sett.more':        '📱 More Options',
+    'sett.account':     '⚠️ Account',
+  },
+  hi: {
+    'menu.play':        '🎰 खेलें',
+    'menu.settings':    '⚙️ सेटिंग्स',
+    'menu.info':        'ℹ️ जानकारी',
+    'menu.tagline':     'अल्टीमेट अनुभव',
+    'gs.title':         'आप कौन हैं?',
+    'gs.sub':           'अपना प्रकार चुनें',
+    'gs.male':          'पुरुष',
+    'gs.female':        'महिला',
+    'ws.back':          '← लॉबी',
+    'ws.balance':       'शेष राशि',
+    'ws.win':           'जीत',
+    'ws.bet':           'दांव',
+    'ws.spin':          'स्पिन',
+    'ws.maxbet':        'मैक्स',
+    'ws.lines':         'लाइनें',
+    'sett.lang':        '🌐 भाषा',
+    'sett.gfx':         '🎮 ग्राफिक्स',
+    'sett.fps':         '⚡ फ्रेम दर',
+    'sett.sound':       '🔊 ध्वनि',
+    'sett.more':        '📱 अन्य विकल्प',
+    'sett.account':     '⚠️ खाता',
+  },
+  zh: {
+    'menu.play':        '🎰 开始游戏',
+    'menu.settings':    '⚙️ 设置',
+    'menu.info':        'ℹ️ 信息',
+    'menu.tagline':     '终极体验',
+    'gs.title':         '你是谁？',
+    'gs.sub':           '选择你的角色类型',
+    'gs.male':          '男性',
+    'gs.female':        '女性',
+    'ws.back':          '← 大厅',
+    'ws.balance':       '余额',
+    'ws.win':           '赢得',
+    'ws.bet':           '投注',
+    'ws.spin':          '旋转',
+    'ws.maxbet':        '最大',
+    'ws.lines':         '线',
+    'sett.lang':        '🌐 语言',
+    'sett.gfx':         '🎮 图形质量',
+    'sett.fps':         '⚡ 帧率',
+    'sett.sound':       '🔊 音效',
+    'sett.more':        '📱 更多选项',
+    'sett.account':     '⚠️ 账户',
+  },
+  ja: {
+    'menu.play':        '🎰 プレイ',
+    'menu.settings':    '⚙️ 設定',
+    'menu.info':        'ℹ️ 情報',
+    'menu.tagline':     '究極の体験',
+    'gs.title':         'あなたは誰ですか？',
+    'gs.sub':           'プレイヤータイプを選択',
+    'gs.male':          '男性',
+    'gs.female':        '女性',
+    'ws.back':          '← ロビー',
+    'ws.balance':       '残高',
+    'ws.win':           '獲得',
+    'ws.bet':           'ベット',
+    'ws.spin':          'スピン',
+    'ws.maxbet':        'MAX',
+    'ws.lines':         'ライン',
+    'sett.lang':        '🌐 言語',
+    'sett.gfx':         '🎮 グラフィック',
+    'sett.fps':         '⚡ フレームレート',
+    'sett.sound':       '🔊 サウンド',
+    'sett.more':        '📱 その他',
+    'sett.account':     '⚠️ アカウント',
+  },
+  tr: {
+    'menu.play':        '🎰 Oyna',
+    'menu.settings':    '⚙️ Ayarlar',
+    'menu.info':        'ℹ️ Bilgi',
+    'menu.tagline':     'EN İYİ DENEYİM',
+    'gs.title':         'Sen kimsin?',
+    'gs.sub':           'Oyuncu tipini seç',
+    'gs.male':          'Erkek',
+    'gs.female':        'Kadın',
+    'ws.back':          '← Lobi',
+    'ws.balance':       'BAKİYE',
+    'ws.win':           'KAZANÇ',
+    'ws.bet':           'BAHİS',
+    'ws.spin':          'DÖNDÜR',
+    'ws.maxbet':        'MAX',
+    'ws.lines':         'Satır',
+    'sett.lang':        '🌐 Dil',
+    'sett.gfx':         '🎮 Grafik Kalitesi',
+    'sett.fps':         '⚡ Kare Hızı',
+    'sett.sound':       '🔊 Ses',
+    'sett.more':        '📱 Diğer Seçenekler',
+    'sett.account':     '⚠️ Hesap',
+  },
+};
+
+function applyLang(lang) {
+  const t = I18N[lang] || I18N['de'];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+}
+
 function setLang(lang) {
   const s = loadSettings(); s.lang = lang; saveSettings(s);
   highlightSettChip('sett-lang', lang, 'sett-lang-btn');
+  applyLang(lang);
 }
 
 function setGfx(val) {
@@ -4075,6 +4563,125 @@ function updateCalNotif() {
   if (dot) dot.style.display = canClaim ? 'block' : 'none';
 }
 
+// ─── Chest Event ───────────────────────────────────────────────
+function getPotions() {
+  const p = loadProfile(); return p.bluePotions || 0;
+}
+function addPotion() {
+  const p = loadProfile(); p.bluePotions = (p.bluePotions || 0) + 1; saveProfileData(p);
+}
+function spendPotion() {
+  const p = loadProfile();
+  if ((p.bluePotions || 0) <= 0) return false;
+  p.bluePotions -= 1; saveProfileData(p); return true;
+}
+
+function openChestEvent() {
+  const el = document.getElementById('chest-event');
+  if (!el) return;
+  el.style.display = 'flex';
+  document.getElementById('chest-result').style.display = 'none';
+  document.getElementById('chest-potions-display').textContent = 'Blaue Tränke: ' + getPotions();
+  const choices = document.getElementById('chest-choices');
+  if (choices) choices.style.display = 'flex';
+  renderChestCards();
+}
+
+function closeChestEvent() {
+  const el = document.getElementById('chest-event');
+  if (el) el.style.display = 'none';
+}
+
+function renderChestCards() {
+  const container = document.getElementById('chest-choices');
+  if (!container) return;
+  container.innerHTML = '';
+  const chests = [
+    { id:'wood',     icon:'📦', name:'Holzkiste',   color:'#8B4513', border:'#A0522D', desc:'1 – 10.000 €' },
+    { id:'gold',     icon:'🎁', name:'Goldkiste',   color:'#8B6914', border:'#FFD700', desc:'5.000 – 50.000 € oder Profil-Deko' },
+    { id:'platinum', icon:'💎', name:'Platinkiste', color:'#2a2a4a', border:'#aaaaff', desc:'50.000 – 1.000.000 € + Token' },
+  ];
+  chests.forEach(ch => {
+    const card = document.createElement('div');
+    card.style.cssText = `width:clamp(100px,28vw,130px); padding:16px 8px; border-radius:14px; text-align:center; cursor:pointer; background:linear-gradient(145deg,${ch.color}33,${ch.color}66); border:2px solid ${ch.border}; transition:all 0.2s;`;
+    card.innerHTML = `<div style="font-size:42px; margin-bottom:6px;">${ch.icon}</div><div style="font-size:12px; font-weight:700; color:#fff; letter-spacing:2px; margin-bottom:4px;">${ch.name}</div><div style="font-size:9px; color:#ccaa66; letter-spacing:1px;">${ch.desc}</div>`;
+    card.onmouseenter = () => { card.style.transform = 'translateY(-6px) scale(1.05)'; card.style.boxShadow = `0 0 20px ${ch.border}66`; };
+    card.onmouseleave = () => { card.style.transform = ''; card.style.boxShadow = ''; };
+    card.onclick = () => openChest(ch.id);
+    container.appendChild(card);
+  });
+}
+
+function openChest(type) {
+  if (!spendPotion()) {
+    alert('Keine blauen Tränke! Steige ein Level auf um einen zu erhalten.');
+    return;
+  }
+  const choices = document.getElementById('chest-choices');
+  const result  = document.getElementById('chest-result');
+  if (choices) choices.style.display = 'none';
+  if (result)  result.style.display  = 'block';
+
+  let icon, title, desc, reward = 0, deco = null, token = false;
+
+  if (type === 'wood') {
+    // 1–10000€, jackpot (10000) probability ~1%
+    const roll = Math.random();
+    if      (roll < 0.01)  reward = 10000;
+    else if (roll < 0.08)  reward = 1000 + Math.floor(Math.random() * 2000);
+    else if (roll < 0.30)  reward = 100  + Math.floor(Math.random() * 400);
+    else                   reward = 1    + Math.floor(Math.random() * 99);
+    icon  = reward >= 5000 ? '🎉' : reward >= 500 ? '💰' : '📦';
+    title = reward >= 5000 ? 'JACKPOT!' : reward >= 500 ? 'Guter Gewinn!' : 'Kleiner Gewinn';
+    desc  = `Du hast <strong style="color:#ffd700">€ ${reward.toLocaleString('de-DE')}</strong> gewonnen!`;
+
+  } else if (type === 'gold') {
+    const roll = Math.random();
+    if (roll < 0.25) {
+      // Profile decoration
+      const decos = ['👑 Goldene Krone', '🌟 Goldener Stern', '💫 Schimmer-Effekt', '🦁 Löwen-Badge'];
+      deco  = decos[Math.floor(Math.random() * decos.length)];
+      icon  = '👑'; title = 'Profil-Dekoration!';
+      desc  = `Du hast <strong style="color:#ffd700">${deco}</strong> erhalten!`;
+    } else {
+      reward = 5000 + Math.floor(Math.random() * 45000);
+      icon   = reward >= 30000 ? '🤑' : '🎁';
+      title  = reward >= 30000 ? 'MEGA GEWINN!' : 'Toller Gewinn!';
+      desc   = `Du hast <strong style="color:#ffd700">€ ${reward.toLocaleString('de-DE')}</strong> gewonnen!`;
+    }
+
+  } else { // platinum
+    reward = 50000 + Math.floor(Math.random() * 950000);
+    token  = true;
+    icon   = '💎'; title = 'PLATINGEWINN!';
+    desc   = `Du hast <strong style="color:#aaaaff">€ ${reward.toLocaleString('de-DE')}</strong> gewonnen!<br><span style="color:#aaaaff; font-size:11px;">+ 1× Unbekannter Token erhalten</span>`;
+  }
+
+  document.getElementById('chest-result-icon').textContent  = icon;
+  document.getElementById('chest-result-title').textContent = title;
+  document.getElementById('chest-result-desc').innerHTML    = desc;
+
+  // Apply rewards
+  if (reward > 0) {
+    wsBalance += reward;
+    saveBalance();
+    wsUpdateUI();
+  }
+  if (deco) {
+    const p = loadProfile();
+    p.decorations = p.decorations || [];
+    p.decorations.push(deco);
+    saveProfileData(p);
+  }
+  if (token) {
+    const p = loadProfile();
+    p.unknownTokens = (p.unknownTokens || 0) + 1;
+    saveProfileData(p);
+  }
+
+  if (navigator.vibrate) navigator.vibrate([80, 30, 120]);
+}
+
 // ─── Reset balance via settings ───────────────────────────────
 function settResetBalance() {
   wsBalance = 100.00;
@@ -4095,6 +4702,7 @@ function settResetBalance() {
   window.vc_sfx_vol   = (s.sfxVol  ?? 80) / 100;
   window.vc_target_fps = s.fps ? (+s.fps || 999) : 60;
   window.vc_quickspin  = s.quickspin === true;
+  applyLang(s.lang || 'de');
 }());
 
 function saveProfile() {
@@ -4133,6 +4741,7 @@ function awardXP(amount) {
   if (p.xp >= needed) {
     p.xp    -= needed;
     p.level += 1;
+    p.bluePotions = (p.bluePotions || 0) + 1;
   }
   saveProfileData(p);
 }
@@ -4202,6 +4811,25 @@ function awardXP(amount) {
     <div class="cal-claim-msg" id="cal-claim-msg">🎉 +5.000 € gutgeschrieben!</div>
     <div class="cal-grid" id="cal-grid"></div>
     <button class="cal-close-btn" onclick="closeCalendar()">✕ &nbsp;Schließen</button>
+  </div>
+</div>
+
+<!-- CHEST EVENT -->
+<div id="chest-event" style="display:none; position:fixed; inset:0; z-index:8800; background:rgba(0,0,0,0.88); backdrop-filter:blur(5px); align-items:center; justify-content:center; flex-direction:column;">
+  <div style="text-align:center; max-width:min(420px,94vw); padding:0 16px;">
+    <div style="font-size:clamp(22px,5vw,34px); font-weight:900; letter-spacing:5px; color:#ffd700; text-shadow:0 0 20px #ffd700; margin-bottom:6px;">⭐ CHEST EVENT ⭐</div>
+    <div style="font-size:11px; color:#885500; letter-spacing:3px; margin-bottom:8px; text-transform:uppercase;">Kosten: 1 Blauer Trank</div>
+    <div style="font-size:13px; color:#cc8844; margin-bottom:20px;" id="chest-potions-display">Blaue Tränke: 0</div>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;" id="chest-choices">
+      <!-- Chest cards injected by JS -->
+    </div>
+    <div id="chest-result" style="display:none; margin-top:24px; text-align:center; animation: bp-pop 0.5s cubic-bezier(0.34,1.56,0.64,1);">
+      <div id="chest-result-icon" style="font-size:64px; margin-bottom:8px;"></div>
+      <div id="chest-result-title" style="font-size:22px; font-weight:900; color:#ffd700; letter-spacing:3px;"></div>
+      <div id="chest-result-desc" style="font-size:14px; color:#cc9955; margin:8px 0 20px; line-height:1.6;"></div>
+      <button class="bonus-btn" onclick="closeChestEvent()">Schließen</button>
+    </div>
+    <button class="bonus-btn" style="margin-top:18px; background:linear-gradient(90deg,#330022,#550033);" onclick="closeChestEvent()">✕ Schließen</button>
   </div>
 </div>
 
