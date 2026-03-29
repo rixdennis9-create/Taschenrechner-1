@@ -13,7 +13,11 @@
       overflow: hidden;
       width: 100vw;
       height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
+
+    button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 
     /* ========== LOADING SCREEN ========== */
     #loading-screen {
@@ -902,6 +906,7 @@
       animation: red-glow 1.4s ease-in-out infinite alternate;
       flex-shrink: 0;
       transition: transform 0.1s;
+      position: relative; z-index: 5;
     }
     @keyframes red-glow {
       from { box-shadow: 0 0 6px #ff330033; border-color: #cc2200; }
@@ -977,8 +982,8 @@
       box-shadow: 0 0 10px #44006622;
     }
     .gs-opt:hover { border-color: #ffd700; box-shadow: 0 0 20px #ffd70044; transform: translateY(-5px); }
-    .gs-opt .gs-icon { font-size: 52px; margin-bottom: 10px; }
-    .gs-opt .gs-label { font-size: 14px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #ffd700; }
+    .gs-opt .gs-icon { font-size: 58px; margin-bottom: 12px; line-height: 1; }
+    .gs-opt .gs-label { font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #ffd700; text-shadow: 0 0 8px #ffd70066; }
 
     /* ─ Profile Button ─ */
     .profile-btn {
@@ -1128,12 +1133,16 @@
     /* ─ Wild Spins Responsive Layout ─ */
     .ws-reel-area {
       display:flex; align-items:center; justify-content:center;
-      gap:clamp(6px,1.5vw,18px); flex:1; padding:4px 8px; overflow:hidden;
+      gap:clamp(6px,1.5vw,18px); flex:1 1 0; padding:4px 8px;
+      overflow:hidden; min-height:0; position:relative; z-index:1;
     }
     .ws-controls-bar {
       display:flex; align-items:center; justify-content:space-between;
-      background:rgba(0,0,0,0.6); border-top:1px solid #33004a;
-      padding:8px 12px; flex-shrink:0; gap:8px;
+      background:rgba(0,0,0,0.85); border-top:2px solid #55007a;
+      padding:10px 12px; flex-shrink:0; gap:8px;
+      position:relative; z-index:3;
+      box-shadow: 0 -4px 20px rgba(100,0,150,0.4);
+      padding-bottom: max(10px, env(safe-area-inset-bottom));
     }
     .ws-info-group { display:flex; gap:16px; }
     .ws-bet-group  { display:flex; align-items:center; gap:6px; }
@@ -1146,6 +1155,7 @@
       .ws-info-group { gap:10px; }
       .ws-info-lbl { font-size:7px; }
       .ws-info-val  { font-size:12px; }
+      .ws-controls-bar { padding:8px 10px; }
     }
     @media (max-width:380px) {
       .ws-bet-group .ws-bet-lbl-small { display:none; }
@@ -1207,6 +1217,8 @@
       z-index: 910;
       overflow: hidden;
       user-select: none;
+      height: 100dvh;
+      height: -webkit-fill-available;
     }
     #wildspins-game.active { display: flex; }
 
@@ -1216,6 +1228,7 @@
       background: rgba(0,0,0,0.5);
       border-bottom: 1px solid #44006a;
       flex-shrink: 0;
+      position: relative; z-index: 2;
     }
     .ws-title-text {
       font-size: clamp(14px, 2.8vw, 24px);
@@ -1264,6 +1277,8 @@
       position: relative; overflow: hidden;
       box-shadow: inset 0 0 8px #000;
       transition: border-color 0.2s, box-shadow 0.2s;
+      will-change: transform;
+      contain: layout style;
     }
     .ws-cell::after {
       content: ''; position: absolute;
@@ -1289,8 +1304,8 @@
     /* Right control panel */
     .ws-panel { display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: clamp(88px, 14vw, 120px); }
     .ws-spin-btn {
-      width: clamp(72px, 11vw, 106px);
-      height: clamp(72px, 11vw, 106px);
+      width: clamp(60px, 11vw, 106px);
+      height: clamp(60px, 11vw, 106px);
       border-radius: 50%;
       border: 3px solid #ffd700;
       background: radial-gradient(circle at 38% 32%, #ff3300, #990000);
@@ -2341,6 +2356,7 @@ function runLoadingBar(totalMs, onComplete) {
 function openGamesMenu() {
   document.getElementById('main-menu').classList.remove('active');
   document.getElementById('games-menu').classList.add('active');
+  history.pushState({screen:'games-menu'}, '');
 }
 function closeGamesMenu() {
   document.getElementById('games-menu').classList.remove('active');
@@ -2349,6 +2365,7 @@ function closeGamesMenu() {
 function openSlotsLobby() {
   document.getElementById('games-menu').classList.remove('active');
   document.getElementById('slots-lobby').classList.add('active');
+  history.pushState({screen:'slots-lobby'}, '');
 }
 function closeSlotsLobby() {
   document.getElementById('slots-lobby').classList.remove('active');
@@ -2371,6 +2388,7 @@ function openWildSpins() {
         loader.style.display = 'none';
         const game = document.getElementById('wildspins-game');
         game.classList.add('active');
+        history.pushState({screen:'wildspins'}, '');
         wsInit();
       }, 280);
     }
@@ -2382,6 +2400,24 @@ function closeWildSpins() {
   wsStopGameMusic();
   document.getElementById('slots-lobby').classList.add('active');
 }
+
+// ─── Android / Browser hardware back button support ──────────
+window.addEventListener('popstate', function(e) {
+  const screen = e.state && e.state.screen;
+  // Close the topmost visible screen
+  if (document.getElementById('wildspins-game').classList.contains('active')) {
+    closeWildSpins();
+    // push a new state so the lobby gets its own back entry
+    history.pushState({screen:'slots-lobby'}, '');
+  } else if (document.getElementById('slots-lobby').classList.contains('active')) {
+    closeSlotsLobby();
+    history.pushState({screen:'games-menu'}, '');
+  } else if (document.getElementById('games-menu').classList.contains('active')) {
+    closeGamesMenu();
+  } else if (document.getElementById('profile-page').classList.contains('active')) {
+    closeProfile();
+  }
+});
 
 // ══════════════════════════════════════════════════════════════
 //  WILD SPINS SLOT ENGINE
