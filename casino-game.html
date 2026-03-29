@@ -1403,20 +1403,21 @@
     }
     @keyframes ws-hud-pulse { from{box-shadow:0 0 6px #0066ff44} to{box-shadow:0 0 16px #0088ffaa} }
 
-    .ws-reels { display: flex; gap: clamp(3px, 0.6vw, 6px); }
-    .ws-reel  { display: flex; flex-direction: column; gap: clamp(3px, 0.6vw, 5px); width: clamp(54px, 9vw, 84px); }
+    .ws-reels { display: flex; gap: clamp(4px, 0.8vw, 8px); }
+    .ws-reel  { display: flex; flex-direction: column; gap: clamp(4px, 0.8vw, 8px); width: clamp(62px, 12vw, 96px); }
     .ws-cell {
       width: 100%; aspect-ratio: 1;
       background: linear-gradient(145deg, #000c20, #001535);
       border: 1px solid #002255;
       border-radius: 7px;
       display: flex; align-items: center; justify-content: center;
-      font-size: clamp(22px, 3.6vw, 36px);
+      font-size: clamp(28px, 6vw, 46px);
+      font-family: 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;
+      line-height: 1;
       position: relative; overflow: hidden;
       box-shadow: inset 0 0 8px #000008;
       transition: border-color 0.2s, box-shadow 0.2s;
       will-change: transform;
-      contain: layout style;
     }
     .ws-cell::after {
       content: ''; position: absolute;
@@ -2644,7 +2645,7 @@ window.addEventListener('popstate', function(e) {
 
 // ── State ──
 let wsBalance   = 100.00;
-let wsBetIdx    = 2;      // index into WS_BETS
+let wsBetIdx    = 0;      // index into WS_BETS (total bet)
 let wsSpinning  = false;
 let wsGameMusicId = null;
 let wsGameMusicPlaying = false;
@@ -2656,8 +2657,9 @@ let wsFreeSpinsMult  = 1;
 let wsFreeSpinsTotal = 0;
 let wsInFreeSpin     = false;
 
-const WS_BETS  = [0.20, 0.50, 1.00, 2.00, 5.00, 10.00];
-const WS_LINES = 10;
+// Total bet per spin (shown to player directly — no per-line confusion)
+const WS_BETS  = [1.00, 2.00, 5.00, 10.00, 20.00, 50.00];
+const WS_LINES = 25;
 
 // ── Symbols ──
 const WS_EMOJI = {
@@ -2701,13 +2703,25 @@ const WS_STRIPS = [
   ['clover','fire','flower','crystal','clover','fire','diamond','flower','crystal','clover','fire','flower','seven','crystal','wild','flower','clover','fire','bell','crystal','scatter','mystery','clover','bonus'],
 ];
 
-// ── 10 Paylines (row index per reel: 0=top, 1=mid, 2=bot) ──
+/// 25 paylines (normal) – row index per reel: 0=top, 1=mid, 2=bot
 const WS_PAYLINES = [
-  [1,1,1,1,1], [0,0,0,0,0], [2,2,2,2,2],
-  [0,1,2,1,0], [2,1,0,1,2],
-  [0,0,1,2,2], [2,2,1,0,0],
-  [1,0,0,0,1], [1,2,2,2,1],
-  [0,1,2,2,2],
+  [1,1,1,1,1],[0,0,0,0,0],[2,2,2,2,2],
+  [0,1,2,1,0],[2,1,0,1,2],
+  [0,0,1,2,2],[2,2,1,0,0],
+  [1,0,0,0,1],[1,2,2,2,1],
+  [0,1,2,2,2],[2,1,0,0,0],
+  [0,0,0,1,2],[2,2,2,1,0],
+  [0,1,0,1,0],[2,1,2,1,2],
+  [1,0,1,2,1],[1,2,1,0,1],
+  [0,0,1,0,0],[2,2,1,2,2],
+  [0,1,1,1,2],[2,1,1,1,0],
+  [1,0,0,1,2],[1,2,2,1,0],
+  [0,2,1,2,0],[2,0,1,0,2],
+];
+// 27 paylines during free spins
+const WS_PAYLINES_FS = [
+  ...WS_PAYLINES,
+  [0,2,0,2,0],[2,0,2,0,2],
 ];
 
 // Cascade multipliers: level 0=1x, 1=1.5x, 2=2x, 3=3x
@@ -2766,15 +2780,17 @@ function wsInit() {
 }
 
 function wsUpdateUI() {
-  const bal = document.getElementById('ws-balance');
-  const top = document.getElementById('ws-bal-top');
-  const bet = document.getElementById('ws-bet-display');
-  const tot = document.getElementById('ws-total-bet');
+  const balEl  = document.getElementById('ws-balance');
+  const topEl  = document.getElementById('ws-bal-top');
+  const betEl  = document.getElementById('ws-bet-display');
+  const totEl  = document.getElementById('ws-total-bet');
+  const linesEl = document.getElementById('ws-lines-count');
   const fmt = v => v.toFixed(2) + ' €';
-  if (bal) bal.textContent = fmt(wsBalance);
-  if (top) top.textContent = fmt(wsBalance);
-  if (bet) bet.textContent = fmt(WS_BETS[wsBetIdx]);
-  if (tot) tot.textContent = fmt(WS_BETS[wsBetIdx] * WS_LINES);
+  if (balEl)   balEl.textContent  = fmt(wsBalance);
+  if (topEl)   topEl.textContent  = fmt(wsBalance);
+  if (betEl)   betEl.textContent  = fmt(WS_BETS[wsBetIdx]);
+  if (totEl)   totEl.textContent  = fmt(WS_BETS[wsBetIdx]);
+  if (linesEl) linesEl.textContent = wsInFreeSpin ? '27 Linien' : '25 Linien';
   // Update FS HUD
   const hud = document.getElementById('ws-fs-hud');
   if (hud) {
@@ -2805,7 +2821,7 @@ function wsDoSpin() {
     }
     wsFreeSpinsLeft--;
   } else {
-    const totalBet = WS_BETS[wsBetIdx] * WS_LINES;
+    const totalBet = WS_BETS[wsBetIdx];
     if (wsBalance < totalBet) { wsBalance = 100.00; wsUpdateUI(); return; }
     wsBalance -= totalBet;
   }
