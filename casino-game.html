@@ -1942,6 +1942,311 @@
       to   { box-shadow: 0 0 20px #ffd700aa; border-color: #ffaa00; }
     }
     .chest-menu-btn:hover { transform: scale(1.1); }
+
+    /* ============================================================
+       ROULETTE LOADER
+       ============================================================ */
+    #roulette-loader {
+      position: fixed; inset: 0; z-index: 600;
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: radial-gradient(ellipse at 50% 42%, #091a0d 0%, #020b04 60%, #000 100%);
+    }
+    #roulette-loader.active { display: flex; }
+    .rl-loader-wheel {
+      font-size: 84px;
+      animation: rl-spin-load 2.2s linear infinite;
+      filter: drop-shadow(0 0 36px #00ff7788);
+      margin-bottom: 22px;
+    }
+    @keyframes rl-spin-load {
+      from { transform: rotate(0deg); } to { transform: rotate(360deg); }
+    }
+    .rl-loader-title {
+      font-size: clamp(28px,6vw,46px); font-weight:900; letter-spacing:6px;
+      text-transform: uppercase;
+      background: linear-gradient(180deg,#e8ffe8 0%,#00ff88 40%,#00aa55 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 16px #00ff8866);
+      margin-bottom: 6px;
+    }
+    .rl-loader-sub {
+      font-size: 12px; color: #2a5e3a; letter-spacing: 4px;
+      text-transform: uppercase; margin-bottom: 30px;
+    }
+    .rl-loader-bar-wrap {
+      width: min(280px,74vw); height: 4px;
+      background: rgba(0,200,100,0.1); border-radius: 4px;
+      border: 1px solid rgba(0,200,100,0.15); overflow: hidden;
+    }
+    #rl-load-bar {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg,#00aa55,#00ff88);
+      border-radius: 4px; transition: width 0.07s linear;
+      box-shadow: 0 0 10px #00ff8888;
+    }
+
+    /* ============================================================
+       ROULETTE GAME
+       ============================================================ */
+    #roulette-game {
+      position: fixed; inset: 0; z-index: 300;
+      display: none; flex-direction: column;
+      background: #060d06; overflow: hidden;
+    }
+    #roulette-game.active { display: flex; }
+
+    /* ── Intro live-feed zoom ── */
+    #rl-intro {
+      position: absolute; inset: 0; z-index: 50;
+      background: #000;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    #rl-intro.rl-intro-hidden { display: none; }
+    .rl-intro-frame {
+      position: relative; width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      animation: rl-zoom-in 3.5s ease-in-out forwards;
+    }
+    @keyframes rl-zoom-in {
+      0%   { transform: scale(0.2) rotateX(45deg); filter: brightness(0.2) blur(6px); }
+      25%  { filter: brightness(0.5) blur(2px); }
+      65%  { transform: scale(2.2) rotateX(12deg); filter: brightness(1) blur(0); }
+      100% { transform: scale(1) rotateX(0deg); filter: brightness(1) blur(0); }
+    }
+    .rl-intro-scanlines {
+      position: absolute; inset: 0; z-index: 10; pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg, transparent 0px, transparent 2px,
+        rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+    }
+    .rl-intro-live {
+      position: absolute; top: 18px; right: 18px; z-index: 20;
+      background: #cc0000; color: #fff;
+      font-size: 11px; font-weight: 900; letter-spacing: 3px;
+      padding: 4px 10px; border-radius: 4px;
+      animation: rl-live-blink 0.9s ease-in-out infinite;
+    }
+    @keyframes rl-live-blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+    .rl-intro-cam-info {
+      position: absolute; bottom: 14px; left: 14px; z-index: 20;
+      color: rgba(255,255,255,0.45); font-size: 10px;
+      letter-spacing: 2px; font-family: monospace;
+    }
+    .rl-intro-wheel-vis {
+      font-size: clamp(110px,30vw,200px);
+      animation: rl-intro-spin 2.4s linear infinite;
+      filter: drop-shadow(0 0 50px rgba(0,255,100,0.5));
+    }
+    @keyframes rl-intro-spin {
+      from { transform: rotate(0deg); } to { transform: rotate(360deg); }
+    }
+    .rl-intro-label {
+      position: absolute; bottom: 18%; left: 50%; transform: translateX(-50%);
+      font-size: 11px; color: rgba(0,255,120,0.5); letter-spacing: 6px;
+      text-transform: uppercase; white-space: nowrap;
+    }
+
+    /* ── Header ── */
+    .rl-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px 8px;
+      background: linear-gradient(180deg,rgba(0,25,10,0.97) 0%,rgba(0,12,5,0.95) 100%);
+      border-bottom: 1px solid rgba(0,160,70,0.18); flex-shrink: 0; z-index: 5;
+      position: relative;
+    }
+    .rl-back-btn {
+      padding: 7px 14px 7px 10px; font-size: 11px;
+      background: rgba(0,0,0,0.38); border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 30px; color: rgba(255,255,255,0.72); cursor: pointer;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      letter-spacing: 1px;
+    }
+    .rl-header-title {
+      font-size: 15px; font-weight: 900; letter-spacing: 5px;
+      color: #00ff88; text-shadow: 0 0 12px #00ff8866; text-transform: uppercase;
+    }
+    .rl-header-bal {
+      font-size: 13px; color: #ffd700; font-weight: 700;
+    }
+
+    /* ── Wheel section ── */
+    .rl-wheel-section {
+      display: flex; align-items: center; justify-content: center;
+      padding: 8px 0 4px; flex-shrink: 0; position: relative;
+    }
+    .rl-wheel-wrap {
+      position: relative;
+      width: min(230px,58vw); height: min(230px,58vw);
+    }
+    #rl-canvas {
+      width: 100%; height: 100%; border-radius: 50%;
+      filter: drop-shadow(0 0 22px rgba(0,200,80,0.35));
+    }
+    #rl-ball {
+      position: absolute; width: 13px; height: 13px;
+      background: radial-gradient(circle at 35% 35%, #ffffff, #bbbbbb);
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(255,255,255,0.9), inset 0 0 3px rgba(0,0,0,0.4);
+      pointer-events: none;
+      left: 50%; top: 0;
+      margin-left: -6.5px; margin-top: -6.5px;
+      display: none;
+    }
+    .rl-last-num {
+      position: absolute; right: -48px; top: 50%; transform: translateY(-50%);
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 900; color: #fff;
+    }
+
+    /* ── Chip selector ── */
+    .rl-chips-row {
+      display: flex; gap: 5px; justify-content: center;
+      padding: 4px 10px 2px; flex-shrink: 0;
+    }
+    .rl-chip {
+      width: 42px; height: 42px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 900; color: #fff;
+      cursor: pointer; border: 3px solid transparent;
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.9); flex-shrink: 0;
+      position: relative;
+    }
+    .rl-chip:active { transform: scale(0.88); }
+    .rl-chip.rl-sel {
+      border-color: #fff; transform: scale(1.18);
+      box-shadow: 0 0 16px rgba(255,255,255,0.65);
+    }
+    .rl-chip[data-val="0.1"]  { background: radial-gradient(circle at 38% 38%, #888, #444); }
+    .rl-chip[data-val="0.5"]  { background: radial-gradient(circle at 38% 38%, #5599ff, #1144bb); }
+    .rl-chip[data-val="1"]    { background: radial-gradient(circle at 38% 38%, #44dd55, #117722); }
+    .rl-chip[data-val="5"]    { background: radial-gradient(circle at 38% 38%, #ee4444, #991111); }
+    .rl-chip[data-val="25"]   { background: radial-gradient(circle at 38% 38%, #dd44dd, #881188); }
+    .rl-chip[data-val="100"]  { background: radial-gradient(circle at 38% 38%, #ffbb00, #886600); }
+
+    /* ── Betting table ── */
+    #rl-table-wrap {
+      flex: 1; overflow-y: auto; padding: 4px 10px 2px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .rl-num-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; max-width: 380px; margin: 0 auto 2px;
+    }
+    .rl-cell {
+      min-height: 34px; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: #fff;
+      cursor: pointer; position: relative;
+      border: 1px solid rgba(255,255,255,0.07);
+      transition: filter 0.1s; user-select: none;
+    }
+    .rl-cell:active { filter: brightness(1.5); }
+    .rl-cell.red-cell    { background: rgba(185,30,30,0.8); }
+    .rl-cell.black-cell  { background: rgba(20,20,20,0.88); border-color: rgba(255,255,255,0.1); }
+    .rl-cell.green-cell  { background: rgba(18,110,38,0.92); }
+    .rl-cell.outside-cell {
+      background: rgba(0,55,20,0.75); font-size: 10px;
+      letter-spacing: 0.5px; border-color: rgba(0,200,80,0.12);
+    }
+    .rl-cell.col-cell {
+      background: rgba(0,35,12,0.75); font-size: 9px;
+      letter-spacing: 0.5px; color: rgba(255,255,255,0.65);
+    }
+    .rl-chip-on-cell {
+      position: absolute; top: -9px; right: -9px;
+      width: 19px; height: 19px; border-radius: 50%;
+      background: #ffd700; color: #000;
+      font-size: 7px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px solid #fff; z-index: 5; pointer-events: none;
+    }
+    .rl-cell.rl-win-flash { animation: rl-win-flash-anim 0.4s ease-in-out 3; }
+    @keyframes rl-win-flash-anim {
+      0%,100% { filter: brightness(1); }
+      50%     { filter: brightness(2.2) saturate(2); }
+    }
+
+    /* ── Controls bar ── */
+    .rl-controls-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 12px;
+      background: rgba(0,18,7,0.97);
+      border-top: 1px solid rgba(0,160,70,0.14);
+      flex-shrink: 0; position: relative; z-index: 5;
+    }
+    .rl-total-bet-txt { font-size: 11px; color: #447755; min-width: 90px; }
+    .rl-spin-btn {
+      padding: 10px 26px;
+      background: linear-gradient(135deg,#00cc66,#008844);
+      border: none; border-radius: 30px;
+      color: #fff; font-size: 14px; font-weight: 900;
+      letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; box-shadow: 0 0 20px rgba(0,200,80,0.4);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .rl-spin-btn:active { transform: scale(0.95); }
+    .rl-spin-btn:disabled { opacity: 0.38; cursor: not-allowed; }
+    .rl-clear-btn {
+      padding: 7px 12px;
+      background: rgba(140,25,25,0.5);
+      border: 1px solid rgba(200,70,70,0.3);
+      border-radius: 20px; color: #ff9999;
+      font-size: 10px; cursor: pointer; min-width: 60px;
+    }
+    .rl-clear-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    /* ── Result overlay ── */
+    #rl-result {
+      position: absolute; inset: 0; z-index: 40;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+    }
+    #rl-result.rl-show { display: flex; }
+    .rl-result-box {
+      background: linear-gradient(180deg,rgba(0,35,14,0.99) 0%,rgba(0,12,4,0.99) 100%);
+      border: 1px solid rgba(0,200,80,0.22); border-radius: 20px;
+      padding: 26px 22px; text-align: center;
+      max-width: min(310px,88vw);
+      animation: bp-pop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .rl-res-number {
+      width: 68px; height: 68px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 900; color: #fff;
+      margin: 0 auto 14px; border: 3px solid transparent;
+    }
+    .rl-res-title {
+      font-size: 21px; font-weight: 900; letter-spacing: 3px;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .rl-res-amount {
+      font-size: 30px; font-weight: 900; margin-bottom: 5px;
+      text-shadow: 0 0 18px currentColor;
+    }
+    .rl-res-desc {
+      font-size: 12px; color: #446655; margin-bottom: 18px; line-height: 1.5;
+    }
+    .rl-res-close-btn {
+      padding: 11px 30px;
+      background: linear-gradient(135deg,#00cc66,#008844);
+      border: none; border-radius: 30px;
+      color: #fff; font-size: 13px; font-weight: 700;
+      cursor: pointer; letter-spacing: 2px;
+    }
+    /* Confetti */
+    @keyframes rl-confetti-fall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(540deg); opacity: 0; }
+    }
+    .rl-confetti {
+      position: fixed; top: 0; pointer-events: none; z-index: 9999;
+      font-size: 22px; animation: rl-confetti-fall linear forwards;
+    }
   </style>
 </head>
 <body>
@@ -2315,6 +2620,7 @@
         <li>💰 <strong>Einsätze ab 0,10 €</strong> — Von 0,10 € bis 50 € wählbar</li>
         <li>📱 <strong>Mobile optimiert</strong> — Android-Zurück-Taste, Safe-Area, Touch</li>
         <li>❓ <strong>Unbekannter Token</strong> — Aus der Platinkiste. Verwendung: <em style="color:#aaaaff">Geheimnis...</em></li>
+        <li>🎡 <strong>Roulette</strong> — Europäisches Roulette mit Live-Zoom-Intro & Monte Carlo Musik</li>
       </ul>
     </div>
 
@@ -2326,7 +2632,6 @@
       </div>
       <ul class="info-update-list" style="color:#445566;">
         <li>🃏 Blackjack — Schlag den Dealer auf 21</li>
-        <li>🎡 Roulette — Das Rad des Glücks</li>
         <li>🎲 Lucky 7, Book of Secrets, Mega Wheel</li>
         <li>🏆 Bestenliste — Globales Ranking</li>
         <li>🔓 Unbekannter Token — Funktion wird enthüllt</li>
@@ -2460,11 +2765,11 @@
       <div class="name">Blackjack</div>
       <div class="desc">Schlag den Dealer auf 21</div>
     </div>
-    <div class="game-card soon">
-      <span class="badge badge-soon">Bald</span>
+    <div class="game-card" style="cursor:pointer;" onclick="openRoulette()">
+      <span class="badge badge-new">Neu</span>
       <span class="icon">🎡</span>
       <div class="name">Roulette</div>
-      <div class="desc">Das Rad des Glücks</div>
+      <div class="desc">Das Rad des Glücks →</div>
     </div>
     <div class="game-card soon">
       <span class="badge badge-soon">Bald</span>
@@ -3248,9 +3553,11 @@ function closeWildSpins() {
 window.addEventListener('popstate', function(e) {
   const screen = e.state && e.state.screen;
   // Close the topmost visible screen
-  if (document.getElementById('wildspins-game').classList.contains('active')) {
+  if (document.getElementById('roulette-game').classList.contains('active')) {
+    closeRoulette();
+    history.pushState({screen:'games-menu'}, '');
+  } else if (document.getElementById('wildspins-game').classList.contains('active')) {
     closeWildSpins();
-    // push a new state so the lobby gets its own back entry
     history.pushState({screen:'slots-lobby'}, '');
   } else if (document.getElementById('slots-lobby').classList.contains('active')) {
     closeSlotsLobby();
@@ -4733,6 +5040,644 @@ function handleAvatarUpload(input) {
 }
 
 // Award XP helper (call after wins in slot game)
+// ══════════════════════════════════════════════════════════════
+//  ROULETTE ENGINE
+// ══════════════════════════════════════════════════════════════
+
+// European roulette wheel (clockwise order)
+const RL_WHEEL = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
+const RL_RED   = new Set([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]);
+function rlNumColor(n){ return n===0?'green': RL_RED.has(n)?'red':'black'; }
+
+// ── State ─────────────────────────────────────────────────────
+let rl_bets     = {};
+let rl_chip     = 1;
+let rl_spinning = false;
+let rl_ballAnim = null;
+let rl_musicPlaying = false;
+let rl_musicId  = null;
+let rl_gmChord  = 0;
+let rl_musicCtx = null;
+
+// ── Audio context ─────────────────────────────────────────────
+function rlAudioCtx() {
+  if (!rl_musicCtx) {
+    try { rl_musicCtx = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){}
+  }
+  if (rl_musicCtx && rl_musicCtx.state==='suspended') rl_musicCtx.resume().catch(()=>{});
+  return rl_musicCtx;
+}
+
+// ── Navigation ────────────────────────────────────────────────
+function openRoulette() {
+  document.getElementById('games-menu').classList.remove('active');
+  const loader = document.getElementById('roulette-loader');
+  loader.classList.add('active');
+  let pct = 0;
+  const bar = document.getElementById('rl-load-bar');
+  rlStartMusic();
+  const iv = setInterval(() => {
+    pct += 100 / 30;
+    if (bar) bar.style.width = Math.min(pct,100) + '%';
+    if (pct >= 100) {
+      clearInterval(iv);
+      setTimeout(() => {
+        loader.classList.remove('active');
+        const game = document.getElementById('roulette-game');
+        game.classList.add('active');
+        history.pushState({screen:'roulette'}, '');
+        rlInit();
+      }, 300);
+    }
+  }, 65);
+}
+
+function closeRoulette() {
+  document.getElementById('roulette-game').classList.remove('active');
+  rlStopMusic();
+  if (rl_ballAnim) { cancelAnimationFrame(rl_ballAnim); rl_ballAnim = null; }
+  document.getElementById('games-menu').classList.add('active');
+}
+
+// ── Init ──────────────────────────────────────────────────────
+function rlInit() {
+  rl_bets = {}; rl_spinning = false; rl_chip = 1;
+  // Show intro, hide main
+  const intro = document.getElementById('rl-intro');
+  const main  = document.getElementById('rl-main');
+  intro.classList.remove('rl-intro-hidden');
+  main.style.display = 'none';
+  // After intro animation
+  setTimeout(() => {
+    intro.classList.add('rl-intro-hidden');
+    main.style.display = 'flex';
+    rlDrawWheel();
+    rlBuildTable();
+    rlUpdateBalance();
+    rlSelectChip(1);
+    rlUpdateControls();
+    // Show ball at rest
+    const ball = document.getElementById('rl-ball');
+    if (ball) ball.style.display = 'none';
+  }, 3800);
+}
+
+// ── Wheel Drawing ─────────────────────────────────────────────
+function rlDrawWheel(highlight) {
+  const canvas = document.getElementById('rl-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2, R = W/2 - 2;
+  const N = RL_WHEEL.length;
+  const arc = (Math.PI*2)/N;
+  ctx.clearRect(0,0,W,H);
+
+  // Outer frame
+  ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2);
+  ctx.fillStyle='#1c0a02'; ctx.fill();
+
+  // Sectors
+  for (let i=0; i<N; i++) {
+    const num = RL_WHEEL[i];
+    const a0  = i*arc - Math.PI/2;
+    const a1  = a0 + arc;
+    const col = rlNumColor(num);
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,R-6,a0,a1); ctx.closePath();
+    ctx.fillStyle = highlight===num ? '#ffe000'
+      : col==='green' ? '#1a7a28'
+      : col==='red'   ? '#bb1e1e'
+      :                  '#111111';
+    ctx.fill();
+    ctx.strokeStyle='rgba(255,200,50,0.22)'; ctx.lineWidth=0.6;
+    ctx.stroke();
+    // Number label
+    const mid = a0 + arc/2;
+    const lx  = cx + Math.cos(mid)*(R-22);
+    const ly  = cy + Math.sin(mid)*(R-22);
+    ctx.save(); ctx.translate(lx,ly); ctx.rotate(mid+Math.PI/2);
+    ctx.font='bold 8px Arial'; ctx.fillStyle='#fff';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(String(num),0,0);
+    ctx.restore();
+  }
+
+  // Inner fret ring
+  ctx.beginPath(); ctx.arc(cx,cy,R*0.55,0,Math.PI*2);
+  ctx.fillStyle='#2e1206'; ctx.fill();
+
+  // Center cone
+  ctx.beginPath(); ctx.arc(cx,cy,R*0.22,0,Math.PI*2);
+  const cg = ctx.createRadialGradient(cx-8,cy-8,2,cx,cy,R*0.22);
+  cg.addColorStop(0,'#7a4e10'); cg.addColorStop(1,'#2e1206');
+  ctx.fillStyle=cg; ctx.fill();
+  ctx.strokeStyle='rgba(255,200,50,0.35)'; ctx.lineWidth=1.5; ctx.stroke();
+}
+
+// ── Ball Animation ────────────────────────────────────────────
+function rlAnimateBall(targetNum, onDone) {
+  const canvas = document.getElementById('rl-canvas');
+  const ball   = document.getElementById('rl-ball');
+  if (!canvas || !ball) { onDone(); return; }
+
+  const W  = canvas.width;
+  const R  = W/2 - 2;
+  const N  = RL_WHEEL.length;
+  const arc = (Math.PI*2)/N;
+
+  const targetIdx   = RL_WHEEL.indexOf(targetNum);
+  const targetAngle = targetIdx*arc - Math.PI/2 + arc/2;
+
+  let angle  = -Math.PI/2;        // start at top
+  let vel    = 0.22;              // fast initial spin
+  const outerR = R * 0.88;
+  const pocketR= R * 0.60;
+  let curR   = outerR;
+  let frame  = 0;
+  const TOTAL = 200;
+
+  ball.style.display = 'block';
+
+  const step = () => {
+    frame++;
+    const progress = frame / TOTAL;
+
+    // Decelerate in first 70% of animation
+    if (progress < 0.7) {
+      vel = Math.max(0.025, 0.22 * (1 - progress/0.7));
+    } else {
+      // Snap toward target pocket
+      const remaining = TOTAL - frame;
+      if (remaining > 0) {
+        let diff = ((targetAngle - angle) % (Math.PI*2) + Math.PI*2) % (Math.PI*2);
+        if (diff > Math.PI) diff -= Math.PI*2;
+        vel = diff / remaining;
+      }
+    }
+
+    angle += vel;
+    curR   = outerR - (outerR - pocketR) * Math.min(1, progress * 1.7);
+
+    // Scale canvas display size → canvas pixel size
+    const dispW = canvas.offsetWidth;
+    const scale = dispW / W;
+    const half  = dispW / 2;
+    ball.style.left = (half + Math.cos(angle)*curR*scale) + 'px';
+    ball.style.top  = (half + Math.sin(angle)*curR*scale) + 'px';
+
+    if (frame < TOTAL) {
+      rl_ballAnim = requestAnimationFrame(step);
+    } else {
+      // Final resting position
+      const scale2 = canvas.offsetWidth / W;
+      const half2  = canvas.offsetWidth / 2;
+      ball.style.left = (half2 + Math.cos(targetAngle)*pocketR*scale2) + 'px';
+      ball.style.top  = (half2 + Math.sin(targetAngle)*pocketR*scale2) + 'px';
+      rl_ballAnim = null;
+      onDone();
+    }
+  };
+
+  // Reset ball to outer top
+  ball.style.left = (canvas.offsetWidth/2) + 'px';
+  ball.style.top  = '0px';
+  rl_ballAnim = requestAnimationFrame(step);
+}
+
+// ── Betting Table ─────────────────────────────────────────────
+function rlBuildTable() {
+  const wrap = document.getElementById('rl-table-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  // Zero row
+  const zeroRow = document.createElement('div');
+  zeroRow.className = 'rl-num-grid';
+  const zeroCell = rlMakeCell('n_0','0','green-cell');
+  zeroCell.style.gridColumn = '1 / -1';
+  zeroRow.appendChild(zeroCell);
+  wrap.appendChild(zeroRow);
+
+  // Number grid: 12 rows × 3 columns
+  // Row 1: 3,2,1 | Row 2: 6,5,4 | ... | Row 12: 36,35,34
+  const numGrid = document.createElement('div');
+  numGrid.className = 'rl-num-grid';
+  for (let r=0; r<12; r++) {
+    for (let c=0; c<3; c++) {
+      const num = 3*(r+1) - c;
+      const cls = rlNumColor(num)==='red' ? 'red-cell' : 'black-cell';
+      numGrid.appendChild(rlMakeCell('n_'+num, String(num), cls));
+    }
+  }
+  wrap.appendChild(numGrid);
+
+  // Dozens
+  const doz = document.createElement('div'); doz.className='rl-num-grid';
+  [['d1','1–12'],['d2','13–24'],['d3','25–36']].forEach(([k,l])=>doz.appendChild(rlMakeCell(k,l,'outside-cell')));
+  wrap.appendChild(doz);
+
+  // Outside row 1
+  const o1 = document.createElement('div'); o1.className='rl-num-grid';
+  [['low','1–18'],['even','Even'],['red','🔴 Rot']].forEach(([k,l])=>{
+    o1.appendChild(rlMakeCell(k,l,k==='red'?'outside-cell red-cell':'outside-cell'));
+  });
+  wrap.appendChild(o1);
+
+  // Outside row 2
+  const o2 = document.createElement('div'); o2.className='rl-num-grid';
+  [['black','⚫ Schw.'],['odd','Odd'],['high','19–36']].forEach(([k,l])=>{
+    o2.appendChild(rlMakeCell(k,l,k==='black'?'outside-cell black-cell':'outside-cell'));
+  });
+  wrap.appendChild(o2);
+
+  // Column bets
+  const col = document.createElement('div'); col.className='rl-num-grid';
+  [['col3','Kol. 3 (2:1)'],['col2','Kol. 2 (2:1)'],['col1','Kol. 1 (2:1)']].forEach(([k,l])=>col.appendChild(rlMakeCell(k,l,'col-cell')));
+  wrap.appendChild(col);
+}
+
+function rlMakeCell(key, label, cls) {
+  const cell = document.createElement('div');
+  cell.className = 'rl-cell ' + cls;
+  cell.dataset.key = key;
+  cell.textContent = label;
+  cell.addEventListener('click', () => rlPlaceBet(key));
+  return cell;
+}
+
+// ── Bet placement ─────────────────────────────────────────────
+function rlPlaceBet(key) {
+  if (rl_spinning) return;
+  const totalPlaced = Object.values(rl_bets).reduce((a,b)=>a+b, 0);
+  if (wsBalance - totalPlaced < rl_chip) { rlFlashBal(); return; }
+  rl_bets[key] = +((rl_bets[key]||0) + rl_chip).toFixed(2);
+  rlRefreshCell(key);
+  rlUpdateControls();
+  rlSfxChip();
+}
+
+function rlRefreshCell(key) {
+  document.querySelectorAll('.rl-cell').forEach(cell => {
+    if (cell.dataset.key !== key) return;
+    let ind = cell.querySelector('.rl-chip-on-cell');
+    const amt = rl_bets[key];
+    if (!amt) { if (ind) ind.remove(); return; }
+    if (!ind) {
+      ind = document.createElement('div');
+      ind.className = 'rl-chip-on-cell';
+      cell.appendChild(ind);
+    }
+    ind.textContent = amt >= 100 ? Math.round(amt) : amt;
+  });
+}
+
+function rlClearBets() {
+  if (rl_spinning) return;
+  rl_bets = {};
+  document.querySelectorAll('.rl-chip-on-cell').forEach(el=>el.remove());
+  rlUpdateControls();
+}
+
+function rlSelectChip(val) {
+  rl_chip = val;
+  document.querySelectorAll('.rl-chip').forEach(c => c.classList.toggle('rl-sel', +c.dataset.val===val));
+}
+
+function rlUpdateBalance() {
+  const el = document.getElementById('rl-balance-disp');
+  if (el) el.textContent = wsBalance.toFixed(2) + ' €';
+}
+
+function rlFlashBal() {
+  const el = document.getElementById('rl-balance-disp');
+  if (!el) return;
+  el.style.color='#ff4444';
+  setTimeout(()=>{ el.style.color=''; }, 500);
+}
+
+function rlUpdateControls() {
+  const total = Object.values(rl_bets).reduce((a,b)=>a+b, 0);
+  const el = document.getElementById('rl-total-bet');
+  if (el) el.textContent = 'Einsatz: ' + total.toFixed(2) + ' €';
+  const spinBtn  = document.getElementById('rl-spin-btn');
+  const clearBtn = document.getElementById('rl-clear-btn');
+  if (spinBtn)  spinBtn.disabled  = total<=0 || rl_spinning;
+  if (clearBtn) clearBtn.disabled = total<=0 || rl_spinning;
+}
+
+// ── Spin Logic ────────────────────────────────────────────────
+function rlSpin() {
+  if (rl_spinning) return;
+  const total = Object.values(rl_bets).reduce((a,b)=>a+b, 0);
+  if (total<=0 || wsBalance<total) { rlFlashBal(); return; }
+
+  rl_spinning = true;
+  wsBalance   = +(wsBalance - total).toFixed(2);
+  saveBalance();
+  rlUpdateBalance();
+  rlUpdateControls();
+
+  // Hide last number
+  const lastNum = document.getElementById('rl-last-num');
+  if (lastNum) lastNum.style.display='none';
+
+  // Random result
+  const result = Math.floor(Math.random() * 37);
+
+  rlAnimateBall(result, () => {
+    const win = rlCalcWin(result);
+    wsBalance = +(wsBalance + win).toFixed(2);
+    saveBalance();
+
+    // Flash winning cells
+    rlFlashWinCells(result);
+
+    // Update wheel highlight
+    rlDrawWheel(result);
+
+    // Show last number badge
+    if (lastNum) {
+      const col = rlNumColor(result);
+      lastNum.textContent = result;
+      lastNum.style.display = 'flex';
+      lastNum.style.background = col==='green'?'#1a7a28': col==='red'?'#bb1e1e':'#1a1a1a';
+      lastNum.style.boxShadow  = '0 0 16px ' + (col==='green'?'#00ff88': col==='red'?'#ff4444':'#888888');
+      lastNum.style.border     = '2px solid ' + (col==='green'?'#00ff88': col==='red'?'#ff4444':'#888888');
+    }
+
+    awardXP(Math.ceil(total * (win>0?2:1)));
+
+    setTimeout(() => rlShowResult(result, win, total), 500);
+  });
+}
+
+function rlCalcWin(num) {
+  let win = 0;
+  const col = rlNumColor(num);
+  Object.entries(rl_bets).forEach(([key, bet]) => {
+    if (key.startsWith('n_')) {
+      if (parseInt(key.slice(2)) === num) win += bet * 36;
+    } else if (key==='red')   { if (col==='red')             win += bet * 2; }
+    else if (key==='black')   { if (col==='black')           win += bet * 2; }
+    else if (key==='even')    { if (num>0 && num%2===0)      win += bet * 2; }
+    else if (key==='odd')     { if (num>0 && num%2===1)      win += bet * 2; }
+    else if (key==='low')     { if (num>=1  && num<=18)      win += bet * 2; }
+    else if (key==='high')    { if (num>=19 && num<=36)      win += bet * 2; }
+    else if (key==='d1')      { if (num>=1  && num<=12)      win += bet * 3; }
+    else if (key==='d2')      { if (num>=13 && num<=24)      win += bet * 3; }
+    else if (key==='d3')      { if (num>=25 && num<=36)      win += bet * 3; }
+    else if (key==='col1')    { if (num>0 && num%3===1)      win += bet * 3; }
+    else if (key==='col2')    { if (num>0 && num%3===2)      win += bet * 3; }
+    else if (key==='col3')    { if (num>0 && num%3===0)      win += bet * 3; }
+  });
+  return +win.toFixed(2);
+}
+
+function rlFlashWinCells(num) {
+  const col = rlNumColor(num);
+  const winKeys = new Set();
+  Object.keys(rl_bets).forEach(key => {
+    if (rlCalcWinForKey(key, num) > 0) winKeys.add(key);
+  });
+  document.querySelectorAll('.rl-cell').forEach(cell => {
+    if (winKeys.has(cell.dataset.key)) {
+      cell.classList.add('rl-win-flash');
+      setTimeout(() => cell.classList.remove('rl-win-flash'), 1300);
+    }
+  });
+}
+
+function rlCalcWinForKey(key, num) {
+  const bet = rl_bets[key]||0; if (!bet) return 0;
+  const col = rlNumColor(num);
+  if (key.startsWith('n_')) return parseInt(key.slice(2))===num ? bet*36 : 0;
+  if (key==='red')   return col==='red' ? bet*2 : 0;
+  if (key==='black') return col==='black' ? bet*2 : 0;
+  if (key==='even')  return num>0&&num%2===0 ? bet*2 : 0;
+  if (key==='odd')   return num>0&&num%2===1 ? bet*2 : 0;
+  if (key==='low')   return num>=1&&num<=18 ? bet*2 : 0;
+  if (key==='high')  return num>=19&&num<=36 ? bet*2 : 0;
+  if (key==='d1')    return num>=1&&num<=12 ? bet*3 : 0;
+  if (key==='d2')    return num>=13&&num<=24 ? bet*3 : 0;
+  if (key==='d3')    return num>=25&&num<=36 ? bet*3 : 0;
+  if (key==='col1')  return num>0&&num%3===1 ? bet*3 : 0;
+  if (key==='col2')  return num>0&&num%3===2 ? bet*3 : 0;
+  if (key==='col3')  return num>0&&num%3===0 ? bet*3 : 0;
+  return 0;
+}
+
+function rlShowResult(num, win, totalBet) {
+  const col  = rlNumColor(num);
+  const bgC  = col==='green'?'#1a7a28': col==='red'?'#bb1e1e':'#1e1e1e';
+  const netW = +(win - totalBet).toFixed(2);
+  const isWin= win > 0;
+
+  const numEl = document.getElementById('rl-res-number');
+  numEl.textContent    = num;
+  numEl.style.background  = bgC;
+  numEl.style.borderColor = col==='black'?'#555': bgC;
+  numEl.style.boxShadow   = '0 0 28px ' + bgC;
+
+  document.getElementById('rl-res-title').textContent  = isWin ? '🎉 GEWONNEN!' : '😔 Verloren';
+  document.getElementById('rl-res-title').style.color  = isWin ? '#ffd700' : '#ff7755';
+  document.getElementById('rl-res-amount').textContent = isWin
+    ? '+' + netW.toFixed(2) + ' €'
+    : '−' + totalBet.toFixed(2) + ' €';
+  document.getElementById('rl-res-amount').style.color = isWin ? '#ffd700' : '#ff7755';
+
+  const colLabel = col==='red'?'Rot': col==='green'?'Grün':'Schwarz';
+  const parLabel = num===0?'': (num%2===0?' · Gerade':' · Ungerade');
+  document.getElementById('rl-res-desc').textContent = colLabel + parLabel + (num>0?(num<=18?' · 1–18':' · 19–36'):'');
+
+  document.getElementById('rl-result').classList.add('rl-show');
+  rl_spinning = false;
+  rlUpdateBalance();
+  rlUpdateControls();
+
+  if (isWin) { rlSpawnConfetti(); rlSfxWin(netW); }
+  else { rlSfxLose(); }
+
+  // Check bankruptcy
+  if (wsBalance <= 0) checkBankruptcy();
+}
+
+function rlCloseResult() {
+  document.getElementById('rl-result').classList.remove('rl-show');
+  document.querySelectorAll('.rl-confetti').forEach(el=>el.remove());
+  rlUpdateBalance();
+}
+
+function rlSpawnConfetti() {
+  const emojis = ['🎰','💰','🎊','⭐','💎','🔥','🎉','💫','🃏','🎡'];
+  for (let i=0; i<20; i++) {
+    const el = document.createElement('div');
+    el.className = 'rl-confetti';
+    el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    el.style.left = Math.random()*100 + 'vw';
+    el.style.animationDuration = (1.4+Math.random()*2) + 's';
+    el.style.animationDelay    = (Math.random()*0.8) + 's';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 4500);
+  }
+}
+
+// ── Monte Carlo Music (70 BPM, Am7→Dm7→G7→Cmaj7) ─────────────
+const RL_BPM   = 70;
+const RL_BEAT  = 60 / RL_BPM;
+// Four-chord loop
+const RL_CHORDS = [
+  [57,60,64,67], // Am7
+  [62,65,69,72], // Dm7
+  [55,59,62,65], // G7
+  [60,64,67,71], // Cmaj7
+];
+const RL_BASS = [45,50,43,48]; // A2 D2 G2 C3
+function rlFreq(m){ return 440*Math.pow(2,(m-69)/12); }
+
+function rlStartMusic() {
+  rl_musicPlaying = true;
+  rl_gmChord = 0;
+  rlScheduleMusic();
+}
+function rlStopMusic() {
+  rl_musicPlaying = false;
+  clearTimeout(rl_musicId);
+  if (rl_musicCtx) { try{ rl_musicCtx.close(); }catch(e){} rl_musicCtx=null; }
+}
+function rlScheduleMusic() {
+  if (!rl_musicPlaying) return;
+  const ctx = rlAudioCtx(); if (!ctx) return;
+  const now = ctx.currentTime;
+  const vol = (window.vc_music_vol ?? 0.7);
+  const barDur = RL_BEAT * 4;
+
+  for (let bar=0; bar<4; bar++) {
+    const bStart = now + bar*barDur;
+    const ci = (rl_gmChord + bar) % 4;
+
+    // ── Pad chords (triangle + slight detune for warmth) ──
+    RL_CHORDS[ci].forEach((midi, vi) => {
+      const detune = [0, 3, -3, 6][vi];
+      const osc = ctx.createOscillator();
+      const env = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = rlFreq(midi);
+      osc.detune.value = detune;
+      env.gain.setValueAtTime(0, bStart);
+      env.gain.linearRampToValueAtTime(0.055*vol, bStart+0.12);
+      env.gain.setValueAtTime(0.055*vol, bStart+barDur-0.18);
+      env.gain.linearRampToValueAtTime(0.001, bStart+barDur);
+      osc.connect(env); env.connect(ctx.destination);
+      osc.start(bStart); osc.stop(bStart+barDur);
+    });
+
+    // ── Soft vibraphone-ish melody (sine with tremolo) ──
+    const melPattern = [
+      [0,0],[0.5,7],[1,5],[1.5,3],
+      [2,0],[2.5,-5],[3,0],[3.5,2]
+    ]; // [beat offset, semitone above root]
+    const root = RL_CHORDS[ci][0];
+    melPattern.forEach(([beatOff, st]) => {
+      const mt = bStart + beatOff*RL_BEAT;
+      const osc = ctx.createOscillator();
+      const env = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = rlFreq(root + st + 12);
+      env.gain.setValueAtTime(0, mt);
+      env.gain.linearRampToValueAtTime(0.09*vol, mt+0.04);
+      env.gain.exponentialRampToValueAtTime(0.001, mt+RL_BEAT*0.7);
+      osc.connect(env); env.connect(ctx.destination);
+      osc.start(mt); osc.stop(mt+RL_BEAT*0.8);
+    });
+
+    // ── Walking bass ──
+    const bassRoot = RL_BASS[ci];
+    [0,3,5,7].forEach((step, beat) => {
+      const bt = bStart + beat*RL_BEAT;
+      const osc = ctx.createOscillator();
+      const env = ctx.createGain();
+      const lp  = ctx.createBiquadFilter();
+      osc.type = 'sawtooth';
+      osc.frequency.value = rlFreq(bassRoot + step - 12);
+      lp.type = 'lowpass'; lp.frequency.value = 320;
+      env.gain.setValueAtTime(0,bt);
+      env.gain.linearRampToValueAtTime(0.20*vol, bt+0.04);
+      env.gain.exponentialRampToValueAtTime(0.001, bt+RL_BEAT*0.75);
+      osc.connect(lp); lp.connect(env); env.connect(ctx.destination);
+      osc.start(bt); osc.stop(bt+RL_BEAT);
+    });
+
+    // ── Soft drum kit ──
+    // Kick: beat 1 & 3
+    [0,2].forEach(beat => {
+      const kt = bStart + beat*RL_BEAT;
+      const buf = ctx.createBuffer(1, ctx.sampleRate*0.14, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.022));
+      const src = ctx.createBufferSource(); src.buffer=buf;
+      const lp = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=110;
+      const g = ctx.createGain(); g.gain.value=0.30*vol;
+      src.connect(lp); lp.connect(g); g.connect(ctx.destination); src.start(kt);
+    });
+    // Snare: beat 2 & 4
+    [1,3].forEach(beat => {
+      const st2 = bStart + beat*RL_BEAT;
+      const buf = ctx.createBuffer(1, ctx.sampleRate*0.09, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.035));
+      const src = ctx.createBufferSource(); src.buffer=buf;
+      const bp = ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1100; bp.Q.value=0.6;
+      const g = ctx.createGain(); g.gain.value=0.15*vol;
+      src.connect(bp); bp.connect(g); g.connect(ctx.destination); src.start(st2);
+    });
+    // Hi-hat: 8th notes
+    for (let e=0;e<8;e++) {
+      const ht = bStart + e*RL_BEAT*0.5;
+      const buf = ctx.createBuffer(1, ctx.sampleRate*0.035, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*0.008));
+      const src = ctx.createBufferSource(); src.buffer=buf;
+      const hp = ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=7000;
+      const g = ctx.createGain(); g.gain.value=(e%2===0?0.10:0.07)*vol;
+      src.connect(hp); hp.connect(g); g.connect(ctx.destination); src.start(ht);
+    }
+  }
+
+  rl_gmChord = (rl_gmChord + 4) % 4;
+  rl_musicId = setTimeout(() => { if (rl_musicPlaying) rlScheduleMusic(); }, barDur*4*1000 - 250);
+}
+
+// ── SFX ───────────────────────────────────────────────────────
+function rlSfxChip() {
+  const ctx=rlAudioCtx(); if(!ctx) return;
+  const vol=window.vc_sfx_vol??0.8, now=ctx.currentTime;
+  const o=ctx.createOscillator(), g=ctx.createGain();
+  o.type='triangle'; o.frequency.setValueAtTime(1400,now); o.frequency.exponentialRampToValueAtTime(700,now+0.07);
+  g.gain.setValueAtTime(0.22*vol,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.1);
+  o.connect(g); g.connect(ctx.destination); o.start(now); o.stop(now+0.11);
+}
+function rlSfxWin(amount) {
+  const ctx=rlAudioCtx(); if(!ctx) return;
+  const vol=window.vc_sfx_vol??0.8, now=ctx.currentTime;
+  const notes=amount>50?[60,64,67,72,76,79]:[60,64,67,72];
+  notes.forEach((m,i) => {
+    const t=now+i*0.11; const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='triangle'; o.frequency.value=rlFreq(m);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.28*vol,t+0.04);
+    g.gain.exponentialRampToValueAtTime(0.001,t+0.55);
+    o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t+0.6);
+  });
+}
+function rlSfxLose() {
+  const ctx=rlAudioCtx(); if(!ctx) return;
+  const vol=window.vc_sfx_vol??0.8, now=ctx.currentTime;
+  const o=ctx.createOscillator(), g=ctx.createGain();
+  o.type='sawtooth'; o.frequency.setValueAtTime(240,now); o.frequency.exponentialRampToValueAtTime(80,now+0.38);
+  g.gain.setValueAtTime(0.18*vol,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.42);
+  o.connect(g); g.connect(ctx.destination); o.start(now); o.stop(now+0.45);
+}
+
 function awardXP(amount) {
   const p = loadProfile();
   p.xp    = (p.xp || 0) + amount;
@@ -4813,6 +5758,90 @@ function awardXP(amount) {
     <button class="cal-close-btn" onclick="closeCalendar()">✕ &nbsp;Schließen</button>
   </div>
 </div>
+
+<!-- ============================================================ -->
+<!--  ROULETTE LOADER                                            -->
+<!-- ============================================================ -->
+<div id="roulette-loader">
+  <div class="rl-loader-wheel">🎡</div>
+  <div class="rl-loader-title">Roulette</div>
+  <div class="rl-loader-sub">Monte Carlo · Europäisches Roulette</div>
+  <div class="rl-loader-bar-wrap">
+    <div id="rl-load-bar"></div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  ROULETTE GAME                                              -->
+<!-- ============================================================ -->
+<div id="roulette-game">
+
+  <!-- Live-feed zoom intro -->
+  <div id="rl-intro">
+    <div class="rl-intro-frame">
+      <div class="rl-intro-scanlines"></div>
+      <div class="rl-intro-live">● LIVE</div>
+      <div class="rl-intro-cam-info">CAM 1 · MONTE CARLO CASINO · HD</div>
+      <div class="rl-intro-wheel-vis">🎡</div>
+      <div class="rl-intro-label">♠ ♥ Roulette Table 1 ♣ ♦</div>
+    </div>
+  </div>
+
+  <!-- Main game (shown after intro) -->
+  <div id="rl-main" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
+
+    <!-- Header -->
+    <div class="rl-header">
+      <button class="rl-back-btn" onclick="closeRoulette()">&#8592; Zurück</button>
+      <div class="rl-header-title">🎡 Roulette</div>
+      <div class="rl-header-bal" id="rl-balance-disp">0.00 €</div>
+    </div>
+
+    <!-- Wheel -->
+    <div class="rl-wheel-section">
+      <div class="rl-wheel-wrap">
+        <canvas id="rl-canvas" width="320" height="320"></canvas>
+        <div id="rl-ball"></div>
+        <div class="rl-last-num" id="rl-last-num" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Chip selector -->
+    <div class="rl-chips-row">
+      <div class="rl-chip" data-val="0.1"  onclick="rlSelectChip(0.1)">0.10</div>
+      <div class="rl-chip" data-val="0.5"  onclick="rlSelectChip(0.5)">0.50</div>
+      <div class="rl-chip rl-sel" data-val="1"   onclick="rlSelectChip(1)">1 €</div>
+      <div class="rl-chip" data-val="5"   onclick="rlSelectChip(5)">5 €</div>
+      <div class="rl-chip" data-val="25"  onclick="rlSelectChip(25)">25 €</div>
+      <div class="rl-chip" data-val="100" onclick="rlSelectChip(100)">100 €</div>
+    </div>
+
+    <!-- Betting table -->
+    <div id="rl-table-wrap">
+      <!-- Built by rlBuildTable() -->
+    </div>
+
+    <!-- Controls -->
+    <div class="rl-controls-bar">
+      <button class="rl-clear-btn" id="rl-clear-btn" onclick="rlClearBets()" disabled>✕ Löschen</button>
+      <span class="rl-total-bet-txt" id="rl-total-bet">Einsatz: 0.00 €</span>
+      <button class="rl-spin-btn" id="rl-spin-btn" onclick="rlSpin()" disabled>DREHEN</button>
+    </div>
+
+  </div><!-- /#rl-main -->
+
+  <!-- Result overlay -->
+  <div id="rl-result">
+    <div class="rl-result-box">
+      <div class="rl-res-number" id="rl-res-number">0</div>
+      <div class="rl-res-title" id="rl-res-title">Ergebnis</div>
+      <div class="rl-res-amount" id="rl-res-amount">0 €</div>
+      <div class="rl-res-desc" id="rl-res-desc"></div>
+      <button class="rl-res-close-btn" onclick="rlCloseResult()">Weiter spielen</button>
+    </div>
+  </div>
+
+</div><!-- /#roulette-game -->
 
 <!-- CHEST EVENT -->
 <div id="chest-event" style="display:none; position:fixed; inset:0; z-index:8800; background:rgba(0,0,0,0.88); backdrop-filter:blur(5px); align-items:center; justify-content:center; flex-direction:column;">
