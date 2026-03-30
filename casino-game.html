@@ -2247,6 +2247,37 @@
       position: fixed; top: 0; pointer-events: none; z-index: 9999;
       font-size: 22px; animation: rl-confetti-fall linear forwards;
     }
+
+    /* ============================================================
+       XP TOASTS
+       ============================================================ */
+    .xp-toast {
+      position: fixed; z-index: 9998;
+      font-size: 15px; font-weight: 900;
+      color: #cc88ff; text-shadow: 0 0 12px #aa00ff88;
+      pointer-events: none; white-space: nowrap;
+      animation: xp-rise 1.4s ease-out forwards;
+    }
+    @keyframes xp-rise {
+      0%   { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-55px); }
+    }
+    .level-up-toast {
+      position: fixed; top: 46%; left: 50%; z-index: 9999;
+      transform: translate(-50%, -50%);
+      font-size: clamp(18px,5vw,26px); font-weight: 900;
+      letter-spacing: 4px; color: #ffd700;
+      text-shadow: 0 0 24px #ffd700, 0 0 48px #ffaa0066;
+      pointer-events: none; text-align: center;
+      animation: level-up-pop 2.8s ease-out forwards;
+    }
+    @keyframes level-up-pop {
+      0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.4); }
+      18%  { opacity: 1; transform: translate(-50%,-50%) scale(1.25); }
+      32%  { transform: translate(-50%,-50%) scale(1); }
+      72%  { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%,-65%) scale(0.85); }
+    }
   </style>
 </head>
 <body>
@@ -3883,6 +3914,13 @@ function wsAfterMystery() {
       }
     saveBalance();
     wsUpdateUI();
+    // Award XP scaled by bet amount
+    const _wsBet = WS_BETS[wsBetIdx];
+    const _wsWinEl = document.getElementById('ws-win-display');
+    const _wsWon = _wsWinEl && _wsWinEl.textContent !== '—' && _wsWinEl.textContent !== '';
+    const xpEarned = calcBetXP(_wsBet, _wsWon);
+    awardXP(xpEarned);
+    showXPToast(xpEarned, spinBtn);
     // Continue free spins if any
     if (wsInFreeSpin && wsFreeSpinsLeft > 0) {
       setTimeout(wsDoSpin, 800);
@@ -5406,7 +5444,10 @@ function rlSpin() {
       lastNum.style.border     = '2px solid ' + (col==='green'?'#00ff88': col==='red'?'#ff4444':'#888888');
     }
 
-    awardXP(Math.ceil(total * (win>0?2:1)));
+    const xpEarned = calcBetXP(total, win > 0);
+    awardXP(xpEarned);
+    const spinBtn = document.getElementById('rl-spin-btn');
+    showXPToast(xpEarned, spinBtn);
 
     setTimeout(() => rlShowResult(result, win, total), 500);
   });
@@ -5678,7 +5719,16 @@ function rlSfxLose() {
   o.connect(g); g.connect(ctx.destination); o.start(now); o.stop(now+0.45);
 }
 
+// XP earned per spin — scales with bet size via sqrt curve
+// Examples: 0.10€→2, 0.50€→4, 1€→5, 5€→11, 10€→16, 25€→25, 50€→35
+// Winning spins give 1.6× XP
+function calcBetXP(totalBet, won) {
+  const base = Math.max(1, Math.round(Math.sqrt(totalBet * 25)));
+  return won ? Math.ceil(base * 1.6) : base;
+}
+
 function awardXP(amount) {
+  if (!amount || amount <= 0) return;
   const p = loadProfile();
   p.xp    = (p.xp || 0) + amount;
   p.level = p.level || 1;
@@ -5687,8 +5737,35 @@ function awardXP(amount) {
     p.xp    -= needed;
     p.level += 1;
     p.bluePotions = (p.bluePotions || 0) + 1;
+    showLevelUpToast(p.level);
   }
   saveProfileData(p);
+}
+
+function showXPToast(xp, anchorEl) {
+  const el = document.createElement('div');
+  el.className = 'xp-toast';
+  el.textContent = '+' + xp + ' XP';
+  // Position near anchor element, or center-ish if no anchor
+  if (anchorEl) {
+    const r = anchorEl.getBoundingClientRect();
+    el.style.left = (r.left + r.width / 2) + 'px';
+    el.style.top  = (r.top - 10) + 'px';
+    el.style.transform = 'translateX(-50%)';
+  } else {
+    el.style.left = '50%'; el.style.top = '60%';
+    el.style.transform = 'translateX(-50%)';
+  }
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1500);
+}
+
+function showLevelUpToast(level) {
+  const el = document.createElement('div');
+  el.className = 'level-up-toast';
+  el.innerHTML = '⭐ LEVEL UP! ⭐<br><span style="font-size:0.75em;letter-spacing:2px;">Level ' + level + ' erreicht</span>';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
 }
 </script>
 
