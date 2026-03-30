@@ -4,3 +4,7 @@
 # Node-Module
 node_modules/
 npm-debug.log*
+
+# release artifacts
+release/*.zip
+release/vegas-casino-complete.html

@@ -1942,6 +1942,54 @@
       to   { box-shadow: 0 0 20px #ffd700aa; border-color: #ffaa00; }
     }
     .chest-menu-btn:hover { transform: scale(1.1); }
+
+
+    /* ─ Mini game releases (Lucky7 / Book / Mega Wheel) ─ */
+    .mini-slot-game {
+      position: fixed; inset: 0; z-index: 915;
+      display: none; flex-direction: column;
+      overflow: hidden; user-select: none;
+      height: 100dvh; height: -webkit-fill-available;
+    }
+    .mini-slot-game.active { display: flex; }
+    #lucky7-game { background: radial-gradient(circle at 50% 20%, #4a0000 0%, #160000 55%, #080000 100%); }
+    #bookof-game { background: radial-gradient(circle at 50% 20%, #5a3200 0%, #1b1000 55%, #090500 100%); }
+    #megawheel-game { background: radial-gradient(circle at 50% 20%, #003a5a 0%, #001220 55%, #00070f 100%); }
+
+    .mg-header { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid rgba(255,255,255,0.18); background:rgba(0,0,0,0.35); }
+    .mg-title { font-size: clamp(16px, 3.2vw, 28px); font-weight:900; letter-spacing:3px; color:#fff; text-shadow:0 0 16px rgba(255,255,255,.25); }
+    .mg-release { font-size:10px; letter-spacing:2px; text-transform:uppercase; padding:4px 8px; border-radius:999px; border:1px solid rgba(255,255,255,0.4); color:#fff; }
+    .mg-back { border:1px solid #ffffff55; background:#00000044; color:#fff; border-radius:9px; padding:8px 10px; font-weight:700; letter-spacing:1px; }
+
+    .mg-main { flex:1; display:grid; place-items:center; padding:14px; }
+    .mg-panel { width:min(560px,95vw); border-radius:20px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.45); box-shadow:0 0 30px rgba(0,0,0,.45), inset 0 0 30px rgba(255,255,255,.03); padding:16px; }
+    .mg-reels { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:12px; }
+    .mg-reel { min-height:88px; display:grid; place-items:center; font-size:48px; border-radius:12px; border:1px solid rgba(255,255,255,0.15); background:linear-gradient(180deg,#ffffff14,#00000055); }
+    .mg-row { display:flex; gap:10px; align-items:center; justify-content:space-between; }
+    .mg-info { color:#f5eac7; font-size:13px; letter-spacing:1px; }
+    .mg-win { margin-top:10px; min-height:44px; display:grid; place-items:center; font-size:15px; color:#fff; text-align:center; }
+    .mg-btn { border:none; border-radius:10px; padding:11px 16px; font-weight:900; letter-spacing:2px; text-transform:uppercase; color:#fff; }
+    .mg-btn:disabled { opacity:.6; }
+    .l7-bet-controls { display:flex; align-items:center; gap:8px; margin-top:10px; }
+    .l7-bet-btn {
+      width:34px; height:34px; border-radius:8px; border:1px solid #ff8a8a55;
+      background:linear-gradient(180deg,#4a0000,#2a0000); color:#ffd0d0; font-weight:900; font-size:18px;
+    }
+    .l7-bet-label { font-size:11px; color:#ffb3b3; letter-spacing:1px; text-transform:uppercase; }
+    .l7-bet-value { min-width:92px; text-align:center; font-size:18px; color:#fff2b0; font-weight:900; text-shadow:0 0 10px #ffcc66aa; }
+    .mg-reel.l7-spinning { animation:l7-spin-blur 0.12s linear infinite; }
+    @keyframes l7-spin-blur {
+      0% { transform: translateY(-3px) scale(0.98); filter: blur(0.5px); }
+      50% { transform: translateY(3px) scale(1.02); filter: blur(1.4px); }
+      100% { transform: translateY(-3px) scale(0.98); filter: blur(0.5px); }
+    }
+    .l7 .mg-btn { background:linear-gradient(90deg,#9f0000,#d10000); box-shadow:0 0 14px #ff3a0060; }
+    .bo .mg-btn { background:linear-gradient(90deg,#6a3e00,#a36700); box-shadow:0 0 14px #d28a2260; }
+    .mw .mg-btn { background:linear-gradient(90deg,#004f77,#0074a8); box-shadow:0 0 14px #00c0ff60; }
+
+    .mw-wheel { width:min(300px,70vw); aspect-ratio:1; border-radius:50%; margin:0 auto 14px; border:3px solid #7ee7ff; box-shadow:0 0 24px #00aaff77; background:conic-gradient(#0af 0 45deg,#024 45deg 90deg,#0bf 90deg 135deg,#036 135deg 180deg,#0df 180deg 225deg,#024 225deg 270deg,#0af 270deg 315deg,#036 315deg 360deg); display:grid; place-items:center; font-size:22px; font-weight:900; color:#fff; transition:transform 2.3s cubic-bezier(.2,.9,.1,1); }
+    .mw-pointer { width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:18px solid #ffd700;margin:0 auto 8px; filter:drop-shadow(0 0 8px #ffd700aa); }
+
   </style>
 </head>
 <body>
@@ -2222,6 +2270,9 @@
     </button>
     <button class="menu-btn btn-secondary" onclick="openInfo()" data-i18n="menu.info">
       ℹ️ &nbsp;Info
+    </button>
+    <button class="menu-btn btn-secondary" onclick="downloadCasinoFile()">
+      ⬇️ &nbsp;Download
     </button>
   </div>
 
@@ -2519,10 +2570,10 @@
     </div>
 
     <!-- Card 2: Lucky 7 -->
-    <div class="lobby-card card-lucky7">
+    <div class="lobby-card card-lucky7" style="cursor:pointer;" onclick="openLucky7()">
       <div class="lc-bg"></div>
       <div class="lc-content">
-        <span class="lc-badge">Klassischer Vegas Slot</span>
+        <span class="lc-badge" style="border-color:#ffcc66;color:#ffd88a;box-shadow:0 0 8px #ff990044;animation:badge-blink 1.5s ease-in-out infinite alternate;">▶ NEU</span>
         <div class="lc-symbols">7️⃣ 🍒 🔔</div>
         <div class="lc-name">Lucky 7</div>
         <ul class="lc-features">
@@ -2531,16 +2582,15 @@
           <li>Kirsche, Glocke, Bar & 7</li>
           <li>Progressiver Jackpot Pool</li>
         </ul>
-        <button class="lc-play-btn">🔒 Demnächst</button>
+        <button class="lc-play-btn" style="opacity:1;cursor:pointer;background:linear-gradient(90deg,#880000,#bb0000);border:1px solid #ff4400;box-shadow:0 0 12px #ff660044;">🎰 Spielen</button>
       </div>
-      <div class="lc-soon"><span>Demnächst</span></div>
     </div>
 
     <!-- Card 3: Book of Secrets -->
-    <div class="lobby-card card-bookof">
+    <div class="lobby-card card-bookof" style="cursor:pointer;" onclick="openBookOfSecrets()">
       <div class="lc-bg"></div>
       <div class="lc-content">
-        <span class="lc-badge">Buch Freispiele</span>
+        <span class="lc-badge" style="border-color:#f0c040;color:#ffd77b;box-shadow:0 0 8px #cc880044;animation:badge-blink 1.5s ease-in-out infinite alternate;">▶ NEU</span>
         <div class="lc-symbols">📖 🏺 👁️</div>
         <div class="lc-name">Book of Secrets</div>
         <ul class="lc-features">
@@ -2549,16 +2599,15 @@
           <li>Ägypten Mystery Bonus</li>
           <li>Re-Trigger bis zu 3×</li>
         </ul>
-        <button class="lc-play-btn">🔒 Demnächst</button>
+        <button class="lc-play-btn" style="opacity:1;cursor:pointer;background:linear-gradient(90deg,#3a1e00,#6a3800);border:1px solid #aa7700;box-shadow:0 0 12px #cc880044;">📖 Spielen</button>
       </div>
-      <div class="lc-soon"><span>Demnächst</span></div>
     </div>
 
     <!-- Card 4: Mega Wheel -->
-    <div class="lobby-card card-megawheel">
+    <div class="lobby-card card-megawheel" style="cursor:pointer;" onclick="openMegaWheel()">
       <div class="lc-bg"></div>
       <div class="lc-content">
-        <span class="lc-badge">Drehräder & Multiplikatoren</span>
+        <span class="lc-badge" style="border-color:#00d8ff;color:#8ee9ff;box-shadow:0 0 8px #00aaff44;animation:badge-blink 1.5s ease-in-out infinite alternate;">▶ NEU</span>
         <div class="lc-symbols">🎡 ⚡ 💎</div>
         <div class="lc-name">Mega Wheel</div>
         <ul class="lc-features">
@@ -2567,9 +2616,8 @@
           <li>Wheel-in-Wheel Feature</li>
           <li>Lightning-Runde ab 3 Scatter</li>
         </ul>
-        <button class="lc-play-btn">🔒 Demnächst</button>
+        <button class="lc-play-btn" style="opacity:1;cursor:pointer;background:linear-gradient(90deg,#001840,#002e60);border:1px solid #007aaa;box-shadow:0 0 12px #00b7ff44;">🎡 Spielen</button>
       </div>
-      <div class="lc-soon"><span>Demnächst</span></div>
     </div>
 
   </div>
@@ -2745,6 +2793,86 @@
   <div class="ws-bigwin-overlay" id="ws-bigwin">
     <div class="ws-bigwin-txt" id="ws-bigwin-txt">BIG WIN!</div>
     <div class="ws-bigwin-amt" id="ws-bigwin-amt">€ 0</div>
+  </div>
+</div>
+
+
+
+<!-- ============================================================ -->
+<!--  LUCKY 7 GAME (Release)                                      -->
+<!-- ============================================================ -->
+<div id="lucky7-game" class="mini-slot-game l7">
+  <div class="mg-header">
+    <button class="mg-back" onclick="closeLucky7()">&#8592; Lobby</button>
+    <div class="mg-title">🔥 Lucky 7</div>
+    <div class="mg-release">Neu · v1.0</div>
+  </div>
+  <div class="mg-main">
+    <div class="mg-panel">
+      <div class="mg-reels">
+        <div class="mg-reel" id="l7-r1">7️⃣</div>
+        <div class="mg-reel" id="l7-r2">🍒</div>
+        <div class="mg-reel" id="l7-r3">🔔</div>
+      </div>
+      <div class="mg-row">
+        <div class="mg-info">Classic Line Win · Drehzeit: 4.0s</div>
+        <button class="mg-btn" id="l7-spin" onclick="spinLucky7()">Spin</button>
+      </div>
+      <div class="l7-bet-controls">
+        <span class="l7-bet-label">Einsatz</span>
+        <button class="l7-bet-btn" onclick="l7BetDown()">−</button>
+        <div class="l7-bet-value" id="l7-bet">2.00 €</div>
+        <button class="l7-bet-btn" onclick="l7BetUp()">+</button>
+      </div>
+      <div class="mg-win" id="l7-msg">3 gleiche Symbole = Gewinn · 7️⃣7️⃣7️⃣ = Mega Win</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  BOOK OF SECRETS GAME (Release)                              -->
+<!-- ============================================================ -->
+<div id="bookof-game" class="mini-slot-game bo">
+  <div class="mg-header">
+    <button class="mg-back" onclick="closeBookOfSecrets()">&#8592; Lobby</button>
+    <div class="mg-title">📖 Book of Secrets</div>
+    <div class="mg-release">Neu · v1.0</div>
+  </div>
+  <div class="mg-main">
+    <div class="mg-panel">
+      <div class="mg-reels">
+        <div class="mg-reel" id="bo-r1">📖</div>
+        <div class="mg-reel" id="bo-r2">🏺</div>
+        <div class="mg-reel" id="bo-r3">👁️</div>
+      </div>
+      <div class="mg-row">
+        <div class="mg-info">Feature: Relikt-Sammlung (<span id="bo-relics">0</span>/3)</div>
+        <button class="mg-btn" id="bo-spin" onclick="spinBookOfSecrets()">Spin</button>
+      </div>
+      <div class="mg-win" id="bo-msg">Sammle 3 Bücher 📖 für den Geheimnis-Bonus.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  MEGA WHEEL GAME (Release)                                   -->
+<!-- ============================================================ -->
+<div id="megawheel-game" class="mini-slot-game mw">
+  <div class="mg-header">
+    <button class="mg-back" onclick="closeMegaWheel()">&#8592; Lobby</button>
+    <div class="mg-title">🎡 Mega Wheel</div>
+    <div class="mg-release">Neu · v1.0</div>
+  </div>
+  <div class="mg-main">
+    <div class="mg-panel">
+      <div class="mw-pointer"></div>
+      <div class="mw-wheel" id="mw-wheel">x2</div>
+      <div class="mg-row">
+        <div class="mg-info">Feature: Multiplikator-Rad · Einsatz: <span id="mw-bet">3.00 €</span></div>
+        <button class="mg-btn" id="mw-spin" onclick="spinMegaWheel()">Spin</button>
+      </div>
+      <div class="mg-win" id="mw-msg">Triff x20 für den Highroller-Bonus.</div>
+    </div>
   </div>
 </div>
 
@@ -3219,6 +3347,10 @@ function openWildSpins() {
   document.getElementById('slots-lobby').classList.remove('active');
   const loader = document.getElementById('game-loader');
   loader.style.display = 'flex';
+  loader.style.background = 'linear-gradient(145deg, #18003a 0%, #3a0060 50%, #5e0078 100%)';
+  loader.querySelector('.gl-title').textContent = 'Wild Spins';
+  loader.querySelector('.gl-sub').textContent = 'Freispiele & Multiplikatoren';
+  loader.querySelector('.gl-symbols-big').textContent = '⭐ 💫 🔥';
   let p = 0;
   const bar = document.getElementById('gl-bar');
   wsPlayLoadMusic(); // start game music during loading
@@ -3244,6 +3376,262 @@ function closeWildSpins() {
   document.getElementById('slots-lobby').classList.add('active');
 }
 
+
+
+// ─── New slot releases: Lucky 7 / Book of Secrets / Mega Wheel ─────────
+const L7_SYMBOLS = ['7️⃣','🍒','🔔','💎','🍋'];
+const BO_SYMBOLS = ['📖','🏺','👁️','🦂','💰'];
+const MW_SEGMENTS = [
+  { label:'x2', mult:2 },{ label:'x3', mult:3 },{ label:'x5', mult:5 },{ label:'x1', mult:1 },
+  { label:'x8', mult:8 },{ label:'x4', mult:4 },{ label:'x10', mult:10 },{ label:'x20', mult:20 },
+];
+let boRelics = 0;
+
+function openThemedLoader(cfg, onDone) {
+  const loader = document.getElementById('game-loader');
+  const title = loader.querySelector('.gl-title');
+  const sub = loader.querySelector('.gl-sub');
+  const symbols = loader.querySelector('.gl-symbols-big');
+  const bar = document.getElementById('gl-bar');
+  loader.style.background = cfg.bg;
+  title.textContent = cfg.title;
+  sub.textContent = cfg.sub;
+  symbols.textContent = cfg.symbols;
+  if (bar) bar.style.width = '0%';
+  loader.style.display = 'flex';
+  let p = 0;
+  const iv = setInterval(() => {
+    p += 100 / 30;
+    if (bar) bar.style.width = Math.min(p, 100) + '%';
+    if (p >= 100) {
+      clearInterval(iv);
+      setTimeout(() => { loader.style.display = 'none'; onDone(); }, 220);
+    }
+  }, 60);
+}
+
+let l7BetIdx = 4;
+let l7Spinning = false;
+let l7MusicPlaying = false;
+let l7MusicNext = 0;
+let l7MusicTimer = null;
+const L7_BETS = [0.10, 0.20, 0.50, 1.00, 2.00, 5.00, 10.00, 20.00, 50.00];
+const L7_REEL_IDS = ['l7-r1','l7-r2','l7-r3'];
+
+function l7UpdateBetUI() {
+  const el = document.getElementById('l7-bet');
+  if (el) el.textContent = L7_BETS[l7BetIdx].toFixed(2) + ' €';
+}
+function l7BetDown() { if (l7Spinning) return; l7BetIdx = Math.max(0, l7BetIdx - 1); l7UpdateBetUI(); }
+function l7BetUp()   { if (l7Spinning) return; l7BetIdx = Math.min(L7_BETS.length - 1, l7BetIdx + 1); l7UpdateBetUI(); }
+
+function l7PlayTick(at) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  osc.type = 'square';
+  osc.frequency.value = 860 + Math.random() * 180;
+  osc.connect(g); g.connect(audioCtx.destination);
+  g.gain.setValueAtTime(0.05 * (window.vc_sfx_vol ?? 1), at);
+  g.gain.exponentialRampToValueAtTime(0.001, at + 0.035);
+  osc.start(at); osc.stop(at + 0.04);
+}
+function l7PlayWinJingle() {
+  if (!audioCtx) return;
+  const t = audioCtx.currentTime + 0.01;
+  [0, 0.09, 0.18].forEach((off, i) => {
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = [660, 880, 1100][i];
+    osc.connect(g); g.connect(audioCtx.destination);
+    g.gain.setValueAtTime(0.09 * (window.vc_sfx_vol ?? 1), t + off);
+    g.gain.exponentialRampToValueAtTime(0.001, t + off + 0.2);
+    osc.start(t + off); osc.stop(t + off + 0.22);
+  });
+}
+function l7MusicScheduler() {
+  if (!l7MusicPlaying || !audioCtx) return;
+  const beat = 0.42;
+  const notes = [220, 277.2, 329.6, 415.3];
+  while (l7MusicNext < audioCtx.currentTime + 0.35) {
+    const base = notes[Math.floor((l7MusicNext / beat) % notes.length)];
+    const t = l7MusicNext;
+    [base, base * 2].forEach((f, idx) => {
+      const osc = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      osc.type = idx ? 'triangle' : 'sawtooth';
+      osc.frequency.value = f;
+      osc.connect(g); g.connect(audioCtx.destination);
+      g.gain.setValueAtTime(0.015 * (window.vc_music_vol ?? 1), t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + beat * 0.95);
+      osc.start(t); osc.stop(t + beat);
+    });
+    l7MusicNext += beat;
+  }
+  l7MusicTimer = setTimeout(l7MusicScheduler, 90);
+}
+function l7StartMusic() {
+  if (!audioCtx || l7MusicPlaying) return;
+  l7MusicPlaying = true;
+  l7MusicNext = audioCtx.currentTime + 0.05;
+  l7MusicScheduler();
+}
+function l7StopMusic() {
+  l7MusicPlaying = false;
+  if (l7MusicTimer) clearTimeout(l7MusicTimer);
+}
+
+function openLucky7() {
+  document.getElementById('slots-lobby').classList.remove('active');
+  openThemedLoader({ title:'Lucky 7', sub:'Classic Line Win', symbols:'7️⃣ 🍒 🔔', bg:'linear-gradient(145deg,#2a0000,#5b0000,#220000)' }, () => {
+    document.getElementById('lucky7-game').classList.add('active');
+    history.pushState({screen:'lucky7'}, '');
+    l7UpdateBetUI();
+    l7StartMusic();
+  });
+}
+function closeLucky7() {
+  document.getElementById('lucky7-game').classList.remove('active');
+  l7StopMusic();
+  document.getElementById('slots-lobby').classList.add('active');
+}
+function spinLucky7() {
+  const bet = L7_BETS[l7BetIdx];
+  const btn = document.getElementById('l7-spin');
+  if (wsBalance < bet || btn.disabled || l7Spinning) return;
+  wsBalance -= bet;
+  wsUpdateUI();
+  btn.disabled = true;
+  l7Spinning = true;
+  const reels = L7_REEL_IDS.map(id => document.getElementById(id));
+  reels.forEach(r => r.classList.add('l7-spinning'));
+  const startAt = Date.now();
+  const duration = 4000;
+  const finalPicks = [0,0,0].map(() => L7_SYMBOLS[Math.floor(Math.random()*L7_SYMBOLS.length)]);
+
+  const timers = reels.map((reel, idx) => setInterval(() => {
+    reel.textContent = L7_SYMBOLS[Math.floor(Math.random() * L7_SYMBOLS.length)];
+    if (audioCtx && idx === 0) l7PlayTick(audioCtx.currentTime + 0.005);
+  }, 90 + idx * 25));
+
+  const endTimer = setTimeout(() => {
+    timers.forEach(t => clearInterval(t));
+    reels.forEach((r, i) => {
+      r.classList.remove('l7-spinning');
+      r.textContent = finalPicks[i];
+    });
+
+    let win = 0;
+    if (finalPicks[0]===finalPicks[1] && finalPicks[1]===finalPicks[2]) {
+      win = finalPicks[0] === '7️⃣' ? bet * 60 : bet * 12;
+    } else if (new Set(finalPicks).size === 2) {
+      win = bet * 3;
+    }
+
+    wsBalance += win;
+    wsUpdateUI();
+    const msg = document.getElementById('l7-msg');
+    msg.textContent = win>0 ? `🎉 Gewinn: ${win.toFixed(2)} €` : 'Kein Treffer – nochmal drehen!';
+    msg.style.color = win>0 ? '#ffd700' : '#ffb199';
+    if (win > 0) {
+      awardXP(8);
+      l7PlayWinJingle();
+    }
+    l7Spinning = false;
+    btn.disabled = false;
+  }, Math.max(0, duration - (Date.now() - startAt)));
+}
+
+function openBookOfSecrets() {
+  document.getElementById('slots-lobby').classList.remove('active');
+  openThemedLoader({ title:'Book of Secrets', sub:'Relikt-Sammlung', symbols:'📖 🏺 👁️', bg:'linear-gradient(145deg,#261300,#5c2f00,#1b0c00)' }, () => {
+    document.getElementById('bookof-game').classList.add('active');
+    history.pushState({screen:'bookof'}, '');
+  });
+}
+function closeBookOfSecrets() {
+  document.getElementById('bookof-game').classList.remove('active');
+  document.getElementById('slots-lobby').classList.add('active');
+}
+function spinBookOfSecrets() {
+  const bet = 2.5;
+  const btn = document.getElementById('bo-spin');
+  if (wsBalance < bet || btn.disabled) return;
+  wsBalance -= bet;
+  btn.disabled = true;
+  const picks = [0,0,0].map(() => BO_SYMBOLS[Math.floor(Math.random()*BO_SYMBOLS.length)]);
+  ['bo-r1','bo-r2','bo-r3'].forEach((id,i)=>document.getElementById(id).textContent = picks[i]);
+  const books = picks.filter(v => v === '📖').length;
+  boRelics = Math.min(3, boRelics + books);
+  let win = books * 4;
+  if (boRelics >= 3) {
+    win += 40;
+    boRelics = 0;
+  }
+  wsBalance += win;
+  wsUpdateUI();
+  document.getElementById('bo-relics').textContent = boRelics;
+  const msg = document.getElementById('bo-msg');
+  msg.textContent = win>0 ? `✨ Relikt-Auszahlung: ${win.toFixed(2)} €` : 'Keine Relikte gefunden.';
+  msg.style.color = win>0 ? '#ffd06d' : '#dca670';
+  if (win > 0) awardXP(10);
+  setTimeout(()=>{ btn.disabled = false; }, 500);
+}
+
+function openMegaWheel() {
+  document.getElementById('slots-lobby').classList.remove('active');
+  openThemedLoader({ title:'Mega Wheel', sub:'Multiplier Wheel', symbols:'🎡 ⚡ 💎', bg:'linear-gradient(145deg,#001b31,#00466d,#001321)' }, () => {
+    document.getElementById('megawheel-game').classList.add('active');
+    history.pushState({screen:'megawheel'}, '');
+  });
+}
+function closeMegaWheel() {
+  document.getElementById('megawheel-game').classList.remove('active');
+  document.getElementById('slots-lobby').classList.add('active');
+}
+function spinMegaWheel() {
+  const bet = 3;
+  const btn = document.getElementById('mw-spin');
+  const wheel = document.getElementById('mw-wheel');
+  if (wsBalance < bet || btn.disabled) return;
+  wsBalance -= bet;
+  btn.disabled = true;
+  const idx = Math.floor(Math.random()*MW_SEGMENTS.length);
+  const seg = MW_SEGMENTS[idx];
+  const rot = 1800 + (idx * (360 / MW_SEGMENTS.length));
+  wheel.style.transform = `rotate(${rot}deg)`;
+  setTimeout(() => {
+    wheel.textContent = seg.label;
+    const win = bet * seg.mult;
+    wsBalance += win;
+    wsUpdateUI();
+    const msg = document.getElementById('mw-msg');
+    msg.textContent = `⚡ ${seg.label} getroffen! Gewinn: ${win.toFixed(2)} €`;
+    msg.style.color = seg.mult >= 8 ? '#8ff3ff' : '#b9e5ff';
+    if (win > bet*2) awardXP(12);
+    btn.disabled = false;
+  }, 2300);
+}
+
+// ─── Direct download (single-file export) ──────────────────────
+function downloadCasinoFile() {
+  try {
+    const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'vegas-casino-complete.html';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+  } catch (err) {
+    alert('Download konnte nicht gestartet werden.');
+  }
+}
+
 // ─── Android / Browser hardware back button support ──────────
 window.addEventListener('popstate', function(e) {
   const screen = e.state && e.state.screen;
@@ -3251,6 +3639,15 @@ window.addEventListener('popstate', function(e) {
   if (document.getElementById('wildspins-game').classList.contains('active')) {
     closeWildSpins();
     // push a new state so the lobby gets its own back entry
+    history.pushState({screen:'slots-lobby'}, '');
+  } else if (document.getElementById('lucky7-game').classList.contains('active')) {
+    closeLucky7();
+    history.pushState({screen:'slots-lobby'}, '');
+  } else if (document.getElementById('bookof-game').classList.contains('active')) {
+    closeBookOfSecrets();
+    history.pushState({screen:'slots-lobby'}, '');
+  } else if (document.getElementById('megawheel-game').classList.contains('active')) {
+    closeMegaWheel();
     history.pushState({screen:'slots-lobby'}, '');
   } else if (document.getElementById('slots-lobby').classList.contains('active')) {
     closeSlotsLobby();
