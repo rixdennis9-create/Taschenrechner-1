@@ -5112,5 +5112,458 @@ function awardXP(amount) {
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════════
+     MOD MENU V2  –  by Shelby Cooper
+     ═══════════════════════════════════════════════════════════ -->
+<style>
+  /* ── Wrapper ── */
+  #mm-wrapper {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 99999;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    user-select: none;
+  }
+
+  /* ── Mini button (collapsed state) ── */
+  #mm-mini {
+    display: none;
+    background: linear-gradient(135deg, #0d0d1a, #16213e);
+    border: 1px solid #e94560;
+    border-radius: 8px;
+    padding: 6px 14px;
+    color: #e94560;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 0 12px #e9456044;
+    transition: box-shadow .2s;
+  }
+  #mm-mini:hover { box-shadow: 0 0 20px #e9456088; }
+
+  /* ── Full panel ── */
+  #mm-panel {
+    width: 320px;
+    background: rgba(13, 13, 26, 0.96);
+    border: 1px solid #e94560;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 30px #e9456033, 0 8px 32px #00000088;
+    animation: mm-fadein .35s ease;
+  }
+  @keyframes mm-fadein {
+    from { opacity:0; transform: translateY(-10px) scale(.97); }
+    to   { opacity:1; transform: translateY(0)     scale(1);   }
+  }
+
+  /* ── Header ── */
+  #mm-header {
+    background: linear-gradient(90deg, #0d0d1a, #1a0a18);
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e9456055;
+  }
+  #mm-title { color: #e94560; font-weight: 900; font-size: 14px; letter-spacing: 1px; }
+  #mm-author { color: #888; font-size: 11px; }
+  #mm-minimize {
+    background: none; border: 1px solid #e94560; color: #e94560;
+    border-radius: 5px; width: 22px; height: 22px; cursor: pointer;
+    font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center;
+  }
+  #mm-minimize:hover { background: #e9456033; }
+
+  /* ── Welcome banner ── */
+  #mm-welcome {
+    background: #0f3460;
+    padding: 7px 12px;
+    color: #fff;
+    font-size: 11.5px;
+    text-align: center;
+    letter-spacing: .4px;
+    border-bottom: 1px solid #e9456033;
+  }
+
+  /* ── Info bar ── */
+  #mm-infobar {
+    display: flex; justify-content: space-between;
+    background: #16213e;
+    padding: 5px 12px;
+    font-size: 11px;
+    border-bottom: 1px solid #ffffff11;
+  }
+  #mm-infobar span { color: #aaddff; }
+  #mm-infobar span:last-child { color: #ffdd88; }
+
+  /* ── Section heading ── */
+  .mm-section {
+    background: rgba(233,69,96,.08);
+    padding: 4px 12px;
+    color: #e94560;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-top: 1px solid #e9456022;
+  }
+
+  /* ── Button grid ── */
+  .mm-row {
+    display: flex; gap: 6px;
+    padding: 6px 10px;
+  }
+
+  .mm-btn {
+    flex: 1;
+    background: #1a1a2e;
+    border: 1px solid #333355;
+    border-radius: 7px;
+    color: #ccc;
+    font-size: 11.5px;
+    padding: 6px 4px;
+    cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+    text-align: center;
+  }
+  .mm-btn:hover { background: #2a2a45; border-color: #e94560; color: #fff; }
+  .mm-btn.on {
+    background: rgba(0,255,127,.12);
+    border-color: #00ff7f;
+    color: #00ff7f;
+  }
+  .mm-btn.off {
+    background: rgba(255,68,68,.10);
+    border-color: #ff4444;
+    color: #ff6666;
+  }
+  .mm-btn.wide { flex: 2; }
+
+  /* ── Input row ── */
+  .mm-input-row {
+    display: flex; gap: 6px; align-items: center;
+    padding: 5px 10px;
+  }
+  .mm-input-row label { color: #aaa; font-size: 11px; white-space: nowrap; }
+  .mm-input-row input {
+    flex: 1; background: #111122; border: 1px solid #333355;
+    border-radius: 6px; color: #fff; font-size: 12px;
+    padding: 4px 8px; outline: none;
+  }
+  .mm-input-row input:focus { border-color: #e94560; }
+
+  /* ── Footer ── */
+  #mm-footer {
+    border-top: 1px solid #e9456033;
+    padding: 6px 10px;
+    display: flex; gap: 6px;
+  }
+  #mm-footer button {
+    flex: 1; background: #1a1a2e; border: 1px solid #333355;
+    border-radius: 7px; color: #aaa; font-size: 11px;
+    padding: 5px; cursor: pointer;
+  }
+  #mm-footer button:hover { background: #2a2a45; color: #fff; }
+
+  /* ── Notification toast ── */
+  #mm-toast {
+    position: fixed; top: 60px; left: 12px;
+    background: rgba(13,13,26,.95);
+    border: 1px solid #e94560;
+    border-radius: 8px;
+    color: #fff; font-size: 12px;
+    padding: 7px 14px;
+    z-index: 100000;
+    pointer-events: none;
+    opacity: 0; transition: opacity .3s;
+    max-width: 280px;
+  }
+  #mm-toast.show { opacity: 1; }
+</style>
+
+<!-- Toast -->
+<div id="mm-toast"></div>
+
+<!-- Mini button (collapsed) -->
+<div id="mm-wrapper">
+  <button id="mm-mini" onclick="mmExpand()">▶ Mod Menu V2</button>
+
+  <!-- Full panel -->
+  <div id="mm-panel">
+
+    <!-- Header -->
+    <div id="mm-header">
+      <div>
+        <div id="mm-title">✦ MOD MENU V2</div>
+        <div id="mm-author">by Shelby Cooper</div>
+      </div>
+      <button id="mm-minimize" onclick="mmMinimize()" title="Minimieren">–</button>
+    </div>
+
+    <!-- Welcome -->
+    <div id="mm-welcome">Willkommen im Mod Menu V2 von Shelby Cooper</div>
+
+    <!-- Info bar -->
+    <div id="mm-infobar">
+      <span id="mm-balance-info">Balance: –</span>
+      <span id="mm-level-info">Level –</span>
+    </div>
+
+    <!-- ── COINS / CHIPS ── -->
+    <div class="mm-section">💰 Coins &amp; Chips</div>
+    <div class="mm-input-row">
+      <label>Betrag:</label>
+      <input type="number" id="mm-coin-amount" value="10000" min="1" />
+    </div>
+    <div class="mm-row">
+      <button class="mm-btn wide" onclick="mmAddCoins()">+ Coins hinzufügen</button>
+      <button class="mm-btn" onclick="mmMaxCoins()">MAX</button>
+    </div>
+
+    <!-- ── ÜBERLEBEN / POTIONS ── -->
+    <div class="mm-section">🧪 Tränke &amp; Items</div>
+    <div class="mm-row">
+      <button class="mm-btn" onclick="mmAddPotions(5)">+5 🔵 Tränke</button>
+      <button class="mm-btn" onclick="mmAddPotions(50)">+50 🔵 Tränke</button>
+      <button class="mm-btn" onclick="mmAddPotions(999)">+999 🔵</button>
+    </div>
+
+    <!-- ── LEVEL / XP ── -->
+    <div class="mm-section">⭐ Level &amp; XP</div>
+    <div class="mm-input-row">
+      <label>Level:</label>
+      <input type="number" id="mm-level-input" value="10" min="1" max="999" />
+    </div>
+    <div class="mm-row">
+      <button class="mm-btn wide" onclick="mmSetLevel()">Level setzen</button>
+      <button class="mm-btn" onclick="mmMaxLevel()">MAX LVL</button>
+    </div>
+
+    <!-- ── SPIEL-TRICKS ── -->
+    <div class="mm-section">🎰 Spiel-Tricks</div>
+    <div class="mm-row">
+      <button class="mm-btn on" id="mm-autowin-btn" onclick="mmToggleAutoWin()">Auto-Win: AUS</button>
+      <button class="mm-btn" onclick="mmNoBankruptcy()">Kein Bankrott</button>
+    </div>
+    <div class="mm-row">
+      <button class="mm-btn" onclick="mmFreespins(20)">+20 Freispiele</button>
+      <button class="mm-btn" onclick="mmResetBalance()">Balance Reset</button>
+    </div>
+
+    <!-- ── MISC ── -->
+    <div class="mm-section">⚙ Sonstiges</div>
+    <div class="mm-row">
+      <button class="mm-btn" onclick="mmSetDay()">☀ Tag-Modus</button>
+      <button class="mm-btn" onclick="mmSetNight()">☽ Nacht-Modus</button>
+    </div>
+    <div class="mm-row">
+      <button class="mm-btn wide" onclick="mmSaveAll()">💾 Alles speichern</button>
+      <button class="mm-btn" onclick="mmRefreshInfo()">↻ Aktualisieren</button>
+    </div>
+
+    <!-- Footer -->
+    <div id="mm-footer">
+      <button onclick="mmMinimize()">Minimieren –</button>
+      <button onclick="mmClosePanel()">Schließen ✕</button>
+    </div>
+
+  </div><!-- #mm-panel -->
+</div><!-- #mm-wrapper -->
+
+<script>
+// ── State ────────────────────────────────────────────────────
+const MM = {
+  autoWin: false,
+  bankrupt: false,
+};
+
+// ── Toast ────────────────────────────────────────────────────
+let mmToastTimer = null;
+function mmToast(msg) {
+  const t = document.getElementById('mm-toast');
+  t.textContent = '[MM] ' + msg;
+  t.classList.add('show');
+  clearTimeout(mmToastTimer);
+  mmToastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── Minimize / Expand / Close ────────────────────────────────
+function mmMinimize() {
+  document.getElementById('mm-panel').style.display = 'none';
+  document.getElementById('mm-mini').style.display  = 'block';
+}
+function mmExpand() {
+  document.getElementById('mm-mini').style.display  = 'none';
+  document.getElementById('mm-panel').style.display = 'block';
+  mmRefreshInfo();
+}
+function mmClosePanel() {
+  document.getElementById('mm-panel').style.display = 'none';
+  document.getElementById('mm-mini').style.display  = 'none';
+}
+
+// ── Info bar ─────────────────────────────────────────────────
+function mmRefreshInfo() {
+  try {
+    const bal = typeof wsBalance !== 'undefined' ? wsBalance : '?';
+    document.getElementById('mm-balance-info').textContent =
+      'Balance: ' + (typeof bal === 'number' ? bal.toFixed(2) + ' €' : bal);
+  } catch(e) {}
+  try {
+    const p = loadProfile();
+    document.getElementById('mm-level-info').textContent =
+      'Level ' + (p.level || 1) + '  |  XP ' + (p.xp || 0);
+    document.getElementById('mm-level-input').value = p.level || 1;
+  } catch(e) {}
+}
+
+// ── Coins ────────────────────────────────────────────────────
+function mmAddCoins() {
+  const amt = parseFloat(document.getElementById('mm-coin-amount').value) || 1000;
+  if (typeof wsBalance !== 'undefined') {
+    wsBalance += amt;
+    if (typeof wsUpdateUI === 'function') wsUpdateUI();
+    if (typeof saveBalanceToProfile === 'function') saveBalanceToProfile();
+    mmToast('+ ' + amt.toFixed(2) + ' € hinzugefügt!');
+    mmRefreshInfo();
+  }
+}
+function mmMaxCoins() {
+  if (typeof wsBalance !== 'undefined') {
+    wsBalance = 9999999;
+    if (typeof wsUpdateUI === 'function') wsUpdateUI();
+    mmToast('Balance auf 9.999.999 € gesetzt!');
+    mmRefreshInfo();
+  }
+}
+function mmResetBalance() {
+  if (typeof wsBalance !== 'undefined') {
+    wsBalance = 1000;
+    if (typeof wsUpdateUI === 'function') wsUpdateUI();
+    mmToast('Balance zurückgesetzt auf 1.000 €');
+    mmRefreshInfo();
+  }
+}
+
+// ── Potions ──────────────────────────────────────────────────
+function mmAddPotions(n) {
+  try {
+    const p = loadProfile();
+    p.bluePotions = (p.bluePotions || 0) + n;
+    saveProfileData(p);
+    // Update displayed counter if visible
+    const el = document.getElementById('chest-potions-display');
+    if (el) el.textContent = 'Blaue Tränke: ' + p.bluePotions;
+    const top = document.getElementById('blue-potion-count');
+    if (top) top.textContent = p.bluePotions;
+    mmToast('+' + n + ' Blaue Tränke hinzugefügt!');
+    mmRefreshInfo();
+  } catch(e) { mmToast('Fehler: ' + e.message); }
+}
+
+// ── Level / XP ───────────────────────────────────────────────
+function mmSetLevel() {
+  try {
+    const lvl = parseInt(document.getElementById('mm-level-input').value) || 1;
+    const p = loadProfile();
+    p.level = Math.max(1, Math.min(999, lvl));
+    p.xp = 0;
+    saveProfileData(p);
+    if (typeof renderProfileUI === 'function') renderProfileUI();
+    mmToast('Level auf ' + p.level + ' gesetzt!');
+    mmRefreshInfo();
+  } catch(e) { mmToast('Fehler: ' + e.message); }
+}
+function mmMaxLevel() {
+  try {
+    const p = loadProfile();
+    p.level = 999; p.xp = 0;
+    saveProfileData(p);
+    if (typeof renderProfileUI === 'function') renderProfileUI();
+    mmToast('Level auf MAX (999) gesetzt!');
+    mmRefreshInfo();
+  } catch(e) {}
+}
+
+// ── Auto-Win ─────────────────────────────────────────────────
+const _origRandom = Math.random.bind(Math);
+function mmToggleAutoWin() {
+  MM.autoWin = !MM.autoWin;
+  const btn = document.getElementById('mm-autowin-btn');
+  if (MM.autoWin) {
+    // Bias random heavily towards winning
+    Math.random = () => _origRandom() * 0.15;
+    btn.classList.add('on'); btn.classList.remove('off');
+    btn.textContent = 'Auto-Win: AN';
+    mmToast('Auto-Win aktiviert!');
+  } else {
+    Math.random = _origRandom;
+    btn.classList.remove('on'); btn.classList.add('off');
+    btn.textContent = 'Auto-Win: AUS';
+    mmToast('Auto-Win deaktiviert.');
+  }
+}
+
+// ── No Bankruptcy ────────────────────────────────────────────
+function mmNoBankruptcy() {
+  // Patch checkBankruptcy if it exists
+  if (typeof checkBankruptcy === 'function') {
+    window.checkBankruptcy = function() {};
+    mmToast('Bankrott-Check deaktiviert!');
+  }
+  // Keep balance safe
+  if (typeof wsBalance !== 'undefined' && wsBalance < 100) {
+    wsBalance = 5000;
+    if (typeof wsUpdateUI === 'function') wsUpdateUI();
+  }
+  mmToast('Kein Bankrott mehr möglich!');
+}
+
+// ── Free Spins ───────────────────────────────────────────────
+function mmFreespins(n) {
+  if (typeof wsFreeSpin !== 'undefined') {
+    window.wsFreeSpin = (window.wsFreeSpin || 0) + n;
+    mmToast('+' + n + ' Freispiele hinzugefügt!');
+  } else {
+    // Fallback: just add money equivalent
+    if (typeof wsBalance !== 'undefined') {
+      wsBalance += n * 50;
+      if (typeof wsUpdateUI === 'function') wsUpdateUI();
+    }
+    mmToast('+' + n + ' Freispiele (als Bonus-Coins gutgeschrieben)');
+  }
+}
+
+// ── Theme (quick CSS hacks) ──────────────────────────────────
+function mmSetDay() {
+  document.body.style.filter = 'brightness(1.5) contrast(0.9)';
+  mmToast('Tag-Modus aktiviert ☀');
+}
+function mmSetNight() {
+  document.body.style.filter = '';
+  mmToast('Nacht-Modus aktiviert ☽');
+}
+
+// ── Save All ─────────────────────────────────────────────────
+function mmSaveAll() {
+  try {
+    if (typeof wsBalance !== 'undefined' && typeof saveBalanceToProfile === 'function') {
+      saveBalanceToProfile();
+    }
+    if (typeof saveProfile === 'function') saveProfile();
+    mmToast('Alles gespeichert! 💾');
+  } catch(e) { mmToast('Gespeichert!'); }
+}
+
+// ── Auto-open on load ────────────────────────────────────────
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    mmExpand();
+  }, 1800);
+});
+</script>
+
 </body>
 </html>
